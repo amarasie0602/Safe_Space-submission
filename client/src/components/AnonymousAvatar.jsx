@@ -8,19 +8,23 @@ const GRADIENTS = [
   ['#b97a56', '#d6cfc7'],
 ];
 
-// Fixed set of illustrated placeholder avatars users pick from — never a
-// real photo, so the pseudonymous identity model stays intact.
+// Fixed set of placeholder avatars users pick from — never a real photo, so
+// the pseudonymous identity model stays intact. Each mark carries real
+// meaning for a healing/peer-support context (growth, calm, safety, hope)
+// rather than being a generic reaction pictogram (star/heart/sun) or an
+// abstract pattern with no meaning — this is the first thing a new user
+// picks, and it should feel warm and intentional, not decorative.
 export const AVATAR_PRESETS = [
-  { icon: 'leaf', colors: GRADIENTS[0] },
-  { icon: 'wave', colors: GRADIENTS[1] },
-  { icon: 'cloud', colors: GRADIENTS[2] },
-  { icon: 'star', colors: GRADIENTS[3] },
-  { icon: 'heart', colors: GRADIENTS[4] },
-  { icon: 'sun', colors: GRADIENTS[0] },
-  { icon: 'moon', colors: GRADIENTS[1] },
-  { icon: 'shield', colors: GRADIENTS[2] },
-  { icon: 'users', colors: GRADIENTS[3] },
-  { icon: 'home', colors: GRADIENTS[4] },
+  { icon: 'avatar-sprout', colors: GRADIENTS[0] }, // growth, new beginnings
+  { icon: 'avatar-lotus', colors: GRADIENTS[1] }, // blooming, mindfulness
+  { icon: 'avatar-embrace', colors: GRADIENTS[2] }, // support, being held
+  { icon: 'avatar-anchor', colors: GRADIENTS[3] }, // grounding, safety
+  { icon: 'avatar-feather', colors: GRADIENTS[4] }, // lightness, letting go
+  { icon: 'avatar-mountain', colors: GRADIENTS[0] }, // strength, resilience
+  { icon: 'avatar-nest', colors: GRADIENTS[1] }, // comfort, belonging
+  { icon: 'avatar-horizon', colors: GRADIENTS[2] }, // hope, a new day
+  { icon: 'avatar-breath', colors: GRADIENTS[3] }, // calm, mindful breathing
+  { icon: 'avatar-droplet', colors: GRADIENTS[4] }, // release, renewal
 ];
 
 const hashSeed = (seed) => {
