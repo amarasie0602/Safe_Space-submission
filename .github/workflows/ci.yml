@@ -6,6 +6,11 @@ on:
   push:
     branches: [main]
 
+# Least-privilege default: this workflow only reads the repo and reports
+# check results, so it gets no other GITHUB_TOKEN permissions.
+permissions:
+  contents: read
+
 jobs:
   backend:
     name: Backend (lint + test)
@@ -33,7 +38,10 @@ jobs:
 
       - name: Install dependencies
         working-directory: backend
-        run: npm ci
+        # --ignore-scripts: none of this project's dependencies need an
+        # install-time lifecycle script, so this stops a compromised
+        # transitive dependency from running arbitrary code during `npm ci`.
+        run: npm ci --ignore-scripts
 
       - name: Run tests
         working-directory: backend
@@ -58,7 +66,8 @@ jobs:
 
       - name: Install dependencies
         working-directory: client
-        run: npm ci
+        # See the matching comment in the backend job above.
+        run: npm ci --ignore-scripts
 
       - name: Lint
         working-directory: client
