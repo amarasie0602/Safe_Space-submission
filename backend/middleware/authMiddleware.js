@@ -8,9 +8,16 @@ const protect = (req, res, next) => {
   }
 
   const token = authHeader.split(' ')[1];
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = decoded;
-  next();
+  // jwt.verify throws synchronously on a malformed/expired/wrong-signature
+  // token. Without this try/catch that throw fell through to the generic
+  // error-handling middleware as a 500, instead of the 401 an auth failure
+  // should be.
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    next();
+  } catch {
+    return res.status(401).json({ message: 'Not authorized, invalid or expired token' });
+  }
 };
 
 const adminOnly = (req, res, next) => {
