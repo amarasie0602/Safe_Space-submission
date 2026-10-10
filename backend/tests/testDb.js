@@ -21,7 +21,16 @@ const clearTestDb = async () => {
 };
 
 const disconnectTestDb = async () => {
-  await mongoose.connection.dropDatabase();
+  // Drop each collection rather than the whole database: `dropDatabase`
+  // needs a privilege (dbAdmin/atlasAdmin) that a least-privilege
+  // readWrite database user — the kind you'd actually want scoped to a
+  // shared Atlas cluster, and the kind most CI Mongo services start with —
+  // doesn't have. Dropping every collection leaves the test database just
+  // as empty without requiring that extra grant.
+  const { collections } = mongoose.connection;
+  await Promise.all(
+    Object.values(collections).map((collection) => collection.drop().catch(() => {}))
+  );
   await mongoose.disconnect();
 };
 

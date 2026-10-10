@@ -98,6 +98,77 @@ const PATHS = {
       <line x1="18" y1="6" x2="6" y2="18" />
     </>
   ),
+
+  // Marks used only by the avatar picker (AnonymousAvatar). Each is a small,
+  // literal symbol with real meaning in a healing/mental-health context —
+  // growth, calm, safety, hope — rather than a generic reaction pictogram
+  // (star/heart/sun) or an abstract pattern with no meaning at all. Kept to
+  // the same quiet single-stroke line style as the rest of this icon set so
+  // an avatar never reads as a bright, emoji-style sticker.
+  'avatar-sprout': (
+    <>
+      <path d="M12 21V11" />
+      <path d="M12 11C12 7 9 4 5 4c0 4 3 7 7 7z" />
+      <path d="M12 11c0-3 2.5-5.5 6-5.5 0 3-2.5 5.5-6 5.5z" />
+    </>
+  ),
+  'avatar-lotus': (
+    <>
+      <line x1="12" y1="21" x2="12" y2="13" />
+      <path d="M12 21c-5 0-8-4-8-8 3 0 6 2 8 5 2-3 5-5 8-5 0 4-3 8-8 8z" />
+    </>
+  ),
+  'avatar-embrace': (
+    <>
+      <path d="M4 14c0-5 3-9 8-9s8 4 8 9" />
+      <path d="M4 14c2 2.3 5 3.5 8 3.5s6-1.2 8-3.5" />
+    </>
+  ),
+  'avatar-anchor': (
+    <>
+      <circle cx="12" cy="5" r="2" />
+      <line x1="12" y1="7" x2="12" y2="19" />
+      <line x1="8" y1="11" x2="16" y2="11" />
+      <path d="M7 14a5 5 0 0010 0" />
+    </>
+  ),
+  'avatar-feather': (
+    <>
+      <path d="M19.5 11.5A5.5 5.5 0 0010 7.8L4.5 13.3V20h6.7z" />
+      <line x1="15" y1="7" x2="4" y2="18" />
+      <line x1="16" y1="13.5" x2="9" y2="13.5" />
+    </>
+  ),
+  'avatar-mountain': (
+    <>
+      <path d="M3 19L9 8l4 6 2-2.5 6 7.5z" />
+      <line x1="3" y1="19" x2="21" y2="19" />
+    </>
+  ),
+  'avatar-nest': (
+    <>
+      <path d="M4 13.5c0-2 3.5-3 8-3s8 1 8 3" />
+      <path d="M3 13.5c1 4 5 6 9 6s8-2 9-6" />
+      <circle cx="10" cy="11.8" r="1.3" />
+      <circle cx="14" cy="11.3" r="1.3" />
+    </>
+  ),
+  'avatar-horizon': (
+    <>
+      <line x1="3" y1="17" x2="21" y2="17" />
+      <path d="M6.5 17a5.5 5.5 0 0111 0" />
+      <line x1="12" y1="6.5" x2="12" y2="3.5" />
+      <line x1="7" y1="9" x2="5" y2="7" />
+      <line x1="17" y1="9" x2="19" y2="7" />
+    </>
+  ),
+  'avatar-breath': (
+    <>
+      <circle cx="12" cy="12" r="7.5" />
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+    </>
+  ),
+  'avatar-droplet': <path d="M12 3c4 5 7 9 7 12a7 7 0 01-14 0c0-3 3-7 7-12z" />,
 };
 
 const Icon = ({ name, size = 18, className = '' }) => (

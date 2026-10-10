@@ -100,3 +100,30 @@ describe('auth', () => {
     expect(replayRes.status).toBe(401);
   });
 });
+
+describe('protect middleware', () => {
+  // jwt.verify throws synchronously on a bad token. Without a try/catch in
+  // the `protect` middleware, that throw used to fall through to the
+  // generic error handler as a 500 instead of the 401 an auth failure
+  // should produce.
+  test('a malformed token is rejected with 401, not 500', async () => {
+    const res = await request(app)
+      .get('/auth/me/stats')
+      .set('Authorization', 'Bearer not-a-real-jwt');
+
+    expect(res.status).toBe(401);
+  });
+
+  test('an expired token is rejected with 401, not 500', async () => {
+    const jwt = require('jsonwebtoken');
+    const expiredToken = jwt.sign({ id: '507f1f77bcf86cd799439011', role: 'user' }, process.env.JWT_SECRET, {
+      expiresIn: -10,
+    });
+
+    const res = await request(app)
+      .get('/auth/me/stats')
+      .set('Authorization', `Bearer ${expiredToken}`);
+
+    expect(res.status).toBe(401);
+  });
+});
