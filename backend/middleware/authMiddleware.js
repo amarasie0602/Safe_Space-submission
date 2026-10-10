@@ -27,6 +27,17 @@ const adminOnly = (req, res, next) => {
   next();
 };
 
+// Day-to-day moderation (reviewing flagged content, resolving reports) is
+// open to both moderators and admins. The most sensitive actions — banning a
+// user, verifying/rejecting a counselor's credentials, and analytics — stay
+// behind adminOnly above, reserved for full admins.
+const staffOnly = (req, res, next) => {
+  if (!['admin', 'moderator'].includes(req.user?.role)) {
+    return res.status(403).json({ message: 'Staff access required' });
+  }
+  next();
+};
+
 // A Counselor's login token carries role: 'counselor' (see
 // counselorController.signToken), so `protect` works for either a User or a
 // Counselor — this just narrows to routes only a logged-in counselor may hit.
@@ -58,4 +69,4 @@ const requireActiveUser = async (req, res, next) => {
   next();
 };
 
-module.exports = { protect, adminOnly, counselorOnly, requireActiveUser };
+module.exports = { protect, adminOnly, staffOnly, counselorOnly, requireActiveUser };

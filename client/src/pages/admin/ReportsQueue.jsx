@@ -2,17 +2,24 @@ import { useContext, useEffect, useState } from 'react';
 import api from '../../api/axios';
 import Card from '../../components/Card';
 import { ToastContext } from '../../context/ToastContext';
+import { AuthContext } from '../../context/AuthContext';
 
 const ReportsQueue = () => {
   const [reports, setReports] = useState([]);
   const { showToast } = useContext(ToastContext);
+  const { user } = useContext(AuthContext);
+  // Suspend/ban are admin-only on the backend (authMiddleware.adminOnly) —
+  // hide the buttons for a moderator rather than show an action that would
+  // just 403, since the report itself is still theirs to resolve/dismiss.
+  const canModerateUsers = user?.role === 'admin';
 
   useEffect(() => {
     const fetchReports = async () => {
       const { data } = await api.get('/admin/reports', { params: { status: 'open' } });
       setReports(data);
     };
-    fetchReports();
+    fetchReports().catch(() => showToast('Unable to load reports.'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResolve = async (reportId, status) => {
@@ -45,6 +52,9 @@ const ReportsQueue = () => {
           <p>{report.reason}</p>
           <div className="card-meta">
             <span className="badge">{report.targetType}</span>
+            {report.reporter?.pseudonym && (
+              <span className="badge">Reported by {report.reporter.pseudonym}</span>
+            )}
           </div>
           <div className="card-actions">
             <button className="btn btn-primary btn-sm" onClick={() => handleResolve(report._id, 'resolved')}>
@@ -53,7 +63,7 @@ const ReportsQueue = () => {
             <button className="btn btn-ghost btn-sm" onClick={() => handleResolve(report._id, 'dismissed')}>
               Dismiss
             </button>
-            {report.targetType === 'user' && (
+            {report.targetType === 'user' && canModerateUsers && (
               <>
                 <button
                   className="btn btn-ghost btn-sm"
