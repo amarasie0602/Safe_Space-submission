@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const Counselor = require('../models/Counselor');
 const Booking = require('../models/Booking');
+const { logAdminAction } = require('../utils/auditLog');
 
 const SLOT_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
 
@@ -53,7 +54,57 @@ const adminVerifyCounselor = async (req, res) => {
     return res.status(404).json({ message: 'Counselor not found' });
   }
 
+  await logAdminAction({
+    actor: req.user.id,
+    action: 'counselor_verified',
+    targetType: 'counselor',
+    targetId: counselor._id,
+    reason: req.body?.reason,
+    metadata: { name: counselor.name, email: counselor.email },
+  });
+
   res.json(counselor);
+};
+
+// A counselor application an admin has declined — rather than add a third
+// status value to sit alongside `verified`, the declined application is
+// just removed. The applicant isn't notified (there's no email/contact
+// channel for a declined applicant by design) but can always re-register
+// with corrected credentials. The audit log keeps a name/email snapshot
+// since the document itself won't exist to look up afterward.
+const adminRejectCounselor = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(404).json({ message: 'Counselor not found' });
+  }
+
+  const counselor = await Counselor.findByIdAndDelete(req.params.id);
+
+  if (!counselor) {
+    return res.status(404).json({ message: 'Counselor not found' });
+  }
+
+  await logAdminAction({
+    actor: req.user.id,
+    action: 'counselor_rejected',
+    targetType: 'counselor',
+    targetId: counselor._id,
+    reason: req.body?.reason,
+    metadata: { name: counselor.name, email: counselor.email },
+  });
+
+  res.status(204).send();
+};
+
+// The admin review queue — every self-registered counselor awaiting a
+// verify/reject decision, with enough detail (name, specialties, credentials
+// text, how long ago they applied) to actually review the application
+// instead of just trusting a raw id typed into a box.
+const getPendingCounselors = async (req, res) => {
+  const counselors = await Counselor.find({ verified: false })
+    .select('-passwordHash')
+    .sort({ createdAt: 1 });
+
+  res.json(counselors);
 };
 
 const getCounselors = async (req, res) => {
@@ -158,6 +209,8 @@ module.exports = {
   register,
   login,
   adminVerifyCounselor,
+  adminRejectCounselor,
+  getPendingCounselors,
   getCounselors,
   getMySchedule,
   updateMySchedule,

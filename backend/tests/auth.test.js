@@ -8,7 +8,7 @@ beforeAll(async () => {
   app = require('../server');
 }, 35000);
 
-afterEach(clearTestDb);
+afterEach(clearTestDb, 35000);
 afterAll(disconnectTestDb, 35000);
 
 describe('auth', () => {

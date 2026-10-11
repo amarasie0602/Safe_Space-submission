@@ -26,6 +26,7 @@ import ReportsQueue from './pages/admin/ReportsQueue';
 import CounselorVerificationList from './pages/admin/CounselorVerificationList';
 import AdminBookings from './pages/admin/AdminBookings';
 import AnalyticsView from './pages/admin/AnalyticsView';
+import AuditLog from './pages/admin/AuditLog';
 import PrivateRoute from './context/PrivateRoute';
 import AdminRoute from './context/AdminRoute';
 import CounselorLogin from './pages/CounselorLogin';
@@ -102,9 +103,38 @@ function App() {
         >
           <Route path="posts" element={<FlaggedPostsQueue />} />
           <Route path="reports" element={<ReportsQueue />} />
-          <Route path="counselors" element={<CounselorVerificationList />} />
-          <Route path="bookings" element={<AdminBookings />} />
-          <Route path="analytics" element={<AnalyticsView />} />
+          <Route
+            path="counselors"
+            element={
+              <AdminRoute adminOnly>
+                <CounselorVerificationList />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="bookings"
+            element={
+              <AdminRoute adminOnly>
+                <AdminBookings />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="analytics"
+            element={
+              <AdminRoute adminOnly>
+                <AnalyticsView />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="audit-log"
+            element={
+              <AdminRoute adminOnly>
+                <AuditLog />
+              </AdminRoute>
+            }
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -17,7 +17,13 @@ const adminGetReports = async (req, res) => {
   const { status } = req.query;
   const filter = status ? { status } : {};
 
-  const reports = await Report.find(filter).sort({ createdAt: -1 });
+  // Populated to pseudonym/avatar only — never passwordHash or anything
+  // beyond what staff already see elsewhere — so moderators can spot a
+  // report-abuse pattern (e.g. one account mass-reporting another) instead
+  // of reviewing reports blind to who filed them.
+  const reports = await Report.find(filter)
+    .populate('reporter', 'pseudonym avatarId')
+    .sort({ createdAt: -1 });
 
   res.json(reports);
 };
