@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const { logAdminAction } = require('../utils/auditLog');
 
 const findTargetUser = async (req, res) => {
   const { id } = req.params;
@@ -23,10 +24,19 @@ const suspendUser = async (req, res) => {
   const user = await findTargetUser(req, res);
   if (!user) return;
 
-  const days = Number(req.body.days) || 7;
+  const days = Number(req.body?.days) || 7;
   user.status = 'suspended';
   user.suspendedUntil = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
   await user.save();
+
+  await logAdminAction({
+    actor: req.user.id,
+    action: 'user_suspended',
+    targetType: 'user',
+    targetId: user._id,
+    reason: req.body?.reason,
+    metadata: { pseudonym: user.pseudonym, days, suspendedUntil: user.suspendedUntil },
+  });
 
   res.json({ pseudonym: user.pseudonym, status: user.status, suspendedUntil: user.suspendedUntil });
 };
@@ -39,6 +49,15 @@ const banUser = async (req, res) => {
   user.suspendedUntil = undefined;
   await user.save();
 
+  await logAdminAction({
+    actor: req.user.id,
+    action: 'user_banned',
+    targetType: 'user',
+    targetId: user._id,
+    reason: req.body?.reason,
+    metadata: { pseudonym: user.pseudonym },
+  });
+
   res.json({ pseudonym: user.pseudonym, status: user.status });
 };
 
@@ -49,6 +68,15 @@ const reinstateUser = async (req, res) => {
   user.status = 'active';
   user.suspendedUntil = undefined;
   await user.save();
+
+  await logAdminAction({
+    actor: req.user.id,
+    action: 'user_reinstated',
+    targetType: 'user',
+    targetId: user._id,
+    reason: req.body?.reason,
+    metadata: { pseudonym: user.pseudonym },
+  });
 
   res.json({ pseudonym: user.pseudonym, status: user.status });
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { protect, adminOnly, requireActiveUser } = require('../middleware/authMiddleware');
+const { protect, staffOnly, requireActiveUser } = require('../middleware/authMiddleware');
 const { contentLimiter, postCooldown } = require('../middleware/rateLimiters');
 const {
   createPost,
@@ -14,9 +14,9 @@ const router = express.Router();
 
 router.post('/posts', protect, requireActiveUser, contentLimiter, postCooldown, createPost);
 router.get('/posts', getPosts);
-router.get('/admin/posts', protect, adminOnly, adminGetPosts);
-router.patch('/admin/posts/:id/status', protect, adminOnly, updatePostStatus);
-router.delete('/admin/posts/:id', protect, adminOnly, adminDeletePost);
+router.get('/admin/posts', protect, staffOnly, adminGetPosts);
+router.patch('/admin/posts/:id/status', protect, staffOnly, updatePostStatus);
+router.delete('/admin/posts/:id', protect, staffOnly, adminDeletePost);
 router.patch('/posts/:id/support', protect, toggleSupport);
 
 module.exports = router;
