@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import api from '../api/axios';
 import { ToastContext } from '../context/ToastContext';
 import { BlockedUsersContext } from '../context/BlockedUsersContext';
@@ -71,40 +71,49 @@ const PostOptionsMenu = ({ post }) => {
       >
         ⋯
       </button>
-      {open && (
-        <div className="post-options-menu" role="menu">
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setOpen(false);
-              setConfirmAction('post');
-            }}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="post-options-menu"
+            role="menu"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
           >
-            Report post
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setOpen(false);
-              setConfirmAction('user');
-            }}
-          >
-            Report user
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setOpen(false);
-              setConfirmAction('block');
-            }}
-          >
-            Block user
-          </button>
-        </div>
-      )}
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                setConfirmAction('post');
+              }}
+            >
+              Report post
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                setConfirmAction('user');
+              }}
+            >
+              Report user
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                setConfirmAction('block');
+              }}
+            >
+              Block user
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {confirmAction === 'post' && (
           <ConfirmDialog

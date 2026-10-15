@@ -817,10 +817,27 @@ textarea {
   gap: 1rem;
   padding: 0.9rem 1.5rem;
   background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: var(--z-sticky);
+  transition: padding 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar-scrolled {
+  padding: 0.65rem 1.5rem;
+  border-bottom-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar-theme-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-theme-icon {
+  display: inline-flex;
 }
 
 .navbar-brand {
@@ -1807,8 +1824,28 @@ textarea {
   display: none;
 }
 
+.navbar-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(62, 47, 38, 0.35);
+  z-index: var(--z-modal);
+}
+
 .navbar-mobile-panel {
-  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(80vw, 300px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  padding: calc(0.9rem + 44px) 1.25rem 1.5rem;
+  z-index: var(--z-modal);
+  overflow-y: auto;
 }
 
 @media (max-width: 860px) {
@@ -1822,15 +1859,6 @@ textarea {
 
   .navbar-brand {
     font-size: 1.05rem;
-  }
-
-  .navbar-mobile-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    padding: 0.75rem 1.25rem 1rem;
   }
 
   .navbar-mobile-panel a {
