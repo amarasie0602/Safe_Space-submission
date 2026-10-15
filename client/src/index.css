@@ -2147,23 +2147,29 @@ textarea {
   margin-top: 0.5rem;
 }
 
+/* Reused across every page's hero banner — each page passes its own
+   illustration's real width/height to ThemedImage, and this just scales
+   that image to the container width while preserving its own aspect
+   ratio (object-fit: contain + height: auto), rather than assuming every
+   hero illustration shares one fixed ratio. */
 .hero-photo {
   position: relative;
   flex-shrink: 0;
   width: 360px;
   max-width: 100%;
-  aspect-ratio: 792 / 370;
 }
 
 .hero-photo .themed-image {
   width: 100%;
-  height: 100%;
+  height: auto;
   aspect-ratio: auto;
   background: none;
 }
 
 .hero-photo .themed-image img {
   object-fit: contain;
+  width: 100%;
+  height: auto;
 }
 
 /* ThemedImage */
@@ -2336,6 +2342,111 @@ textarea {
   background: var(--color-success);
 }
 
+.counselor-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.15rem 1.3rem;
+  margin-bottom: 1rem;
+  animation: fade-in-up 0.35s ease both;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.counselor-row:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.counselor-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.counselor-row-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.counselor-row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .counselor-row {
+    flex-direction: column;
+  }
+
+  .counselor-row-actions {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .counselor-row-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.counselors-intro-card {
+  text-align: center;
+}
+
+.counselors-intro-card .themed-image {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto 0.75rem;
+  border-radius: var(--radius-md);
+  background: none;
+}
+
+.counselors-intro-card .themed-image img {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+}
+
+.consideration-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.consideration-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.consideration-list p {
+  margin: 0.15rem 0 0;
+}
+
+.consideration-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
 /* Profile */
 
 .profile-page {
@@ -2405,16 +2516,50 @@ textarea {
 
 /* Inspiration / healing reads */
 
-.article-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  margin-top: 1.5rem;
+.section-heading {
+  margin: 1.75rem 0 1rem;
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
 .article-card {
   padding: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-card-featured {
+  flex-direction: row;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .article-card-featured {
+    flex-direction: column;
+  }
+}
+
+.article-card-cover {
+  flex-shrink: 0;
+}
+
+.article-card-featured .article-card-cover {
+  width: 40%;
+}
+
+.article-card:not(.article-card-featured) .article-card-cover {
+  width: 100%;
+  height: 140px;
+}
+
+.article-card-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .article-card-header {
@@ -2432,7 +2577,8 @@ textarea {
   padding: 1.1rem 1.25rem;
 }
 
-.article-card-header h2 {
+.article-card-header h2,
+.article-card-header h3 {
   margin: 0.35rem 0 0.35rem;
 }
 

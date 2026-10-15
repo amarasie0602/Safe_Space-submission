@@ -5,6 +5,8 @@ import flowersVase from '../assets/images/illustrations/flowers-vase.png';
 import handsHeart from '../assets/images/illustrations/hands-heart.png';
 import openJournal from '../assets/images/illustrations/open-journal.png';
 import sunsetHills from '../assets/images/illustrations/sunset-hills.png';
+import affirmationDaisy from '../assets/images/illustrations/affirmation-daisy.png';
+import progressNote from '../assets/images/illustrations/progress-note.png';
 
 // Central place for every image used across the app, so swapping one (or
 // the whole set) means editing one file. Each entry keeps its credit
@@ -16,29 +18,36 @@ import sunsetHills from '../assets/images/illustrations/sunset-hills.png';
 // credited as "Provided by the project author" rather than a fabricated
 // stock-photographer attribution, which would be dishonest.
 const PROVIDED_CREDIT = { source: 'Provided by the project author' };
+const credited = (src) => ({ src, alt: '', credit: PROVIDED_CREDIT });
 
 export const IMAGES = {
-  landingHero: {
-    src: heroWomanPlantsMug,
-    alt: '',
-    credit: PROVIDED_CREDIT,
-  },
-  authSplit: {
-    src: flowersVase,
-    alt: '',
-    credit: PROVIDED_CREDIT,
-  },
+  landingHero: credited(heroWomanPlantsMug),
+  authSplit: credited(flowersVase),
   // Small thumbnails for the homepage sidebar's "You Might Find Helpful"
   // resource list.
   helpfulResources: {
-    breathing: { src: leafBranch, alt: '', credit: PROVIDED_CREDIT },
-    healingReads: { src: coffeeBooks, alt: '', credit: PROVIDED_CREDIT },
-    crisisResources: { src: sunsetHills, alt: '', credit: PROVIDED_CREDIT },
+    breathing: credited(leafBranch),
+    healingReads: credited(coffeeBooks),
+    crisisResources: credited(sunsetHills),
   },
-  counselorPrompt: { src: handsHeart, alt: '', credit: PROVIDED_CREDIT },
-  inspirationHeader: { src: openJournal, alt: '', credit: PROVIDED_CREDIT },
-  // TODO: one cover image per Healing Reads article (client/src/pages/Inspiration.jsx).
-  healingReadsCovers: {},
+  counselorPrompt: credited(handsHeart),
+  threadsHero: credited(flowersVase),
+  calmCornerHero: credited(sunsetHills),
+  counselorsHero: credited(leafBranch),
+  // Healing Reads: a hero (the one asset with its own baked-in affirmation
+  // text — fits here since this page's content doesn't rotate like the
+  // homepage's dynamic AffirmationCard does) plus one cover per article,
+  // cycling through the rest of the set since there are more articles than
+  // spare illustrations.
+  inspirationHero: credited(affirmationDaisy),
+  healingReadsCovers: {
+    'progress-not-loud': credited(progressNote),
+    'case-for-rest': credited(sunsetHills),
+    'gentle-gratitude': credited(flowersVase),
+    'no-words': credited(coffeeBooks),
+    'five-minute-reset': credited(leafBranch),
+    'not-a-burden': credited(openJournal),
+  },
   // TODO: one muted photo per Calm Corner sound tile (rain, ocean, forest, cafe, piano).
   calmCornerTiles: {},
 };

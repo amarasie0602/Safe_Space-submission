@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import Card from './Card';
 import CategoryTag from './CategoryTag';
 import AnonymousAvatar from './AnonymousAvatar';
 import Icon from './Icon';
@@ -16,38 +15,44 @@ const CounselorCard = ({ counselor }) => {
   const open = isOpenForBooking(counselor);
 
   return (
-    <Card>
-      <div className="post-card-header">
-        <AnonymousAvatar seed={counselor._id} />
-        <div>
+    <div className="counselor-row">
+      <AnonymousAvatar seed={counselor._id} size={56} />
+      <div className="counselor-row-body">
+        <div className="counselor-row-title">
           <Link to={`/counselors/${counselor._id}`}>
             <strong>{counselor.name}</strong>
           </Link>
-          <div className="counselor-availability">
-            <span className={`availability-dot${open ? ' open' : ''}`} aria-hidden="true" />
-            {counselor.availability}
-          </div>
+          {counselor.verified && (
+            <span className="badge badge-success">
+              <Icon name="shield" size={12} /> Verified Professional
+            </span>
+          )}
+        </div>
+        {counselor.credentials && <p className="text-muted">{counselor.credentials}</p>}
+        <div className="card-meta">
+          {counselor.specialties?.map((specialty) => (
+            <CategoryTag key={specialty} category={specialty} />
+          ))}
+          {typeof counselor.rating === 'number' && (
+            <span className="badge badge-success">
+              <Icon name="star" size={12} /> {counselor.rating.toFixed(1)}
+            </span>
+          )}
         </div>
       </div>
-      {counselor.credentials && <p className="text-muted">{counselor.credentials}</p>}
-      <div className="card-meta">
-        {counselor.specialties?.map((specialty) => (
-          <CategoryTag key={specialty} category={specialty} />
-        ))}
-      </div>
-      <div className="card-meta">
-        {typeof counselor.rating === 'number' && (
-          <span className="badge badge-success">
-            <Icon name="star" size={12} /> {counselor.rating.toFixed(1)}
-          </span>
-        )}
-      </div>
-      <div className="card-actions">
+      <div className="counselor-row-actions">
+        <div className="counselor-availability">
+          <span className={`availability-dot${open ? ' open' : ''}`} aria-hidden="true" />
+          {counselor.availability}
+        </div>
+        <Link to={`/counselors/${counselor._id}`} className="btn btn-ghost btn-sm">
+          View Profile
+        </Link>
         <Link to={`/counselors/${counselor._id}`} className="btn btn-primary btn-sm">
-          {open ? 'Book Anonymous Session' : 'View Profile'}
+          {open ? 'Book Anonymous Session' : 'Explore Booking Options'}
         </Link>
       </div>
-    </Card>
+    </div>
   );
 };
 
