@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import api from '../api/axios';
 import { AuthContext } from '../context/AuthContext';
 import ErrorMessage from '../components/ErrorMessage';
@@ -79,9 +80,11 @@ const Register = () => {
           Already have an account? <Link to="/login">Log in</Link>
         </p>
       </form>
-      {recoveryCode && (
-        <RecoveryCodeDialog recoveryCode={recoveryCode} onContinue={() => navigate('/')} />
-      )}
+      <AnimatePresence>
+        {recoveryCode && (
+          <RecoveryCodeDialog recoveryCode={recoveryCode} onContinue={() => navigate('/')} />
+        )}
+      </AnimatePresence>
     </AuthCard>
   );
 };

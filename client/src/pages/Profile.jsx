@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import api from '../api/axios';
 import { AuthContext } from '../context/AuthContext';
 import { ToastContext } from '../context/ToastContext';
@@ -246,9 +247,11 @@ const Profile = () => {
           </div>
         </form>
       )}
-      {newRecoveryCode && (
-        <RecoveryCodeDialog recoveryCode={newRecoveryCode} onContinue={() => setNewRecoveryCode('')} />
-      )}
+      <AnimatePresence>
+        {newRecoveryCode && (
+          <RecoveryCodeDialog recoveryCode={newRecoveryCode} onContinue={() => setNewRecoveryCode('')} />
+        )}
+      </AnimatePresence>
 
       <h2>Blocked users</h2>
       <p className="text-muted">

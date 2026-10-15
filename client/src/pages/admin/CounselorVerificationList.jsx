@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import api from '../../api/axios';
 import Card from '../../components/Card';
 import CategoryTag from '../../components/CategoryTag';
@@ -84,8 +85,10 @@ const CounselorVerificationList = () => {
           </div>
         </Card>
       ))}
+      <AnimatePresence>
       {rejectTarget && (
         <ConfirmDialog
+          key="reject"
           title={`Reject ${rejectTarget.name}'s application?`}
           message={<RejectReasonPrompt reason={rejectReason} onReasonChange={setRejectReason} />}
           confirmLabel="Reject application"
@@ -97,6 +100,7 @@ const CounselorVerificationList = () => {
           }}
         />
       )}
+      </AnimatePresence>
     </div>
   );
 };

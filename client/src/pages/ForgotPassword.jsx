@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import ErrorMessage from '../components/ErrorMessage';
@@ -69,9 +70,11 @@ const ForgotPassword = () => {
           Remembered it after all? <Link to="/login">Log in</Link>
         </p>
       </form>
-      {nextRecoveryCode && (
-        <RecoveryCodeDialog recoveryCode={nextRecoveryCode} onContinue={() => navigate('/login')} />
-      )}
+      <AnimatePresence>
+        {nextRecoveryCode && (
+          <RecoveryCodeDialog recoveryCode={nextRecoveryCode} onContinue={() => navigate('/login')} />
+        )}
+      </AnimatePresence>
     </AuthCard>
   );
 };

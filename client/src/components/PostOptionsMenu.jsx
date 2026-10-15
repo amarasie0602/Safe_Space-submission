@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import api from '../api/axios';
 import { ToastContext } from '../context/ToastContext';
 import { BlockedUsersContext } from '../context/BlockedUsersContext';
@@ -104,36 +105,41 @@ const PostOptionsMenu = ({ post }) => {
           </button>
         </div>
       )}
-      {confirmAction === 'post' && (
-        <ConfirmDialog
-          title="Report this post?"
-          message="Reports help us maintain a safe and respectful community. Our moderators will review it."
-          confirmLabel="Report"
-          danger
-          onConfirm={handleReportPost}
-          onCancel={() => setConfirmAction(null)}
-        />
-      )}
-      {confirmAction === 'user' && (
-        <ConfirmDialog
-          title="Report this user?"
-          message="Reports help us maintain a safe and respectful community. Our moderators will review it."
-          confirmLabel="Report"
-          danger
-          onConfirm={handleReportUser}
-          onCancel={() => setConfirmAction(null)}
-        />
-      )}
-      {confirmAction === 'block' && (
-        <ConfirmDialog
-          title="Block this user?"
-          message="You won't see posts from this user anymore, on any device you log in from. They won't be notified, and they can still see your posts."
-          confirmLabel="Block"
-          danger
-          onConfirm={handleBlockUser}
-          onCancel={() => setConfirmAction(null)}
-        />
-      )}
+      <AnimatePresence>
+        {confirmAction === 'post' && (
+          <ConfirmDialog
+            key="post"
+            title="Report this post?"
+            message="Reports help us maintain a safe and respectful community. Our moderators will review it."
+            confirmLabel="Report"
+            danger
+            onConfirm={handleReportPost}
+            onCancel={() => setConfirmAction(null)}
+          />
+        )}
+        {confirmAction === 'user' && (
+          <ConfirmDialog
+            key="user"
+            title="Report this user?"
+            message="Reports help us maintain a safe and respectful community. Our moderators will review it."
+            confirmLabel="Report"
+            danger
+            onConfirm={handleReportUser}
+            onCancel={() => setConfirmAction(null)}
+          />
+        )}
+        {confirmAction === 'block' && (
+          <ConfirmDialog
+            key="block"
+            title="Block this user?"
+            message="You won't see posts from this user anymore, on any device you log in from. They won't be notified, and they can still see your posts."
+            confirmLabel="Block"
+            danger
+            onConfirm={handleBlockUser}
+            onCancel={() => setConfirmAction(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
