@@ -7,6 +7,7 @@ import { containsRiskKeyword } from '../utils/riskKeywords';
 import MoodQuickOptions from '../components/MoodQuickOptions';
 import ErrorMessage from '../components/ErrorMessage';
 import CrisisSupportBanner from '../components/CrisisSupportBanner';
+import SubmitButton from '../components/SubmitButton';
 import Icon from '../components/Icon';
 
 const MAX_LENGTH = 500;
@@ -53,11 +54,11 @@ const CreatePost = ({ onCreated }) => {
     setStatus('saving');
     try {
       const { data } = await api.post('/posts', { category, content });
-      setStatus('published');
+      setStatus('success');
       setContent('');
       showToast('Post created');
       onCreated?.(data);
-      navigate('/');
+      setTimeout(() => navigate('/'), 500);
     } catch (err) {
       setStatus('failed');
       setSubmitError(err.response?.data?.message || 'Something went wrong. Please try again.');
@@ -66,6 +67,9 @@ const CreatePost = ({ onCreated }) => {
 
   const remaining = MAX_LENGTH - content.length;
   const showCrisisSupport = containsRiskKeyword(content);
+  let charCountTone = '';
+  if (remaining < 0) charCountTone = ' char-count-over';
+  else if (remaining <= 50) charCountTone = ' char-count-near';
 
   return (
     <div>
@@ -93,16 +97,12 @@ const CreatePost = ({ onCreated }) => {
             }}
             placeholder="Take your time. Share whatever feels true right now..."
           />
-          <span className={`char-count${remaining < 0 ? ' char-count-over' : ''}`}>
-            {remaining} characters left
-          </span>
+          <span className={`char-count${charCountTone}`}>{remaining} characters left</span>
         </label>
         {showCrisisSupport && <CrisisSupportBanner />}
         {validationError && <ErrorMessage message={validationError} />}
         {submitError && <ErrorMessage message={submitError} />}
-        <button type="submit" className="btn btn-primary" disabled={status === 'saving'}>
-          {status === 'saving' ? 'Sharing...' : 'Share'}
-        </button>
+        <SubmitButton status={status} idleLabel="Share" savingLabel="Sharing..." />
         <p className="reassurance">
           <Icon name="lock" size={14} /> Your identity is safe here — no real name, no email,
           just your nickname.

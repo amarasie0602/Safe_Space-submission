@@ -4,21 +4,33 @@ import api from '../api/axios';
 import { CATEGORIES } from '../utils/categories';
 import { containsRiskKeyword } from '../utils/riskKeywords';
 import CrisisSupportBanner from '../components/CrisisSupportBanner';
+import ErrorMessage from '../components/ErrorMessage';
+import SubmitButton from '../components/SubmitButton';
 
 const CreateThread = ({ onCreated }) => {
   const [category, setCategory] = useState(CATEGORIES[0].value);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [status, setStatus] = useState('idle');
+  const [submitError, setSubmitError] = useState('');
   const navigate = useNavigate();
   const showCrisisSupport = containsRiskKeyword(title) || containsRiskKeyword(body);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await api.post('/threads', { category, title, body });
-    setTitle('');
-    setBody('');
-    onCreated?.(data);
-    navigate(`/threads/${data._id}`);
+    setSubmitError('');
+    setStatus('saving');
+    try {
+      const { data } = await api.post('/threads', { category, title, body });
+      setStatus('success');
+      setTitle('');
+      setBody('');
+      onCreated?.(data);
+      setTimeout(() => navigate(`/threads/${data._id}`), 500);
+    } catch (err) {
+      setStatus('failed');
+      setSubmitError(err.response?.data?.message || 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -54,9 +66,8 @@ const CreateThread = ({ onCreated }) => {
           />
         </label>
         {showCrisisSupport && <CrisisSupportBanner />}
-        <button type="submit" className="btn btn-primary">
-          Create Thread
-        </button>
+        {submitError && <ErrorMessage message={submitError} />}
+        <SubmitButton status={status} idleLabel="Create Thread" savingLabel="Creating..." />
       </form>
     </div>
   );

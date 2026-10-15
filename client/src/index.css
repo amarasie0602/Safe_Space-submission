@@ -275,6 +275,36 @@ a:hover {
   transform: translateY(-1px);
 }
 
+.submit-btn {
+  min-width: 5.5rem;
+  position: relative;
+}
+
+.submit-btn-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.submit-btn-check {
+  display: inline-flex;
+}
+
+.submit-btn-spinner {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .btn-danger {
   background: var(--color-danger);
   color: #fff;
@@ -782,6 +812,7 @@ textarea {
   padding: 0.6rem 0.85rem;
   font-size: 0.85rem;
   font-weight: 500;
+  animation: fade-in-up 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .loading-spinner {
@@ -1076,6 +1107,7 @@ textarea {
   border-radius: var(--radius-md, 12px);
   padding: 0.75rem 1rem;
   margin: 0.75rem 0;
+  animation: fade-in-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .crisis-support-banner strong {
@@ -1401,6 +1433,11 @@ textarea {
   font-size: 0.75rem;
   color: var(--color-text-muted);
   font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.char-count-near {
+  color: var(--color-terracotta);
 }
 
 .char-count-over {
