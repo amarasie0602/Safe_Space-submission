@@ -4,6 +4,17 @@ A MERN stack anonymous support platform built for a university project. SafeSpac
 
 > For a complete reference — data models, auth model, full feature list, known limitations, and testing — see [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md).
 
+## Live demo
+
+- **App**: https://safespace-peer.vercel.app
+- **API**: https://safespace-api.up.railway.app
+
+Seeded demo accounts (password `password123` for all): admin `admin_sage`,
+moderator `mod_river`, users `quiet_alice` / `steady_ben` / `hopeful_casey` /
+`wandering_dee`, counselors (email login) `maya.chen@example.com` /
+`tunde.okafor@example.com` / `elin.lindqvist@example.com` /
+`priya.nandakumar@example.com`.
+
 ## Subsystems
 
 1. **Anonymous User & Issue System** — pseudonymous users post about personal struggles under categories (Mental Health, Relationships, Family, Financial Stress, Work & Burnout, Gratitude & Wins).
@@ -82,8 +93,8 @@ Mongoose process, and vice versa.
    platform wants it spelled out.
 3. Set environment variables: `MONGO_URI`, `JWT_SECRET`, `NODE_ENV=production`,
    and `CLIENT_URL` (the deployed frontend's origin, e.g.
-   `https://safespace.vercel.app` — comma-separate multiple origins if you
-   have a custom domain and a Vercel preview URL both hitting the API).
+   `https://safespace-peer.vercel.app` — comma-separate multiple origins if
+   you have a custom domain and a Vercel preview URL both hitting the API).
    `PORT` is usually injected by the platform; `server.js` already reads it.
 4. Run `npm run seed` once against your production database only if you
    actually want the seeded demo accounts there — most real deployments
