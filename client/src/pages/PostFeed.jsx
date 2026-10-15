@@ -15,6 +15,8 @@ import DailyAffirmation from '../components/DailyAffirmation';
 import { CATEGORIES } from '../utils/categories';
 import { BlockedUsersContext } from '../context/BlockedUsersContext';
 import useDelayedLoading from '../hooks/useDelayedLoading';
+import ThemedImage from '../components/ThemedImage';
+import { IMAGES } from '../config/images';
 import logo from '../assets/logo-icon.png';
 
 const PostFeed = () => {
@@ -102,8 +104,19 @@ const PostFeed = () => {
             </span>
           </div>
         </div>
-        <div className="hero-icon" aria-hidden="true">
-          <img src={logo} alt="" />
+        <div className="hero-photo">
+          <ThemedImage
+            src={IMAGES.landingHero.src}
+            alt=""
+            width={640}
+            height={480}
+            sizes="(max-width: 860px) 100vw, 320px"
+            loading="eager"
+            fetchPriority="high"
+          />
+          <span className="hero-photo-badge" aria-hidden="true">
+            <img src={logo} alt="" width={22} height={22} />
+          </span>
         </div>
       </div>
 

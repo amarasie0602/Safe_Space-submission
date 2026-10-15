@@ -1,5 +1,8 @@
 import StaticPage from '../components/StaticPage';
 import GrowthIllustration from '../components/GrowthIllustration';
+import { IMAGES } from '../config/images';
+
+const imageCredits = [IMAGES.landingHero, IMAGES.authSplit].filter((entry) => entry.credit);
 
 const About = () => (
   <StaticPage title="About SafeSpace">
@@ -17,6 +20,24 @@ const About = () => (
       things safe and respectful.
     </p>
     <p>SafeSpace was built as a university project exploring what a genuinely trustworthy anonymous support community could look like.</p>
+
+    <h2>Credits</h2>
+    <p className="text-muted">Photography, audio, and video used across the app, with licence and source.</p>
+    <ul>
+      {imageCredits.map((entry) => (
+        <li key={entry.credit.url}>
+          Photo by{' '}
+          <a href={entry.credit.url} target="_blank" rel="noopener noreferrer">
+            {entry.credit.photographer}
+          </a>{' '}
+          on {entry.credit.source} — free to use under the Unsplash License.
+        </li>
+      ))}
+      <li>
+        Calm Corner ambient sounds and guided meditation videos: sources and licences listed in{' '}
+        <code>client/public/audio/README.md</code> once added.
+      </li>
+    </ul>
   </StaticPage>
 );
 
