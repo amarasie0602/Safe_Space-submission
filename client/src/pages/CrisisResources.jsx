@@ -1,7 +1,20 @@
 import StaticPage from '../components/StaticPage';
+import ThemedImage from '../components/ThemedImage';
+import { IMAGES } from '../config/images';
 
 const CrisisResources = () => (
   <StaticPage title="Crisis Resources">
+    <div className="static-page-illustration">
+      <ThemedImage
+        src={IMAGES.crisisResourcesHero.src}
+        alt=""
+        width={274}
+        height={220}
+        sizes="140px"
+        overlay={false}
+        className="static-page-image"
+      />
+    </div>
     <p>
       If you're in immediate danger, please contact your local emergency service right away.
       Below are additional resources if you need someone to talk to right now.

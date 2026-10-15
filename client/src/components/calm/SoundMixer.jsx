@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '../Icon';
+import ThemedImage from '../ThemedImage';
+import { IMAGES } from '../../config/images';
 import { SOUND_TILES, SLEEP_TIMER_OPTIONS } from '../../config/calmCorner';
 
 const FADE_MS = 400;
@@ -113,7 +115,9 @@ const SoundMixer = () => {
       <p className="text-muted">Layer a few together, or let one play quietly in the background.</p>
 
       <div className="sound-tiles">
-        {SOUND_TILES.map((tile) => (
+        {SOUND_TILES.map((tile) => {
+          const thumb = IMAGES.calmCornerTiles[tile.id];
+          return (
           <div className={`sound-tile${playing[tile.id] ? ' active' : ''}`} key={tile.id}>
             <audio ref={(el) => (audioRefs.current[tile.id] = el)} src={tile.src} loop preload="none" />
             <button
@@ -122,7 +126,18 @@ const SoundMixer = () => {
               onClick={() => toggleTile(tile)}
               aria-pressed={!!playing[tile.id]}
             >
-              <Icon name={tile.icon} size={20} />
+              {thumb ? (
+                <ThemedImage
+                  src={thumb.src}
+                  alt=""
+                  width={48}
+                  height={48}
+                  sizes="48px"
+                  className="sound-tile-thumb"
+                />
+              ) : (
+                <Icon name={tile.icon} size={20} />
+              )}
               <span>{tile.label}</span>
             </button>
             <input
@@ -135,7 +150,8 @@ const SoundMixer = () => {
               aria-label={`${tile.label} volume`}
             />
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="sound-mixer-master">

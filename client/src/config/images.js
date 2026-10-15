@@ -7,6 +7,13 @@ import openJournal from '../assets/images/illustrations/open-journal.png';
 import sunsetHills from '../assets/images/illustrations/sunset-hills.png';
 import affirmationDaisy from '../assets/images/illustrations/affirmation-daisy.png';
 import progressNote from '../assets/images/illustrations/progress-note.png';
+import waterRipple from '../assets/images/illustrations/water-ripple.jpg';
+import sunsetHillsWide from '../assets/images/illustrations/sunset-hills-wide.jpg';
+import handwrittenNote from '../assets/images/illustrations/handwritten-note.jpg';
+import speechBubbles from '../assets/images/illustrations/speech-bubbles.jpg';
+import signpost from '../assets/images/illustrations/signpost.jpg';
+import calendarCheck from '../assets/images/illustrations/calendar-check.jpg';
+import handsHeartFlat from '../assets/images/illustrations/hands-heart-flat.jpg';
 
 // Central place for every image used across the app, so swapping one (or
 // the whole set) means editing one file. Each entry keeps its credit
@@ -32,8 +39,15 @@ export const IMAGES = {
   },
   counselorPrompt: credited(handsHeart),
   threadsHero: credited(flowersVase),
-  calmCornerHero: credited(sunsetHills),
+  // A small decorative accent next to the Threads hero text — not load-
+  // bearing content, just visual texture, matching the mockup's corner note.
+  threadsAccent: credited(handwrittenNote),
+  threadsIcon: credited(speechBubbles),
+  calmCornerHero: credited(sunsetHillsWide),
   counselorsHero: credited(leafBranch),
+  notFound: credited(signpost),
+  bookingConfirmation: credited(calendarCheck),
+  crisisResourcesHero: credited(handsHeartFlat),
   // Healing Reads: a hero (the one asset with its own baked-in affirmation
   // text — fits here since this page's content doesn't rotate like the
   // homepage's dynamic AffirmationCard does) plus one cover per article,
@@ -48,8 +62,11 @@ export const IMAGES = {
     'five-minute-reset': credited(leafBranch),
     'not-a-burden': credited(openJournal),
   },
-  // TODO: one muted photo per Calm Corner sound tile (rain, ocean, forest, cafe, piano).
-  calmCornerTiles: {},
+  calmCornerTiles: {
+    ocean: credited(waterRipple),
+    // TODO: no good source match yet for rain, forest, cafe, piano — those
+    // tiles stay icon-only rather than forcing a mismatched photo.
+  },
 };
 
 export default IMAGES;

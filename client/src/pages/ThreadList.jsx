@@ -5,6 +5,8 @@ import ThreadCard from '../components/ThreadCard';
 import Icon from '../components/Icon';
 import SearchBar from '../components/SearchBar';
 import ErrorMessage from '../components/ErrorMessage';
+import ThemedImage from '../components/ThemedImage';
+import { IMAGES } from '../config/images';
 import { AuthContext } from '../context/AuthContext';
 import { CATEGORIES } from '../utils/categories';
 
@@ -69,20 +71,36 @@ const ThreadList = () => {
 
   return (
     <div>
-      <div className="page-header">
-        <h1>Threads</h1>
+      <div className="hero">
+        <div className="hero-text">
+          <h1>Threads</h1>
+          <p>
+            Meaningful conversations, real experiences, and support from people who understand.
+            You're not alone here.
+          </p>
+        </div>
+        <div className="hero-photo-group">
+          <div className="hero-photo">
+            <ThemedImage src={IMAGES.threadsHero.src} alt="" width={235} height={360} sizes="200px" overlay={false} />
+          </div>
+          <div className="hero-accent">
+            <ThemedImage src={IMAGES.threadsAccent.src} alt="" width={243} height={178} sizes="120px" overlay={false} />
+          </div>
+        </div>
+      </div>
+      <div className="thread-toolbar">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search thread titles..."
+          suggestions={searchSuggestions}
+        />
         {user && (
           <Link to="/threads/new" className="btn btn-primary btn-sm">
             New Thread
           </Link>
         )}
       </div>
-      <SearchBar
-        value={search}
-        onChange={setSearch}
-        placeholder="Search thread titles..."
-        suggestions={searchSuggestions}
-      />
       <div className="filter-row">
         <label className="sort-select">
           Sort by
@@ -92,7 +110,7 @@ const ThreadList = () => {
           </select>
         </label>
       </div>
-      <div className="tabs">
+      <div className="tabs tabs-scroll">
         <button className={`tab${category === '' ? ' active' : ''}`} onClick={() => setCategory('')}>
           All
         </button>
