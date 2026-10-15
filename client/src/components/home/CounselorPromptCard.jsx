@@ -1,12 +1,19 @@
 import { Link } from 'react-router-dom';
-import Icon from '../Icon';
+import ThemedImage from '../ThemedImage';
+import { IMAGES } from '../../config/images';
 
 const CounselorPromptCard = () => (
   <div className="card sidebar-card counselor-prompt-card">
-    <div className="sidebar-card-header">
-      <Icon name="heart" size={16} />
-      <h2>Need to talk to someone?</h2>
-    </div>
+    <ThemedImage
+      src={IMAGES.counselorPrompt.src}
+      alt=""
+      width={96}
+      height={96}
+      sizes="96px"
+      overlay={false}
+      className="counselor-prompt-image"
+    />
+    <h2>Need to talk to someone?</h2>
     <p className="text-muted">
       This community is peer support, not professional care. If you'd like more than that,
       verified counselors here offer confidential, anonymous sessions.

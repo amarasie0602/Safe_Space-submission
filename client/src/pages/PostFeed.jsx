@@ -19,7 +19,6 @@ import ThemedImage from '../components/ThemedImage';
 import { IMAGES } from '../config/images';
 import HomeSidebar from '../components/home/HomeSidebar';
 import { pickFeaturedPost, totalReactions } from '../utils/pickFeaturedPost';
-import logo from '../assets/logo-icon.png';
 
 const PostFeed = () => {
   const { user } = useContext(AuthContext);
@@ -120,15 +119,13 @@ const PostFeed = () => {
             <ThemedImage
               src={IMAGES.landingHero.src}
               alt=""
-              width={640}
-              height={480}
-              sizes="(max-width: 860px) 100vw, 320px"
+              width={792}
+              height={370}
+              sizes="(max-width: 860px) 100vw, 420px"
               loading="eager"
               fetchPriority="high"
+              overlay={false}
             />
-            <span className="hero-photo-badge" aria-hidden="true">
-              <img src={logo} alt="" width={22} height={22} />
-            </span>
           </div>
         </div>
 

@@ -3,7 +3,11 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
 
 // Appends Unsplash's own format/quality/width params to a base CDN URL —
 // keeps IMAGES config entries as bare photo URLs instead of duplicating
-// query strings per placement.
+// query strings per placement. Only remote CDN URLs support this; a local
+// asset (imported via Vite, so `src` is already a hashed build URL) has no
+// resize API to call, so it's served as-is instead.
+const isRemoteCdnImage = (src) => /^https?:\/\//.test(src);
+
 const withParams = (src, params) => {
   const url = new URL(src);
   Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
@@ -35,6 +39,7 @@ const ThemedImage = ({ src, alt, width, height, sizes = '100vw', className = '',
     );
   }
 
+  const remote = isRemoteCdnImage(src);
   const widths = [480, 768, 1200, 1600];
   const buildSrcSet = (format) =>
     widths.map((w) => `${withParams(src, { auto: 'format', fm: format, fit: 'crop', w, q: 70 })} ${w}w`).join(', ');
@@ -44,12 +49,25 @@ const ThemedImage = ({ src, alt, width, height, sizes = '100vw', className = '',
       className={`themed-image ${overlay ? 'themed-image-overlay' : ''} ${loaded ? 'is-loaded' : ''} ${className}`.trim()}
       style={{ aspectRatio: width && height ? `${width} / ${height}` : undefined }}
     >
-      <picture>
-        <source type="image/webp" srcSet={buildSrcSet('webp')} sizes={sizes} />
+      {remote ? (
+        <picture>
+          <source type="image/webp" srcSet={buildSrcSet('webp')} sizes={sizes} />
+          <img
+            src={withParams(src, { auto: 'format', fit: 'crop', w: width || 1200, q: 70 })}
+            srcSet={buildSrcSet('jpg')}
+            sizes={sizes}
+            alt={alt}
+            width={width}
+            height={height}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            style={prefersReducedMotion ? undefined : { transition: 'opacity 0.4s ease' }}
+            {...props}
+          />
+        </picture>
+      ) : (
         <img
-          src={withParams(src, { auto: 'format', fit: 'crop', w: width || 1200, q: 70 })}
-          srcSet={buildSrcSet('jpg')}
-          sizes={sizes}
+          src={src}
           alt={alt}
           width={width}
           height={height}
@@ -58,7 +76,7 @@ const ThemedImage = ({ src, alt, width, height, sizes = '100vw', className = '',
           style={prefersReducedMotion ? undefined : { transition: 'opacity 0.4s ease' }}
           {...props}
         />
-      </picture>
+      )}
     </div>
   );
 };

@@ -2067,6 +2067,7 @@ textarea {
   height: 100%;
   aspect-ratio: auto;
   border-radius: 0;
+  background: var(--color-primary-bg);
 }
 
 .auth-card {
@@ -2149,32 +2150,20 @@ textarea {
 .hero-photo {
   position: relative;
   flex-shrink: 0;
-  width: 220px;
-  height: 160px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
+  width: 360px;
+  max-width: 100%;
+  aspect-ratio: 792 / 370;
 }
 
 .hero-photo .themed-image {
-  border-radius: var(--radius-lg);
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
+  background: none;
 }
 
-.hero-photo-badge {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hero-photo .themed-image img {
+  object-fit: contain;
 }
 
 /* ThemedImage */
@@ -2221,7 +2210,6 @@ textarea {
 
   .hero-photo {
     width: 100%;
-    height: 160px;
   }
 }
 
@@ -2880,6 +2868,27 @@ textarea {
 .popular-topics button span:last-child {
   margin-left: auto;
   font-weight: 600;
+}
+
+.counselor-prompt-card {
+  text-align: center;
+}
+
+.counselor-prompt-image {
+  width: 72px;
+  height: 66px;
+  margin: 0 auto 0.5rem;
+  background: none;
+}
+
+.counselor-prompt-image img {
+  object-fit: contain;
+}
+
+.counselor-prompt-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: var(--font-heading);
 }
 
 .counselor-prompt-card p {

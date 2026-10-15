@@ -1,44 +1,42 @@
-// Central place for every photo URL used across the app, so swapping an
-// image (or the whole set, e.g. for a different license) means editing one
-// file. Each entry keeps its license/attribution alongside the URL so the
-// About page's Credits section can be generated from this file directly.
+import heroWomanPlantsMug from '../assets/images/illustrations/hero-woman-plants-mug.png';
+import leafBranch from '../assets/images/illustrations/leaf-branch.png';
+import coffeeBooks from '../assets/images/illustrations/coffee-books.png';
+import flowersVase from '../assets/images/illustrations/flowers-vase.png';
+import handsHeart from '../assets/images/illustrations/hands-heart.png';
+import openJournal from '../assets/images/illustrations/open-journal.png';
+import sunsetHills from '../assets/images/illustrations/sunset-hills.png';
+
+// Central place for every image used across the app, so swapping one (or
+// the whole set) means editing one file. Each entry keeps its credit
+// alongside the asset so the About page's Credits section can be generated
+// from this file directly.
 //
-// `src` is an Unsplash CDN URL; append Unsplash's own query params (w, q,
-// auto=format) per placement rather than baking a fixed size in here.
-//
-// TODO (manual follow-up): the entries marked `TODO` are unfilled —
-// ThemedImage renders its placeholder/empty state for these until a real
-// photo URL + credit is added here.
+// The illustration set (hero, sidebar thumbnails, etc.) was supplied
+// directly by the project author rather than sourced from a stock library —
+// credited as "Provided by the project author" rather than a fabricated
+// stock-photographer attribution, which would be dishonest.
+const PROVIDED_CREDIT = { source: 'Provided by the project author' };
+
 export const IMAGES = {
   landingHero: {
-    src: 'https://images.unsplash.com/photo-1595425504122-ed7894db7711',
+    src: heroWomanPlantsMug,
     alt: '',
-    credit: { photographer: 'Giulia Bertelli', source: 'Unsplash', url: 'https://unsplash.com/photos/2-xbLgZDT_g' },
+    credit: PROVIDED_CREDIT,
   },
   authSplit: {
-    src: 'https://images.unsplash.com/photo-1762539683985-de22c1e2358f',
+    src: flowersVase,
     alt: '',
-    credit: { photographer: 'Bob Jenkin', source: 'Unsplash', url: 'https://unsplash.com/photos/2ZSWAKRB2ok' },
+    credit: PROVIDED_CREDIT,
   },
   // Small thumbnails for the homepage sidebar's "You Might Find Helpful"
   // resource list.
   helpfulResources: {
-    breathing: {
-      src: 'https://images.unsplash.com/photo-1595425504122-ed7894db7711',
-      alt: '',
-      credit: { photographer: 'Giulia Bertelli', source: 'Unsplash', url: 'https://unsplash.com/photos/2-xbLgZDT_g' },
-    },
-    healingReads: {
-      src: 'https://images.unsplash.com/photo-1519091830432-41608a52904e',
-      alt: '',
-      credit: { photographer: 'Nathan Dumlao', source: 'Unsplash', url: 'https://unsplash.com/photos/lb2VmFq-0xI' },
-    },
-    crisisResources: {
-      src: 'https://images.unsplash.com/photo-1762539683985-de22c1e2358f',
-      alt: '',
-      credit: { photographer: 'Bob Jenkin', source: 'Unsplash', url: 'https://unsplash.com/photos/2ZSWAKRB2ok' },
-    },
+    breathing: { src: leafBranch, alt: '', credit: PROVIDED_CREDIT },
+    healingReads: { src: coffeeBooks, alt: '', credit: PROVIDED_CREDIT },
+    crisisResources: { src: sunsetHills, alt: '', credit: PROVIDED_CREDIT },
   },
+  counselorPrompt: { src: handsHeart, alt: '', credit: PROVIDED_CREDIT },
+  inspirationHeader: { src: openJournal, alt: '', credit: PROVIDED_CREDIT },
   // TODO: one cover image per Healing Reads article (client/src/pages/Inspiration.jsx).
   healingReadsCovers: {},
   // TODO: one muted photo per Calm Corner sound tile (rain, ocean, forest, cafe, piano).
