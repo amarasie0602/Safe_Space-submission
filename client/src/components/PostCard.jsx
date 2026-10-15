@@ -3,7 +3,6 @@ import api from '../api/axios';
 import AnonymousAvatar from './AnonymousAvatar';
 import CategoryTag from './CategoryTag';
 import { timeAgo } from '../utils/timeAgo';
-import { getCategoryMeta } from '../utils/categories';
 import { ToastContext } from '../context/ToastContext';
 import { AuthContext } from '../context/AuthContext';
 import { SavedPostsContext } from '../context/SavedPostsContext';
@@ -21,7 +20,6 @@ const PostCard = ({ post, showFlagged, index = 0 }) => {
   const { showToast } = useContext(ToastContext);
   const { isSaved, toggleSaved } = useContext(SavedPostsContext);
   const saved = isSaved(post._id);
-  const meta = getCategoryMeta(post.category);
 
   const handleSupport = async () => {
     if (!user) {
@@ -59,7 +57,7 @@ const PostCard = ({ post, showFlagged, index = 0 }) => {
 
   return (
     <div
-      className={`post-card tone-${meta.tone}`}
+      className="post-card"
       style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
     >
       <div className="post-card-header">

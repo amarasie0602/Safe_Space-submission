@@ -11,9 +11,9 @@
 // photo URL + credit is added here.
 export const IMAGES = {
   landingHero: {
-    src: 'https://images.unsplash.com/photo-1761958150520-94dae44404e4',
+    src: 'https://images.unsplash.com/photo-1595425504122-ed7894db7711',
     alt: '',
-    credit: { photographer: 'Ahmed Nishaath', source: 'Unsplash', url: 'https://unsplash.com/photos/aq-bPCWmdQQ' },
+    credit: { photographer: 'Giulia Bertelli', source: 'Unsplash', url: 'https://unsplash.com/photos/2-xbLgZDT_g' },
   },
   authSplit: {
     src: 'https://images.unsplash.com/photo-1762539683985-de22c1e2358f',
