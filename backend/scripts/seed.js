@@ -17,6 +17,19 @@ const seed = async () => {
   await mongoose.connect(process.env.MONGO_URI);
   console.log('MongoDB connected');
 
+  const existingUserCount = await User.countDocuments();
+  if (existingUserCount > 0 && !process.argv.includes('--force')) {
+    console.error(
+      `\nRefusing to seed: this database already has ${existingUserCount} user(s).\n` +
+      'Seeding wipes the users/posts/threads/replies/counselors/bookings/reviews/reports ' +
+      'collections before reseeding, which would delete any real or test accounts already ' +
+      'there.\n\nRe-run with --force if you really want to wipe and reseed this database:\n' +
+      '  npm run seed -- --force\n'
+    );
+    await mongoose.disconnect();
+    process.exit(1);
+  }
+
   await Promise.all([
     User.deleteMany({}),
     Post.deleteMany({}),
