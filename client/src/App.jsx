@@ -41,6 +41,7 @@ const AnalyticsView = lazy(() => import('./pages/admin/AnalyticsView'));
 const AuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const CounselorLogin = lazy(() => import('./pages/CounselorLogin'));
 const CounselorDashboard = lazy(() => import('./pages/CounselorDashboard'));
+const CalmCorner = lazy(() => import('./pages/CalmCorner'));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -91,6 +92,7 @@ function App() {
               />
               <Route path="/threads/:id" element={<ThreadDetail />} />
               <Route path="/inspiration" element={<Inspiration />} />
+              <Route path="/calm" element={<CalmCorner />} />
               <Route path="/counselors" element={<CounselorList />} />
               <Route path="/counselors/:id" element={<CounselorProfile />} />
               <Route path="/counselor-login" element={<CounselorLogin />} />

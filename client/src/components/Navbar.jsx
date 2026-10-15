@@ -59,10 +59,11 @@ const Navbar = () => {
     };
 
     document.addEventListener('keydown', handleKeyDown);
+    const toggleButton = menuToggleRef.current;
     return () => {
       document.body.style.overflow = '';
       document.removeEventListener('keydown', handleKeyDown);
-      menuToggleRef.current?.focus();
+      toggleButton?.focus();
     };
   }, [mobileOpen]);
 
@@ -83,6 +84,9 @@ const Navbar = () => {
         </NavLink>
         <NavLink to="/inspiration" className={navLinkClass}>
           <Icon name="sun" size={15} /> Inspiration
+        </NavLink>
+        <NavLink to="/calm" className={navLinkClass}>
+          <Icon name="leaf" size={15} /> Calm Corner
         </NavLink>
         <NavLink to="/counselors" className={navLinkClass}>
           <Icon name="users" size={15} /> Counselors
@@ -168,6 +172,9 @@ const Navbar = () => {
               </NavLink>
               <NavLink to="/inspiration" className={navLinkClass} onClick={closeMenu}>
                 <Icon name="sun" size={15} /> Inspiration
+              </NavLink>
+              <NavLink to="/calm" className={navLinkClass} onClick={closeMenu}>
+                <Icon name="leaf" size={15} /> Calm Corner
               </NavLink>
               <NavLink to="/counselors" className={navLinkClass} onClick={closeMenu}>
                 <Icon name="users" size={15} /> Counselors

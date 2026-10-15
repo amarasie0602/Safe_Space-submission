@@ -2493,3 +2493,247 @@ textarea {
   text-align: center;
   padding: 4rem 1.5rem;
 }
+
+/* Calm Corner */
+
+.calm-corner-intro {
+  max-width: 60ch;
+  margin-bottom: 1.5rem;
+}
+
+.calm-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.calm-section h2 {
+  margin-top: 0;
+}
+
+/* Breathing exercise */
+
+.breathing-pattern-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.breathing-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  margin: 0 auto 1.5rem;
+}
+
+.breathing-ring {
+  position: absolute;
+  transform: rotate(-90deg);
+}
+
+.breathing-ring-track {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 3;
+}
+
+.breathing-ring-progress {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  animation-name: ring-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes ring-progress {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: var(--breathing-circumference, 339);
+  }
+}
+
+.breathing-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--color-primary-bg), var(--color-sage-bg) 80%);
+  box-shadow: var(--shadow-sm);
+}
+
+.breathing-cue {
+  position: absolute;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.breathing-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.breathing-cycle-count {
+  width: 100%;
+  text-align: center;
+}
+
+/* Sound mixer */
+
+.sound-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.sound-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.sound-tile.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+.sound-tile-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.sound-tile input[type='range'] {
+  width: 100%;
+}
+
+.sound-mixer-master {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.field-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sleep-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+/* Guided meditation */
+
+.meditation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.meditation-tile iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+.meditation-tile-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+}
+
+.meditation-tile-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.meditation-tile-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(62, 47, 38, 0.25);
+  transition: background-color 0.2s ease;
+}
+
+.meditation-tile-thumb:hover .meditation-tile-play {
+  background: rgba(62, 47, 38, 0.4);
+}
+
+.meditation-tile-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-top: 0.5rem;
+}
+
+/* Grounding exercise */
+
+.grounding-stage {
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+}
+
+.grounding-step-count {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.grounding-step-prompt {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
