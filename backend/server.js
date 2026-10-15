@@ -16,6 +16,13 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const pushRoutes = require('./routes/pushRoutes');
 
 const app = express();
+
+// Railway (and most PaaS hosts) sit the app behind a reverse proxy that sets
+// X-Forwarded-For; trusting exactly one hop lets express-rate-limit (and
+// req.ip generally) see the real client IP instead of the proxy's, without
+// trusting arbitrarily-spoofable forwarded chains.
+app.set('trust proxy', 1);
+
 app.use(express.json());
 
 // In production, only the configured frontend origin(s) may call this API.
