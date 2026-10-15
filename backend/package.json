@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "seed": "node scripts/seed.js",
     "seed:more": "node scripts/seedMore.js",
+    "migrate:reactions": "node scripts/migrateReactions.js",
     "test": "jest --runInBand"
   },
   "keywords": [],

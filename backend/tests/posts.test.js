@@ -64,3 +64,73 @@ describe('post safety-critical flagging', () => {
     expect(res.status).toBe(401);
   });
 });
+
+describe('post reactions', () => {
+  test('reacting, switching type, and un-reacting all update counts correctly', async () => {
+    const authorToken = await registerUser('test_reactauthor');
+    const reactorToken = await registerUser('test_reactor');
+
+    const createRes = await request(app)
+      .post('/posts')
+      .set('Authorization', `Bearer ${authorToken}`)
+      .send({ category: 'gratitude', content: 'A post other people will react to.' });
+    const postId = createRes.body._id;
+
+    const first = await request(app)
+      .patch(`/posts/${postId}/react`)
+      .set('Authorization', `Bearer ${reactorToken}`)
+      .send({ type: 'heard' });
+    expect(first.status).toBe(200);
+    expect(first.body.counts).toEqual({ heard: 1, support: 0, beenthere: 0 });
+    expect(first.body.userReaction).toBe('heard');
+
+    const switched = await request(app)
+      .patch(`/posts/${postId}/react`)
+      .set('Authorization', `Bearer ${reactorToken}`)
+      .send({ type: 'support' });
+    expect(switched.body.counts).toEqual({ heard: 0, support: 1, beenthere: 0 });
+    expect(switched.body.userReaction).toBe('support');
+
+    const removed = await request(app)
+      .patch(`/posts/${postId}/react`)
+      .set('Authorization', `Bearer ${reactorToken}`)
+      .send({ type: 'support' });
+    expect(removed.body.counts).toEqual({ heard: 0, support: 0, beenthere: 0 });
+    expect(removed.body.userReaction).toBeNull();
+  });
+
+  test('an invalid reaction type is rejected', async () => {
+    const token = await registerUser('test_badreaction');
+    const createRes = await request(app)
+      .post('/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ category: 'gratitude', content: 'Post for the invalid-type test.' });
+
+    const res = await request(app)
+      .patch(`/posts/${createRes.body._id}/react`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'love' });
+
+    expect(res.status).toBe(400);
+  });
+});
+
+describe('category counts', () => {
+  test('only counts visible posts, grouped by category', async () => {
+    const token = await registerUser('test_categorycounts');
+
+    await request(app)
+      .post('/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ category: 'gratitude', content: 'Visible gratitude post for counting.' });
+    await request(app)
+      .post('/posts')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ category: 'mental_health', content: 'I keep thinking I want to die.' }); // flagged, excluded
+
+    const res = await request(app).get('/posts/category-counts');
+    expect(res.status).toBe(200);
+    expect(res.body.gratitude).toBe(1);
+    expect(res.body.mental_health || 0).toBe(0);
+  });
+});

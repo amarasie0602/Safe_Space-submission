@@ -13,6 +13,7 @@ const Reply = require('../models/Reply');
 // *all* existing posts/threads (not just the new ones) so the feed reads
 // as an active, lived-in community rather than a handful of lonely posts.
 const SEED_PASSWORD = 'password123';
+const REACTION_TYPES = Post.REACTION_TYPES;
 
 const NEW_PSEUDONYMS = [
   'patient_otter',
@@ -225,11 +226,13 @@ const seedMore = async () => {
       replyCount += 1;
     }
 
-    const supporters = pick(
-      allUsers.map((u) => u._id),
-      randomInt(2, Math.min(10, allUsers.length))
-    );
-    post.supporters = Array.from(new Set([...post.supporters.map(String), ...supporters.map(String)]));
+    const reactors = pick(allUsers, randomInt(2, Math.min(10, allUsers.length)));
+    const existingReactorIds = new Set(post.reactions.map((r) => r.user.toString()));
+    reactors
+      .filter((u) => !existingReactorIds.has(u._id.toString()))
+      .forEach((u) => {
+        post.reactions.push({ user: u._id, type: REACTION_TYPES[randomInt(0, REACTION_TYPES.length - 1)] });
+      });
     await post.save();
   }
 

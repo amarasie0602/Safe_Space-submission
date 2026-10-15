@@ -81,23 +81,48 @@ const adminDeletePost = async (req, res) => {
   res.status(204).send();
 };
 
-const toggleSupport = async (req, res) => {
-  const post = await Post.findById(req.params.id).select('supporters');
+const emptyCounts = () => Object.fromEntries(Post.REACTION_TYPES.map((t) => [t, 0]));
+
+const countReactions = (reactions) => {
+  const counts = emptyCounts();
+  reactions.forEach((r) => { counts[r.type] = (counts[r.type] || 0) + 1; });
+  return counts;
+};
+
+const toggleReaction = async (req, res) => {
+  const { type } = req.body;
+  if (!Post.REACTION_TYPES.includes(type)) {
+    return res.status(400).json({ message: `type must be one of: ${Post.REACTION_TYPES.join(', ')}` });
+  }
+
+  const post = await Post.findById(req.params.id).select('reactions');
   if (!post) {
     return res.status(404).json({ message: 'Post not found' });
   }
 
   const userId = req.user.id;
-  const alreadySupported = post.supporters.some((id) => id.toString() === userId);
+  const existing = post.reactions.find((r) => r.user.toString() === userId);
 
-  if (alreadySupported) {
-    post.supporters = post.supporters.filter((id) => id.toString() !== userId);
+  if (existing && existing.type === type) {
+    post.reactions = post.reactions.filter((r) => r.user.toString() !== userId);
+  } else if (existing) {
+    existing.type = type;
   } else {
-    post.supporters.push(userId);
+    post.reactions.push({ user: userId, type });
   }
   await post.save();
 
-  res.json({ supported: !alreadySupported, count: post.supporters.length });
+  const userReaction = post.reactions.find((r) => r.user.toString() === userId);
+  res.json({ counts: countReactions(post.reactions), userReaction: userReaction ? userReaction.type : null });
+};
+
+const getCategoryCounts = async (req, res) => {
+  const results = await Post.aggregate([
+    { $match: { status: 'visible' } },
+    { $group: { _id: '$category', count: { $sum: 1 } } },
+  ]);
+
+  res.json(Object.fromEntries(results.map((r) => [r._id, r.count])));
 };
 
 module.exports = {
@@ -106,5 +131,6 @@ module.exports = {
   adminGetPosts,
   updatePostStatus,
   adminDeletePost,
-  toggleSupport,
+  toggleReaction,
+  getCategoryCounts,
 };

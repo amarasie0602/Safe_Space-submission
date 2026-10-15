@@ -14,6 +14,7 @@ const adminActionRoutes = require('./routes/adminActionRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const pushRoutes = require('./routes/pushRoutes');
+const communityRoutes = require('./routes/communityRoutes');
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use('/', adminActionRoutes);
 app.use('/', analyticsRoutes);
 app.use('/', notificationRoutes);
 app.use('/', pushRoutes);
+app.use('/', communityRoutes);
 
 // This network's replica-set primary discovery is slower than Mongoose's
 // default 10s query-buffering timeout, which was causing every query to fail
