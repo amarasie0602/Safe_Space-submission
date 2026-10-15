@@ -14,6 +14,7 @@ import MoodQuickOptions from '../components/MoodQuickOptions';
 import DailyAffirmation from '../components/DailyAffirmation';
 import { CATEGORIES } from '../utils/categories';
 import { BlockedUsersContext } from '../context/BlockedUsersContext';
+import useDelayedLoading from '../hooks/useDelayedLoading';
 import logo from '../assets/logo-icon.png';
 
 const PostFeed = () => {
@@ -25,6 +26,7 @@ const PostFeed = () => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('recent');
   const [loading, setLoading] = useState(true);
+  const showLoading = useDelayedLoading(loading);
   const [error, setError] = useState('');
   const [loadMoreError, setLoadMoreError] = useState('');
   const [page, setPage] = useState(1);
@@ -153,7 +155,7 @@ const PostFeed = () => {
           </button>
         ))}
       </div>
-      {loading && (
+      {showLoading && (
         <>
           <SkeletonCard />
           <SkeletonCard />
@@ -169,8 +171,8 @@ const PostFeed = () => {
       )}
       {!loading &&
         !error &&
-        sortedPosts.map((post) => (
-          <PostCard key={post._id} post={post} showFlagged={user?.role === 'admin'} />
+        sortedPosts.map((post, index) => (
+          <PostCard key={post._id} post={post} index={index} showFlagged={user?.role === 'admin'} />
         ))}
       {loadMoreError && <ErrorMessage message={loadMoreError} />}
       {!loading && !error && !category && !search && hasMore && (

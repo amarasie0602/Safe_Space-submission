@@ -11,7 +11,7 @@ import PostOptionsMenu from './PostOptionsMenu';
 import PostReplies from './PostReplies';
 import Icon from './Icon';
 
-const PostCard = ({ post, showFlagged }) => {
+const PostCard = ({ post, showFlagged, index = 0 }) => {
   const { user } = useContext(AuthContext);
   const [supported, setSupported] = useState(
     () => !!user && (post.supporters || []).some((id) => id === user.id)
@@ -58,7 +58,10 @@ const PostCard = ({ post, showFlagged }) => {
   };
 
   return (
-    <div className={`post-card tone-${meta.tone}`}>
+    <div
+      className={`post-card tone-${meta.tone}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+    >
       <div className="post-card-header">
         <AnonymousAvatar seed={post.author?._id} avatarId={post.author?.avatarId} />
         <div className="post-card-authorline">

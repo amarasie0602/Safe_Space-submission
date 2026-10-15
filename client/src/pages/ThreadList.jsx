@@ -107,8 +107,8 @@ const ThreadList = () => {
         ))}
       </div>
       {threads.length === 0 && <div className="empty-state">No threads found.</div>}
-      {sortedThreads.map((thread) => (
-        <ThreadCard key={thread._id} thread={thread} />
+      {sortedThreads.map((thread, index) => (
+        <ThreadCard key={thread._id} thread={thread} index={index} />
       ))}
       {loadMoreError && <ErrorMessage message={loadMoreError} />}
       {hasMore && (

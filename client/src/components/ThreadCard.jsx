@@ -5,11 +5,15 @@ import { timeAgo } from '../utils/timeAgo';
 import { getCategoryMeta } from '../utils/categories';
 import Icon from './Icon';
 
-const ThreadCard = ({ thread }) => {
+const ThreadCard = ({ thread, index = 0 }) => {
   const meta = getCategoryMeta(thread.category);
 
   return (
-    <Link to={`/threads/${thread._id}`} className={`thread-card tone-${meta.tone}`}>
+    <Link
+      to={`/threads/${thread._id}`}
+      className={`thread-card tone-${meta.tone}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+    >
       <div className="post-card-header">
         <AnonymousAvatar seed={thread.author?._id} avatarId={thread.author?.avatarId} />
         <div className="post-card-authorline">
