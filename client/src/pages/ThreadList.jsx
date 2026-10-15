@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
-import Card from '../components/Card';
-import CategoryTag from '../components/CategoryTag';
+import ThreadCard from '../components/ThreadCard';
 import Icon from '../components/Icon';
 import SearchBar from '../components/SearchBar';
 import ErrorMessage from '../components/ErrorMessage';
@@ -109,13 +108,7 @@ const ThreadList = () => {
       </div>
       {threads.length === 0 && <div className="empty-state">No threads found.</div>}
       {sortedThreads.map((thread) => (
-        <Card key={thread._id}>
-          <Link to={`/threads/${thread._id}`}>{thread.title}</Link>
-          <div className="card-meta">
-            <CategoryTag category={thread.category} />
-            <span className="text-muted">{thread.upvotes} supports</span>
-          </div>
-        </Card>
+        <ThreadCard key={thread._id} thread={thread} />
       ))}
       {loadMoreError && <ErrorMessage message={loadMoreError} />}
       {hasMore && (

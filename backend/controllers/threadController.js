@@ -1,4 +1,5 @@
 const Thread = require('../models/Thread');
+const Reply = require('../models/Reply');
 
 // Escapes regex special characters so search input is matched literally
 // instead of being interpreted as a (possibly catastrophic) pattern.
@@ -36,7 +37,17 @@ const getThreads = async (req, res) => {
     Thread.countDocuments(filter),
   ]);
 
-  res.json({ threads, page, hasMore: page * limit < total, total });
+  const replyCounts = await Reply.aggregate([
+    { $match: { thread: { $in: threads.map((t) => t._id) } } },
+    { $group: { _id: '$thread', count: { $sum: 1 } } },
+  ]);
+  const countByThread = new Map(replyCounts.map((r) => [r._id.toString(), r.count]));
+  const threadsWithReplyCount = threads.map((thread) => ({
+    ...thread.toObject(),
+    replyCount: countByThread.get(thread._id.toString()) || 0,
+  }));
+
+  res.json({ threads: threadsWithReplyCount, page, hasMore: page * limit < total, total });
 };
 
 const getMySupportedThreads = async (req, res) => {
