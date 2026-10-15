@@ -6,6 +6,8 @@ import Card from '../components/Card';
 import CategoryTag from '../components/CategoryTag';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Icon from '../components/Icon';
+import ErrorMessage from '../components/ErrorMessage';
+import SubmitButton from '../components/SubmitButton';
 import { ToastContext } from '../context/ToastContext';
 import { AuthContext } from '../context/AuthContext';
 import { timeAgo } from '../utils/timeAgo';
@@ -17,6 +19,9 @@ const ThreadDetail = () => {
   const [supported, setSupported] = useState(false);
   const [replies, setReplies] = useState([]);
   const [body, setBody] = useState('');
+  const [newReplyId, setNewReplyId] = useState(null);
+  const [replyStatus, setReplyStatus] = useState('idle');
+  const [replyError, setReplyError] = useState('');
   const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
@@ -34,9 +39,19 @@ const ThreadDetail = () => {
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();
-    const { data } = await api.post(`/threads/${id}/replies`, { body });
-    setReplies((prev) => [...prev, data]);
-    setBody('');
+    setReplyError('');
+    setReplyStatus('saving');
+    try {
+      const { data } = await api.post(`/threads/${id}/replies`, { body });
+      setReplies((prev) => [...prev, data]);
+      setNewReplyId(data._id);
+      setBody('');
+      setReplyStatus('success');
+      setTimeout(() => setReplyStatus('idle'), 900);
+    } catch (err) {
+      setReplyStatus('failed');
+      setReplyError(err.response?.data?.message || 'Something went wrong. Please try again.');
+    }
   };
 
   const handleFlag = async (replyId) => {
@@ -102,7 +117,7 @@ const ThreadDetail = () => {
       </p>
       {replies.length === 0 && <div className="empty-state">No replies yet.</div>}
       {replies.map((reply) => (
-        <Card key={reply._id}>
+        <Card key={reply._id} className={reply._id === newReplyId ? 'post-reply-new' : ''}>
           <div className="post-card-header">
             <AnonymousAvatar seed={reply.author?._id} avatarId={reply.author?.avatarId} />
             <div className="post-card-meta">
@@ -134,9 +149,8 @@ const ThreadDetail = () => {
           placeholder="Write a reply"
           required
         />
-        <button type="submit" className="btn btn-primary">
-          Reply
-        </button>
+        {replyError && <ErrorMessage message={replyError} />}
+        <SubmitButton status={replyStatus} idleLabel="Reply" savingLabel="Replying..." className="btn-sm" />
       </form>
     </div>
   );

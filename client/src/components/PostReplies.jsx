@@ -12,6 +12,7 @@ const PostReplies = ({ postId }) => {
   const [loading, setLoading] = useState(true);
   const [body, setBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [newReplyId, setNewReplyId] = useState(null);
 
   useEffect(() => {
     let active = true;
@@ -37,6 +38,7 @@ const PostReplies = ({ postId }) => {
     try {
       const { data } = await api.post(`/posts/${postId}/replies`, { body });
       setReplies((prev) => [...prev, data]);
+      setNewReplyId(data._id);
       setBody('');
     } finally {
       setSubmitting(false);
@@ -60,7 +62,10 @@ const PostReplies = ({ postId }) => {
       )}
       {!loading &&
         replies.map((reply) => (
-          <div className="post-reply" key={reply._id}>
+          <div
+            className={`post-reply${reply._id === newReplyId ? ' post-reply-new' : ''}`}
+            key={reply._id}
+          >
             <AnonymousAvatar seed={reply.author?._id} avatarId={reply.author?.avatarId} size={28} />
             <div className="post-reply-body">
               <div className="post-card-meta">
