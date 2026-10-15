@@ -58,9 +58,9 @@ const CounselorList = () => {
             <ThemedImage
               src={IMAGES.counselorsHero.src}
               alt=""
-              width={220}
+              width={240}
               height={220}
-              sizes="200px"
+              sizes="360px"
               overlay={false}
             />
           </div>

@@ -38,13 +38,17 @@ export const IMAGES = {
     crisisResources: credited(sunsetHills),
   },
   counselorPrompt: credited(handsHeart),
-  threadsHero: credited(flowersVase),
+  // Hero banners all crop through the same fixed landscape box (see
+  // .hero-photo), so each one is picked for how well it survives that
+  // crop, not just thematic fit — a portrait image (like flowers-vase,
+  // used for the tall auth panel instead) would lose most of its subject.
+  threadsHero: credited(coffeeBooks),
   // A small decorative accent next to the Threads hero text — not load-
   // bearing content, just visual texture, matching the mockup's corner note.
   threadsAccent: credited(handwrittenNote),
   threadsIcon: credited(speechBubbles),
   calmCornerHero: credited(sunsetHillsWide),
-  counselorsHero: credited(leafBranch),
+  counselorsHero: credited(handsHeart),
   notFound: credited(signpost),
   bookingConfirmation: credited(calendarCheck),
   crisisResourcesHero: credited(handsHeartFlat),

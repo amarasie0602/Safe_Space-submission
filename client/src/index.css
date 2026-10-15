@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap');
 
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-heading: 'Fraunces', Georgia, serif;
+  /* A warm handwritten accent — used sparingly, for small personal-feeling
+     flourishes (the daily affirmation, hero taglines), never for anything
+     that needs to stay highly legible at a glance. */
+  --font-script: 'Caveat', cursive;
 
   /* Coffee & Comfort — light mode */
   --color-bg: #f5efe6;
@@ -434,6 +438,21 @@ textarea {
   box-shadow: var(--shadow-sm);
   padding: 1rem 1.15rem;
   margin-bottom: 0.85rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Cards that are purely informational (sidebar widgets) get the shadow
+   lift only, not the translate — they don't lead anywhere on click, so a
+   "liftable" affordance would be misleading. Interactive cards (articles,
+   anything wrapped in a link/button) get the fuller hover below. */
+.article-card:hover,
+.sound-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .card-actions {
@@ -2183,13 +2202,20 @@ textarea {
 /* Reused across every page's hero banner — each page passes its own
    illustration's real width/height to ThemedImage, and this just scales
    that image to the container width while preserving its own aspect
-   ratio (object-fit: contain + height: auto), rather than assuming every
-   hero illustration shares one fixed ratio. */
+   ratio. Every hero uses the same fixed crop box and object-fit: cover,
+   so the banner reads as one deliberate, designed shape across every
+   page regardless of which illustration's native proportions it holds —
+   letting each image keep its own native ratio here was the actual bug:
+   it made every page's hero a different, arbitrary size. */
 .hero-photo {
   position: relative;
   flex-shrink: 0;
   width: 360px;
+  height: 210px;
   max-width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
 .hero-photo-group {
@@ -2227,15 +2253,14 @@ textarea {
 
 .hero-photo .themed-image {
   width: 100%;
-  height: auto;
-  aspect-ratio: auto;
+  height: 100%;
   background: none;
 }
 
 .hero-photo .themed-image img {
-  object-fit: contain;
+  object-fit: cover;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 /* ThemedImage */
@@ -2282,6 +2307,7 @@ textarea {
 
   .hero-photo {
     width: 100%;
+    height: 160px;
   }
 }
 
@@ -2313,8 +2339,9 @@ textarea {
   flex: 1;
   min-width: 0;
   margin: 0;
-  font-family: var(--font-heading);
-  font-style: italic;
+  font-family: var(--font-script);
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--color-text);
 }
 
@@ -2468,18 +2495,17 @@ textarea {
 }
 
 .counselors-intro-card .themed-image {
-  width: 100%;
-  max-width: 180px;
-  height: auto;
+  width: 160px;
+  height: 120px;
   margin: 0 auto 0.75rem;
   border-radius: var(--radius-md);
-  background: none;
+  overflow: hidden;
 }
 
 .counselors-intro-card .themed-image img {
-  object-fit: contain;
+  object-fit: cover;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .consideration-list {
@@ -3015,7 +3041,10 @@ textarea {
 
 .affirmation-text {
   margin: 0 0 0.75rem;
-  line-height: 1.5;
+  font-family: var(--font-script);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .sidebar-card-action {

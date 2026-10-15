@@ -81,7 +81,7 @@ const ThreadList = () => {
         </div>
         <div className="hero-photo-group">
           <div className="hero-photo">
-            <ThemedImage src={IMAGES.threadsHero.src} alt="" width={235} height={360} sizes="200px" overlay={false} />
+            <ThemedImage src={IMAGES.threadsHero.src} alt="" width={230} height={220} sizes="360px" overlay={false} />
           </div>
           <div className="hero-accent">
             <ThemedImage src={IMAGES.threadsAccent.src} alt="" width={243} height={178} sizes="120px" overlay={false} />
