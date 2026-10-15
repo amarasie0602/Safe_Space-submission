@@ -2,7 +2,14 @@ import StaticPage from '../components/StaticPage';
 import GrowthIllustration from '../components/GrowthIllustration';
 import { IMAGES } from '../config/images';
 
-const imageCredits = [IMAGES.landingHero, IMAGES.authSplit].filter((entry) => entry.credit);
+const allImageEntries = [
+  IMAGES.landingHero,
+  IMAGES.authSplit,
+  ...Object.values(IMAGES.helpfulResources),
+];
+const imageCredits = Array.from(
+  new Map(allImageEntries.filter((entry) => entry.credit).map((entry) => [entry.credit.url, entry])).values()
+);
 
 const About = () => (
   <StaticPage title="About SafeSpace">

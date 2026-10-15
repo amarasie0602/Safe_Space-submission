@@ -2863,6 +2863,20 @@ textarea {
   text-decoration: none;
 }
 
+.helpful-resource-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.helpful-resource-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  transform: rotate(-90deg);
+  opacity: 0.5;
+}
+
 .popular-topics button span:last-child {
   margin-left: auto;
   font-weight: 600;

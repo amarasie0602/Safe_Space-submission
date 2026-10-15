@@ -20,6 +20,25 @@ export const IMAGES = {
     alt: '',
     credit: { photographer: 'Bob Jenkin', source: 'Unsplash', url: 'https://unsplash.com/photos/2ZSWAKRB2ok' },
   },
+  // Small thumbnails for the homepage sidebar's "You Might Find Helpful"
+  // resource list.
+  helpfulResources: {
+    breathing: {
+      src: 'https://images.unsplash.com/photo-1595425504122-ed7894db7711',
+      alt: '',
+      credit: { photographer: 'Giulia Bertelli', source: 'Unsplash', url: 'https://unsplash.com/photos/2-xbLgZDT_g' },
+    },
+    healingReads: {
+      src: 'https://images.unsplash.com/photo-1519091830432-41608a52904e',
+      alt: '',
+      credit: { photographer: 'Nathan Dumlao', source: 'Unsplash', url: 'https://unsplash.com/photos/lb2VmFq-0xI' },
+    },
+    crisisResources: {
+      src: 'https://images.unsplash.com/photo-1762539683985-de22c1e2358f',
+      alt: '',
+      credit: { photographer: 'Bob Jenkin', source: 'Unsplash', url: 'https://unsplash.com/photos/2ZSWAKRB2ok' },
+    },
+  },
   // TODO: one cover image per Healing Reads article (client/src/pages/Inspiration.jsx).
   healingReadsCovers: {},
   // TODO: one muted photo per Calm Corner sound tile (rain, ocean, forest, cafe, piano).
