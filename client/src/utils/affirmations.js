@@ -29,3 +29,10 @@ export const getTodaysAffirmation = () => {
   const index = dayOfYear(new Date()) % AFFIRMATIONS.length;
   return AFFIRMATIONS[index];
 };
+
+// For a "show me another one" action — deliberately not persisted/seeded,
+// just a different line from the same curated set.
+export const getRandomAffirmation = (excluding) => {
+  const choices = AFFIRMATIONS.filter((line) => line !== excluding);
+  return choices[Math.floor(Math.random() * choices.length)];
+};

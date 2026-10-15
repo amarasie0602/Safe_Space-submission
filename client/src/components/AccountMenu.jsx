@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import AnonymousAvatar from './AnonymousAvatar';
+import Icon from './Icon';
 
 const AccountMenu = () => {
   const { user, logout } = useContext(AuthContext);
@@ -28,6 +29,8 @@ const AccountMenu = () => {
         title={user.pseudonym}
       >
         <AnonymousAvatar seed={user.id} avatarId={user.avatarId} />
+        <span className="navbar-avatar-label navbar-desktop-only">{user.pseudonym}</span>
+        <Icon name="chevron-down" size={13} className="navbar-desktop-only" />
       </button>
       {open && (
         <div className="account-menu-dropdown">

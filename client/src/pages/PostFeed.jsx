@@ -17,6 +17,8 @@ import { BlockedUsersContext } from '../context/BlockedUsersContext';
 import useDelayedLoading from '../hooks/useDelayedLoading';
 import ThemedImage from '../components/ThemedImage';
 import { IMAGES } from '../config/images';
+import HomeSidebar from '../components/home/HomeSidebar';
+import { pickFeaturedPost, totalReactions } from '../utils/pickFeaturedPost';
 import logo from '../assets/logo-icon.png';
 
 const PostFeed = () => {
@@ -84,122 +86,142 @@ const PostFeed = () => {
 
   const sortedPosts = [...visiblePosts].sort((a, b) => {
     if (sort === 'supported') {
-      return (b.supporters?.length || 0) - (a.supporters?.length || 0);
+      return totalReactions(b) - totalReactions(a);
     }
     return 0;
   });
 
+  // Only spotlight a featured post on the default, unfiltered view — once
+  // someone's searching or filtering by category, pulling a post out of
+  // order would just be confusing.
+  const showFeatured = !category && !search && sort === 'recent';
+  const featuredPost = showFeatured ? pickFeaturedPost(sortedPosts) : null;
+  const remainingPosts = featuredPost
+    ? sortedPosts.filter((post) => post._id !== featuredPost._id)
+    : sortedPosts;
+
   return (
-    <div>
-      <div className="hero">
-        <div className="hero-text">
-          <h1>Welcome to SafeSpace</h1>
-          <p>A place to share your thoughts anonymously and connect with people who understand.</p>
-          <div className="hero-badges">
-            <span className="badge tag-sage">
-              <Icon name="shield" size={13} /> Always anonymous
-            </span>
-            <span className="badge tag-mocha">
-              <Icon name="users" size={13} /> Supportive community
+    <div className="home-layout">
+      <div className="home-main">
+        <div className="hero">
+          <div className="hero-text">
+            <h1>Welcome to SafeSpace</h1>
+            <p>A place to share your thoughts anonymously and connect with people who understand.</p>
+            <div className="hero-badges">
+              <span className="badge tag-sage">
+                <Icon name="shield" size={13} /> Always anonymous
+              </span>
+              <span className="badge tag-mocha">
+                <Icon name="users" size={13} /> Supportive community
+              </span>
+            </div>
+          </div>
+          <div className="hero-photo">
+            <ThemedImage
+              src={IMAGES.landingHero.src}
+              alt=""
+              width={640}
+              height={480}
+              sizes="(max-width: 860px) 100vw, 320px"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <span className="hero-photo-badge" aria-hidden="true">
+              <img src={logo} alt="" width={22} height={22} />
             </span>
           </div>
         </div>
-        <div className="hero-photo">
-          <ThemedImage
-            src={IMAGES.landingHero.src}
-            alt=""
-            width={640}
-            height={480}
-            sizes="(max-width: 860px) 100vw, 320px"
-            loading="eager"
-            fetchPriority="high"
-          />
-          <span className="hero-photo-badge" aria-hidden="true">
-            <img src={logo} alt="" width={22} height={22} />
-          </span>
-        </div>
-      </div>
 
-      <DailyAffirmation />
+        <DailyAffirmation />
 
-      {user ? (
-        <div className="card composer-teaser">
-          <button
-            type="button"
-            className="composer-teaser-input"
-            onClick={() => navigate('/posts/new')}
-          >
-            <AnonymousAvatar seed={user.id} avatarId={user.avatarId} />
-            <span>Share what&apos;s on your mind...</span>
-          </button>
+        {user ? (
+          <div className="card composer-teaser">
+            <button
+              type="button"
+              className="composer-teaser-input"
+              onClick={() => navigate('/posts/new')}
+            >
+              <AnonymousAvatar seed={user.id} avatarId={user.avatarId} />
+              <span>Share what&apos;s on your mind...</span>
+            </button>
+            <p className="reassurance">
+              <Icon name="lock" size={14} /> Your identity remains anonymous. Express yourself
+              freely in a safe environment.
+            </p>
+            <MoodQuickOptions onSelect={(mood) => navigate('/posts/new', { state: { mood } })} />
+          </div>
+        ) : (
           <p className="reassurance">
-            <Icon name="lock" size={14} /> Your identity remains anonymous. Express yourself
-            freely in a safe environment.
+            <Icon name="lock" size={14} /> Your identity is safe here.
           </p>
-          <MoodQuickOptions onSelect={(mood) => navigate('/posts/new', { state: { mood } })} />
-        </div>
-      ) : (
-        <p className="reassurance">
-          <Icon name="lock" size={14} /> Your identity is safe here.
-        </p>
-      )}
+        )}
 
-      <SearchBar value={search} onChange={setSearch} placeholder="Search posts..." suggestions={searchSuggestions} />
-      <div className="filter-row">
-        <label className="sort-select">
-          Sort by
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            <option value="recent">Most Recent</option>
-            <option value="supported">Most Supported</option>
-          </select>
-        </label>
-      </div>
-      <div className="tabs">
-        <button className={`tab${category === '' ? ' active' : ''}`} onClick={() => setCategory('')}>
-          All
-        </button>
-        {CATEGORIES.map((c) => (
-          <button
-            key={c.value}
-            className={`tab${category === c.value ? ' active' : ''}`}
-            onClick={() => setCategory(c.value)}
-          >
-            <Icon name={c.icon} size={14} /> {c.label}
-          </button>
-        ))}
-      </div>
-      {showLoading && (
-        <>
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </>
-      )}
-      {!loading && error && <NetworkError message={error} onRetry={fetchPosts} />}
-      {!loading && !error && visiblePosts.length === 0 && posts.length > 0 && (
-        <div className="empty-state">No posts found. Try a different search or category.</div>
-      )}
-      {!loading && !error && visiblePosts.length === 0 && posts.length === 0 && (
-        <EmptyState message="You're not alone. Share when you're ready." />
-      )}
-      {!loading &&
-        !error &&
-        sortedPosts.map((post, index) => (
-          <PostCard key={post._id} post={post} index={index} showFlagged={user?.role === 'admin'} />
-        ))}
-      {loadMoreError && <ErrorMessage message={loadMoreError} />}
-      {!loading && !error && !category && !search && hasMore && (
-        <div className="load-more">
-          <button type="button" className="btn btn-ghost" onClick={handleLoadMore} disabled={loadingMore}>
-            {loadingMore ? 'Loading more...' : 'Load more'}
-          </button>
+        <SearchBar value={search} onChange={setSearch} placeholder="Search posts..." suggestions={searchSuggestions} />
+        <div className="filter-row">
+          <label className="sort-select">
+            Sort by
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="recent">Most Recent</option>
+              <option value="supported">Most Supported</option>
+            </select>
+          </label>
         </div>
-      )}
-      {user && (
-        <Link to="/posts/new" className="fab" aria-label="Create a new post" title="Create a new post">
-          +
-        </Link>
-      )}
+        <div className="tabs tabs-scroll">
+          <button className={`tab${category === '' ? ' active' : ''}`} onClick={() => setCategory('')}>
+            All
+          </button>
+          {CATEGORIES.map((c) => (
+            <button
+              key={c.value}
+              className={`tab${category === c.value ? ' active' : ''}`}
+              onClick={() => setCategory(c.value)}
+            >
+              <Icon name={c.icon} size={14} /> {c.label}
+            </button>
+          ))}
+        </div>
+        {showLoading && (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        )}
+        {!loading && error && <NetworkError message={error} onRetry={fetchPosts} />}
+        {!loading && !error && visiblePosts.length === 0 && posts.length > 0 && (
+          <div className="empty-state">No posts found. Try a different search or category.</div>
+        )}
+        {!loading && !error && visiblePosts.length === 0 && posts.length === 0 && (
+          <EmptyState message="You're not alone. Share when you're ready." />
+        )}
+        {!loading && !error && featuredPost && (
+          <PostCard post={featuredPost} index={0} showFlagged={user?.role === 'admin'} featured />
+        )}
+        {!loading &&
+          !error &&
+          remainingPosts.map((post, index) => (
+            <PostCard
+              key={post._id}
+              post={post}
+              index={featuredPost ? index + 1 : index}
+              showFlagged={user?.role === 'admin'}
+            />
+          ))}
+        {loadMoreError && <ErrorMessage message={loadMoreError} />}
+        {!loading && !error && !category && !search && hasMore && (
+          <div className="load-more">
+            <button type="button" className="btn btn-ghost" onClick={handleLoadMore} disabled={loadingMore}>
+              {loadingMore ? 'Loading more...' : 'Load more'}
+            </button>
+          </div>
+        )}
+        {user && (
+          <Link to="/posts/new" className="fab" aria-label="Create a new post" title="Create a new post">
+            +
+          </Link>
+        )}
+      </div>
+      <HomeSidebar onSelectCategory={setCategory} />
     </div>
   );
 };

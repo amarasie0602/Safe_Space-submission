@@ -1765,15 +1765,24 @@ textarea {
 }
 
 .navbar-avatar-btn {
-  width: 34px;
+  width: auto;
   height: 34px;
-  overflow: hidden;
+  padding: 0 0.4rem 0 0;
+  gap: 0.4rem;
 }
 
 .navbar-avatar-btn .anon-avatar {
   width: 32px;
   height: 32px;
   border: none;
+  flex-shrink: 0;
+}
+
+.navbar-avatar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
 }
 
 /* Notifications */
@@ -2712,4 +2721,194 @@ textarea {
 .grounding-step-prompt {
   font-size: 1.1rem;
   margin-bottom: 1rem;
+}
+
+/* Homepage two-column layout */
+
+.page:has(.home-layout) {
+  max-width: 1180px;
+}
+
+.home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.home-main {
+  min-width: 0;
+}
+
+.home-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: sticky;
+  top: calc(var(--space-2) + 60px);
+}
+
+@media (max-width: 1024px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .home-sidebar {
+    position: static;
+  }
+}
+
+/* Category tabs: horizontal scroll instead of wrapping into a dense block
+   once there's not enough width for them to sit on one row. */
+@media (max-width: 700px) {
+  .tabs-scroll {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabs-scroll .tab {
+    flex-shrink: 0;
+  }
+}
+
+/* Sidebar cards */
+
+.sidebar-card {
+  margin-bottom: 0;
+}
+
+.sidebar-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary-hover);
+  margin-bottom: 0.65rem;
+}
+
+.sidebar-card-header h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-family: var(--font-heading);
+  color: var(--color-text);
+}
+
+.affirmation-text {
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.sidebar-card-action {
+  width: 100%;
+  justify-content: center;
+}
+
+.community-stats {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.community-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary);
+}
+
+.community-stat div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.community-stat strong {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--color-text);
+}
+
+.popular-topics,
+.helpful-resources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.popular-topics button,
+.helpful-resources a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.4rem;
+  border-radius: var(--radius-sm);
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.popular-topics button:hover,
+.helpful-resources a:hover {
+  background: var(--color-primary-bg);
+  color: var(--color-primary-hover);
+  text-decoration: none;
+}
+
+.popular-topics button span:last-child {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.counselor-prompt-card p {
+  margin: 0 0 0.75rem;
+}
+
+.counselor-prompt-card .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Featured post card */
+
+.post-card-featured {
+  border-color: var(--color-primary);
+  background: linear-gradient(170deg, var(--color-primary-bg), var(--color-surface) 55%);
+}
+
+.featured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-primary-hover);
+  margin-bottom: 0.6rem;
+}
+
+/* Reaction chips: icon + count always, label hidden below the breakpoint
+   where three full-text chips plus Reply/Save would wrap awkwardly. */
+
+.reaction-count {
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .reaction-label {
+    display: none;
+  }
+}
+
+.reaction-btn-icon-only {
+  padding: 0.35rem 0.6rem;
 }
