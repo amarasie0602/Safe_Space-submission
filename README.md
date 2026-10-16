@@ -21,11 +21,12 @@ moderator `mod_river`, users `quiet_alice` / `steady_ben` / `hopeful_casey` /
 2. **Peer Support Community** — threaded discussions per category with replies, upvotes, and reporting.
 3. **Professional Connect Module** — verified counselors listed with specialties; users can book anonymous sessions.
 4. **Safety & Analytics Dashboard (admin-only)** — auto-flags posts containing risk keywords, routes them to a moderation queue, and shows aggregate analytics.
+5. **Calm Corner** — self-guided tools (breathing exercise, ambient sounds, guided meditation, grounding exercise) for in-the-moment regulation, separate from the peer-support feed.
 
 ## Stack
 
 - Backend: Node.js, Express, MongoDB Atlas (Mongoose), JWT auth
-- Frontend: React (Vite), React Router, Axios
+- Frontend: React (Vite), React Router, Axios, Framer Motion (page transitions, dialogs, reaction/toast micro-interactions — all respecting `prefers-reduced-motion`)
 
 ## Setup
 
@@ -161,7 +162,8 @@ already assumes.
 | DELETE | `/admin/posts/:id` | Admin | Delete post |
 | GET | `/posts/:id/replies` | Public | List replies for a post |
 | POST | `/posts/:id/replies` | User (active) | Add reply to a post |
-| PATCH | `/posts/:id/support` | User | Toggle supporting a post |
+| PATCH | `/posts/:id/react` | User (active) | Set/switch/remove your reaction (`{ type: 'heard' \| 'support' \| 'beenthere' }`) — one reaction per user per post, picking a new type replaces your previous one. Returns `{ counts, userReaction }` |
+| GET | `/posts/category-counts` | Public | Post count per category (visible posts only) — powers the homepage's Popular Topics sidebar |
 
 ### Threads & Replies
 | Method | Route | Auth | Description |
@@ -217,10 +219,18 @@ already assumes.
 |--------|-------|------|-------------|
 | GET | `/admin/analytics` | Admin | Aggregate counts only — no raw personal data |
 
+### Community
+| Method | Route | Auth | Description |
+|--------|-------|------|-------------|
+| GET | `/community/stats` | Public | `{ members, postsShared }` — real counts powering the homepage sidebar's "You're not alone" card (deliberately not a live-presence/"online now" number, since this app has no session-presence tracking to back that honestly) |
+
 ## Product features
 
 Beyond the core CRUD flows, the frontend includes production-shaped UX:
 
+- **Community homepage**: a two-column layout — the main feed (hero, anonymous composer, mood-quick-start chips, category filters, search) alongside a sticky sidebar (today's affirmation, real member/post counts, Popular Topics sorted by real per-category post counts and clickable straight into that filter, a Helpful Resources list, and a counselor prompt). A **Featured Discussion** is pulled from whatever's currently loaded by a transparent rule — highest total reactions, tie-broken by recency — not a stored flag or fabricated stat.
+- **Three real reaction types**: "I hear you" / "Sending support" / "I've been there" on every post, each independently tracked server-side (`Post.reactions`, one per user, switching types replaces your previous one) — not a cosmetic reskin of a single like button.
+- **Calm Corner** (`/calm`): a guided breathing exercise (box breathing and 4-7-8 patterns, with a timed SVG progress ring and cycle counter), an ambient sound mixer with five real looping tracks (rain/ocean/forest/café/piano) with independent + master volume and a sleep timer, click-to-load guided meditation videos (no YouTube iframe/network request until clicked), and a 5-4-3-2-1 grounding exercise. Lazy-loaded so regular feed visitors never download it.
 - **Trust & safety**: a contextual (⋯) menu on every post for Report Post, Report User, and Block User, each behind a confirmation dialog with plain-language copy. Blocking is backend-persisted (`User.blockedUsers`) and syncs across devices — Profile has a "Blocked users" section to review/unblock. Reports go to the real `/reports` endpoint (the `Report` model accepts `targetType: 'user'`); moderators review them in the admin Reports Queue, with one-click **Suspend 7 days** / **Ban user** actions for user reports.
 - **Moderation escalation**: beyond removing a single post, admins can suspend (temporary, auto-lifts) or ban (indefinite) a user account. A suspended/banned account can't log in, and — since a JWT can outlive a since-suspended account — content-creation routes re-check status against the database on every request, not just at login.
 - **Crisis-aware composer**: typing self-harm/suicide-related language into a new post or thread shows an inline, non-blocking supportive banner linking to Crisis Resources — support surfaces immediately, without stopping the person from posting when they're ready.
@@ -237,7 +247,8 @@ Beyond the core CRUD flows, the frontend includes production-shaped UX:
 - **Real counselor booking**: a counselor sets their own weekly recurring schedule; the booking flow (Calendar → time slot → confirm → confirmation screen) only ever shows slots that are actually open — filtered against that schedule, already-booked times, and (for today) times already in the past — with a race-safe unique index preventing two clients from double-booking the same slot.
 - **Counselor reviews**: after a session is marked completed, the client can leave a 1–5 star rating + optional comment from My Activity; the counselor's profile shows real aggregate rating/count and individual reviews instead of a placeholder.
 - **Dark mode & accessible focus states**: a full dark palette, visible `:focus-visible` outlines on every link/button, and `title` + `aria-label` on icon-only buttons.
-- **Not just problems**: a Gratitude & Wins category for posts and threads, a daily affirmation banner on the feed, and a Healing Reads (`/inspiration`) page of short, original, editorial articles on self-compassion, rest, gratitude, and coping skills — curated, not user-submitted, so there's no moderation queue involved.
+- **Not just problems**: a Gratitude & Wins category for posts and threads, a daily affirmation banner on the feed (and a rotating one in the sidebar — original, curated lines, not AI-generated per visit), and a Healing Reads (`/inspiration`) page — a featured article plus a filterable grid, each with its own cover illustration — of short, original, editorial articles on self-compassion, rest, gratitude, and coping skills, curated rather than user-submitted so there's no moderation queue involved.
+- **Illustration system**: a consistent set of custom illustrations (`client/src/components/ThemedImage.jsx` + `client/src/config/images.js`) used across the hero banners, auth pages, and sidebar cards — one fixed crop box per placement (so every page's hero reads as the same deliberate shape, not whatever aspect ratio that particular image happened to be), lazy-loaded, with a loading placeholder and fade-in. A small `Caveat` script font accents the two affirmation moments alongside the main Fraunces/Inter pairing.
 - **Richer profiles**: beyond the placeholder avatar, a profile now has an optional 160-character bio, a "member since" date, live post/reply counts (`GET /auth/me/stats`), a blocked-users manager, a push-notification toggle, and recovery-code regeneration.
 - **Installable, with real push**: a PWA manifest + app icons, plus a service worker (`client/public/sw.js`) that handles Web Push and notification clicks — still no offline caching, just installability + push.
 
@@ -257,11 +268,20 @@ Backend tests run against a dedicated `safespace_test` database on the same Mong
 The UI follows a warm, calm "Coffee & Comfort" theme rather than a bright social-media look:
 
 - **Palette**: warm beige/cream surfaces, muted mocha primary, sage secondary, terracotta accent — full light and dark variants in `client/src/index.css`.
-- **Typography**: Fraunces (a warm serif) for headings, Inter for body text — comfortable line height, no condensed/sharp styles.
+- **Typography**: Fraunces (a warm serif) for headings, Inter for body text, and Caveat (a handwritten script) used sparingly for the two affirmation moments — comfortable line height, no condensed/sharp styles.
 - **Icons**: a small hand-built line-icon set (`client/src/components/Icon.jsx`) replaces emoji everywhere — reactions, categories, moods, theme toggle, search, and reassurance text are all monochrome SVG, not pictographs.
+- **Illustrations**: a consistent custom illustration set (see Product features → Illustration system above) for hero banners, auth pages, and sidebar art, each with its own background removed so it blends into the surrounding card/page rather than showing a visible canvas edge.
 - **No glassmorphism**: solid warm surfaces and soft shadows instead of blur/gradient backgrounds, for a grounded rather than "glassy" feel.
 
-Run `npm run seed` in `backend/` after pulling this theme update — the category taxonomy changed (`academic`/`addiction` → `work_burnout`), so old seeded data won't match the new dropdowns until you reseed.
+### Re-seeding
+
+`backend/scripts/seed.js` refuses to run (without `--force`) if the `users`
+collection already has data, since it wipes posts/threads/replies/
+counselors/bookings/reviews/reports before reseeding — this guards against
+accidentally nuking real accounts. If you deliberately want a fresh demo
+dataset: `npm run seed -- --force`. `npm run seed:more` is purely additive
+(never deletes anything) and layers extra posts/threads/replies/reactions
+onto whatever's already there, safe to run anytime.
 
 ## Contributing
 
