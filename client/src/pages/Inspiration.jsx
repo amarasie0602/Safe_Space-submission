@@ -10,7 +10,7 @@ const ArticleCard = ({ article, isOpen, onToggle, large }) => (
   <div className={`card article-card${large ? ' article-card-featured' : ''}`}>
     <ThemedImage
       src={IMAGES.healingReadsCovers[article.id]?.src}
-      alt=""
+      alt={IMAGES.healingReadsCovers[article.id]?.alt || ''}
       width={large ? 420 : 220}
       height={large ? 220 : 140}
       sizes={large ? '(max-width: 700px) 100vw, 420px' : '220px'}
@@ -52,8 +52,7 @@ const Inspiration = () => {
         <div className="hero-text">
           <h1>Healing Reads</h1>
           <p>
-            Short, honest reads for the days you need something gentler than a blank page —
-            self-compassion, rest, gratitude, and coping skills, written for SafeSpace.
+            Brief reads on rest, self-compassion, gratitude, and coping. Choose a topic that feels useful today.
           </p>
         </div>
         <div className="hero-photo">

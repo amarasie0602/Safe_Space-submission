@@ -5,8 +5,7 @@ import ThreadCard from '../components/ThreadCard';
 import Icon from '../components/Icon';
 import SearchBar from '../components/SearchBar';
 import ErrorMessage from '../components/ErrorMessage';
-import ThemedImage from '../components/ThemedImage';
-import { IMAGES } from '../config/images';
+import SkeletonCard from '../components/SkeletonCard';
 import { AuthContext } from '../context/AuthContext';
 import { CATEGORIES } from '../utils/categories';
 
@@ -20,15 +19,25 @@ const ThreadList = () => {
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadMoreError, setLoadMoreError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchThreads = async () => {
-      const { data } = await api.get('/threads', {
-        params: { page: 1, limit: 10, ...(category && { category }), ...(search && { search }) },
-      });
-      setThreads(data.threads);
-      setHasMore(data.hasMore);
-      setPage(1);
+      setLoading(true);
+      setError('');
+      try {
+        const { data } = await api.get('/threads', {
+          params: { page: 1, limit: 10, ...(category && { category }), ...(search && { search }) },
+        });
+        setThreads(data.threads);
+        setHasMore(data.hasMore);
+        setPage(1);
+      } catch {
+        setError('Unable to load threads right now. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     };
     fetchThreads();
   }, [category, search]);
@@ -66,7 +75,7 @@ const ThreadList = () => {
     if (sort === 'supported') {
       return (b.upvotes || 0) - (a.upvotes || 0);
     }
-    return 0;
+    return new Date(b.createdAt || b.updatedAt || 0) - new Date(a.createdAt || a.updatedAt || 0);
   });
 
   return (
@@ -75,17 +84,8 @@ const ThreadList = () => {
         <div className="hero-text">
           <h1>Threads</h1>
           <p>
-            Meaningful conversations, real experiences, and support from people who understand.
-            You're not alone here.
+            Browse ongoing conversations, or start one of your own. You can join in at your own pace.
           </p>
-        </div>
-        <div className="hero-photo-group">
-          <div className="hero-photo">
-            <ThemedImage src={IMAGES.threadsHero.src} alt="" width={230} height={220} sizes="360px" overlay={false} />
-          </div>
-          <div className="hero-accent">
-            <ThemedImage src={IMAGES.threadsAccent.src} alt="" width={243} height={178} sizes="120px" overlay={false} />
-          </div>
         </div>
       </div>
       <div className="thread-toolbar">
@@ -124,8 +124,10 @@ const ThreadList = () => {
           </button>
         ))}
       </div>
-      {threads.length === 0 && <div className="empty-state">No threads found.</div>}
-      {sortedThreads.map((thread, index) => (
+      {loading && <><SkeletonCard /><SkeletonCard /><SkeletonCard /></>}
+      {!loading && error && <ErrorMessage message={error} />}
+      {!loading && !error && threads.length === 0 && <div className="empty-state">No threads found. You can start a conversation when you feel ready.</div>}
+      {!loading && !error && sortedThreads.map((thread, index) => (
         <ThreadCard key={thread._id} thread={thread} index={index} />
       ))}
       {loadMoreError && <ErrorMessage message={loadMoreError} />}

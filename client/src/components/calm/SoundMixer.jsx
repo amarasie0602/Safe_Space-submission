@@ -130,10 +130,11 @@ const SoundMixer = () => {
                 <ThemedImage
                   src={thumb.src}
                   alt=""
-                  width={48}
-                  height={48}
-                  sizes="48px"
+                  width={64}
+                  height={64}
+                  sizes="64px"
                   className="sound-tile-thumb"
+                  overlay={false}
                 />
               ) : (
                 <Icon name={tile.icon} size={20} />

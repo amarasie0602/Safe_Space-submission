@@ -11,8 +11,7 @@ const CalmCorner = () => (
       <div className="hero-text">
         <h1>Calm Corner</h1>
         <p>
-          A quiet space to pause, breathe, and come back to yourself — whether that's two minutes
-          or twenty.
+          Breathing, grounding, meditation, and ambient sound tools. Start wherever feels comfortable.
         </p>
       </div>
       <div className="hero-photo">

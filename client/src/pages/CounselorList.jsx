@@ -52,7 +52,7 @@ const CounselorList = () => {
         <div className="hero">
           <div className="hero-text">
             <h1>Counselors &amp; Professionals</h1>
-            <p>Book a confidential, anonymous session with a licensed professional.</p>
+            <p>Explore counselor profiles, specialties, and availability for anonymous sessions.</p>
           </div>
           <div className="hero-photo">
             <ThemedImage

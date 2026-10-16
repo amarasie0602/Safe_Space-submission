@@ -45,11 +45,8 @@ const CounselorCard = ({ counselor }) => {
           <span className={`availability-dot${open ? ' open' : ''}`} aria-hidden="true" />
           {counselor.availability}
         </div>
-        <Link to={`/counselors/${counselor._id}`} className="btn btn-ghost btn-sm">
-          View Profile
-        </Link>
         <Link to={`/counselors/${counselor._id}`} className="btn btn-primary btn-sm">
-          {open ? 'Book Anonymous Session' : 'Explore Booking Options'}
+          {open ? 'View profile & booking' : 'View profile'}
         </Link>
       </div>
     </div>

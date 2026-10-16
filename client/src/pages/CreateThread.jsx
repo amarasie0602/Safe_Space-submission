@@ -34,7 +34,7 @@ const CreateThread = ({ onCreated }) => {
   };
 
   return (
-    <div>
+    <div className="form-page">
       <h1>New Thread</h1>
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">

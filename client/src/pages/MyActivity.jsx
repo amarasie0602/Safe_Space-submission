@@ -7,6 +7,7 @@ import { ToastContext } from '../context/ToastContext';
 import PostCard from '../components/PostCard';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorMessage from '../components/ErrorMessage';
 
 const TABS = ['My Posts', 'My Replies', 'Saved Posts', 'Supported Discussions', 'My Bookings'];
 
@@ -63,9 +64,12 @@ const MyActivity = () => {
   const [supportedThreads, setSupportedThreads] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
-  useEffect(() => {
-    const fetchAll = async () => {
+  const fetchAll = async () => {
+    setLoading(true);
+    setLoadError('');
+    try {
       const [postsRes, repliesRes, supportedRes, bookingsRes] = await Promise.all([
         api.get('/posts', { params: { limit: 50 } }),
         api.get('/auth/me/replies'),
@@ -76,8 +80,14 @@ const MyActivity = () => {
       setMyReplies(repliesRes.data);
       setSupportedThreads(supportedRes.data);
       setBookings(bookingsRes.data);
+    } catch {
+      setLoadError('Unable to load your activity right now. Please try again.');
+    } finally {
       setLoading(false);
-    };
+    }
+  };
+
+  useEffect(() => {
     fetchAll();
   }, []);
 
@@ -104,8 +114,9 @@ const MyActivity = () => {
       </div>
 
       {loading && <LoadingSpinner />}
+      {!loading && loadError && <div className="activity-load-error"><ErrorMessage message={loadError} /><button type="button" className="btn btn-ghost btn-sm" onClick={fetchAll}>Try again</button></div>}
 
-      {!loading && activeTab === 'My Posts' && (
+      {!loading && !loadError && activeTab === 'My Posts' && (
         <>
           {myPosts.length === 0 && <div className="empty-state">You haven't posted yet.</div>}
           {myPosts.map((post) => (
@@ -114,7 +125,7 @@ const MyActivity = () => {
         </>
       )}
 
-      {!loading && activeTab === 'Saved Posts' && (
+      {!loading && !loadError && activeTab === 'Saved Posts' && (
         <>
           {savedPosts.length === 0 && (
             <div className="empty-state">No saved posts yet. Use the bookmark icon on a post to save it.</div>
@@ -125,7 +136,7 @@ const MyActivity = () => {
         </>
       )}
 
-      {!loading && activeTab === 'My Replies' && (
+      {!loading && !loadError && activeTab === 'My Replies' && (
         <>
           {myReplies.length === 0 && <div className="empty-state">No replies yet.</div>}
           {myReplies.map((reply) => (
@@ -141,7 +152,7 @@ const MyActivity = () => {
         </>
       )}
 
-      {!loading && activeTab === 'Supported Discussions' && (
+      {!loading && !loadError && activeTab === 'Supported Discussions' && (
         <>
           {supportedThreads.length === 0 && (
             <div className="empty-state">You haven't supported any threads yet.</div>
@@ -154,7 +165,7 @@ const MyActivity = () => {
         </>
       )}
 
-      {!loading && activeTab === 'My Bookings' && (
+      {!loading && !loadError && activeTab === 'My Bookings' && (
         <>
           {bookings.length === 0 && (
             <div className="empty-state">

@@ -104,8 +104,8 @@ const PostFeed = () => {
       <div className="home-main">
         <div className="hero">
           <div className="hero-text">
-            <h1>Welcome to SafeSpace</h1>
-            <p>A place to share your thoughts anonymously and connect with people who understand.</p>
+            <h1>Some things are easier to share here.</h1>
+            <p>Write anonymously, read what others are carrying, and find a little company in it.</p>
             <div className="hero-badges">
               <span className="badge tag-sage">
                 <Icon name="shield" size={13} /> Always anonymous

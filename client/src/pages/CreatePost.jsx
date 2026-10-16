@@ -72,7 +72,7 @@ const CreatePost = ({ onCreated }) => {
   else if (remaining <= 50) charCountTone = ' char-count-near';
 
   return (
-    <div>
+    <div className="form-page">
       <h1>New Post</h1>
       <p className="text-muted">Not sure what to say? Try one of these:</p>
       <MoodQuickOptions onSelect={handleMoodSelect} />

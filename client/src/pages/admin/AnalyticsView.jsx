@@ -12,18 +12,29 @@ import {
 } from 'recharts';
 import api from '../../api/axios';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const AnalyticsView = () => {
   const [analytics, setAnalytics] = useState(null);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchAnalytics = async () => {
+  const fetchAnalytics = async () => {
+    setError('');
+    try {
       const { data } = await api.get('/admin/analytics');
       setAnalytics(data);
-    };
+    } catch {
+      setError('Unable to load analytics right now. Please try again.');
+    }
+  };
+
+  useEffect(() => {
     fetchAnalytics();
   }, []);
 
+  if (error && !analytics) {
+    return <div><h1>Analytics</h1><ErrorMessage message={error} /><button className="btn btn-ghost btn-sm" onClick={fetchAnalytics}>Try again</button></div>;
+  }
   if (!analytics) return <LoadingSpinner />;
 
   const postsByCategory = analytics.postsByCategory.map((d) => ({

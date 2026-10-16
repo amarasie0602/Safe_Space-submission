@@ -1,11 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import api from '../../api/axios';
 import Card from '../../components/Card';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import ErrorMessage from '../../components/ErrorMessage';
 import { ToastContext } from '../../context/ToastContext';
 import { AuthContext } from '../../context/AuthContext';
 
 const ReportsQueue = () => {
   const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const { showToast } = useContext(ToastContext);
   const { user } = useContext(AuthContext);
   // Suspend/ban are admin-only on the backend (authMiddleware.adminOnly) —
@@ -13,19 +17,32 @@ const ReportsQueue = () => {
   // just 403, since the report itself is still theirs to resolve/dismiss.
   const canModerateUsers = user?.role === 'admin';
 
-  useEffect(() => {
-    const fetchReports = async () => {
+  const fetchReports = async () => {
+    setLoading(true);
+    setLoadError('');
+    try {
       const { data } = await api.get('/admin/reports', { params: { status: 'open' } });
       setReports(data);
-    };
-    fetchReports().catch(() => showToast('Unable to load reports.'));
+    } catch {
+      setLoadError('Unable to load reports. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResolve = async (reportId, status) => {
-    await api.patch(`/admin/reports/${reportId}/resolve`, { status });
-    setReports((prev) => prev.filter((report) => report._id !== reportId));
-    showToast(status === 'resolved' ? 'Report resolved' : 'Report dismissed');
+    try {
+      await api.patch(`/admin/reports/${reportId}/resolve`, { status });
+      setReports((prev) => prev.filter((report) => report._id !== reportId));
+      showToast(status === 'resolved' ? 'Report resolved' : 'Report dismissed');
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Unable to update this report.');
+    }
   };
 
   const handleModerate = async (report, action) => {
@@ -46,8 +63,10 @@ const ReportsQueue = () => {
   return (
     <div>
       <h1>Reports</h1>
-      {reports.length === 0 && <div className="empty-state">No open reports.</div>}
-      {reports.map((report) => (
+      {loading && <LoadingSpinner />}
+      {!loading && loadError && <><ErrorMessage message={loadError} /><button type="button" className="btn btn-ghost btn-sm" onClick={fetchReports}>Try again</button></>}
+      {!loading && !loadError && reports.length === 0 && <div className="empty-state">No open reports.</div>}
+      {!loading && !loadError && reports.map((report) => (
         <Card key={report._id}>
           <p>{report.reason}</p>
           <div className="card-meta">

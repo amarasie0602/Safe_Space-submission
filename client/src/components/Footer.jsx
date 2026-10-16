@@ -27,7 +27,6 @@ const Footer = () => (
         <h3>Legal</h3>
         <Link to="/privacy">Privacy Policy</Link>
         <Link to="/terms">Terms of Service</Link>
-        <Link to="/guidelines">Community Guidelines</Link>
       </div>
       <div className="footer-column">
         <h3>Counselors</h3>

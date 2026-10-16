@@ -1,12 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-heading: 'Fraunces', Georgia, serif;
-  /* A warm handwritten accent — used sparingly, for small personal-feeling
-     flourishes (the daily affirmation, hero taglines), never for anything
-     that needs to stay highly legible at a glance. */
-  --font-script: 'Caveat', cursive;
+  --font-script: var(--font-heading);
 
   /* Coffee & Comfort — light mode */
   --color-bg: #f5efe6;
@@ -1578,7 +1575,8 @@ textarea {
 }
 
 .counselor-profile {
-  max-width: 640px;
+  max-width: 880px;
+  margin-inline: auto;
 }
 
 .counselor-profile h2 {
@@ -1589,6 +1587,7 @@ textarea {
 
 .static-page {
   max-width: 640px;
+  margin-inline: auto;
 }
 
 .static-page h2 {
@@ -2100,7 +2099,7 @@ textarea {
 
 .auth-split {
   display: flex;
-  max-width: 780px;
+  max-width: 540px;
   margin: 1rem auto 0;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -2123,16 +2122,16 @@ textarea {
 }
 
 .auth-card {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
-  padding: 2rem 1.75rem 2.25rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
   text-align: center;
 }
 
 @media (max-width: 700px) {
   .auth-split {
     flex-direction: column;
-    max-width: 420px;
+    max-width: 540px;
   }
 
   .auth-split-image {
@@ -2542,7 +2541,8 @@ textarea {
 /* Profile */
 
 .profile-page {
-  max-width: 560px;
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 .profile-summary {
@@ -2831,12 +2831,24 @@ textarea {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg);
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(62, 47, 38, 0.025);
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 260ms ease,
+    box-shadow 300ms ease,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sound-tile:hover,
+.sound-tile:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 22px rgba(62, 47, 38, 0.075);
 }
 
 .sound-tile.active {
   border-color: var(--color-primary);
   background: var(--color-primary-bg);
+  box-shadow: 0 5px 16px rgba(62, 47, 38, 0.07);
 }
 
 .sound-tile-toggle {
@@ -2853,16 +2865,43 @@ textarea {
   cursor: pointer;
   min-height: 44px;
   min-width: 44px;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.sound-tile-toggle:active {
+  transform: scale(0.97);
 }
 
 .sound-tile-thumb {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 3px 9px rgba(62, 47, 38, 0.09);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+}
+
+.sound-tile-toggle:hover .sound-tile-thumb,
+.sound-tile-toggle[aria-pressed='true'] .sound-tile-thumb {
+  box-shadow: 0 6px 14px rgba(62, 47, 38, 0.14);
+  animation: sound-art-breathe 3.4s ease-in-out infinite;
+}
+
+@keyframes sound-art-breathe {
+  0%,
+  100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
 }
 
 .sound-tile input[type='range'] {
   width: 100%;
+  accent-color: var(--color-terracotta);
+  cursor: pointer;
+}
+
+.sound-mixer-master input[type='range'] {
+  accent-color: var(--color-terracotta);
+  cursor: pointer;
 }
 
 .sound-mixer-master {
@@ -3112,9 +3151,14 @@ textarea {
 }
 
 .helpful-resource-thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 44px;
   height: 44px;
   border-radius: var(--radius-sm);
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -3135,10 +3179,15 @@ textarea {
 }
 
 .counselor-prompt-image {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 72px;
   height: 66px;
   margin: 0 auto 0.5rem;
-  background: none;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border-radius: 50%;
 }
 
 .counselor-prompt-image img {
@@ -3194,4 +3243,386 @@ textarea {
 
 .reaction-btn-icon-only {
   padding: 0.35rem 0.6rem;
+}
+
+/* SafeSpace refinement: quieter surfaces, clearer hierarchy, and a little
+   more breathing room without changing the established warm palette. */
+:root {
+  --color-bg: #f7f3ec;
+  --color-surface: #fffdf9;
+  --color-border: #e5ddd1;
+  --color-primary: #87664e;
+  --color-primary-hover: #70513d;
+  --color-primary-bg: #eee4d8;
+  --color-terracotta: #ad7053;
+  --color-terracotta-bg: #f2e5da;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 3px 12px rgba(62, 47, 38, 0.045);
+  --shadow-md: 0 12px 30px rgba(62, 47, 38, 0.085);
+}
+
+body {
+  line-height: 1.68;
+  letter-spacing: 0;
+}
+
+.page {
+  max-width: 1180px;
+  padding-top: clamp(1.4rem, 3vw, 2.5rem);
+}
+
+.navbar {
+  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+}
+
+.navbar-brand-text {
+  letter-spacing: -0.035em;
+}
+
+.hero {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: linear-gradient(120deg, var(--color-surface), var(--color-primary-bg));
+  padding: clamp(1.25rem, 3vw, 2.4rem);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  max-width: 15ch;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  margin-bottom: 0.8rem;
+}
+
+.hero-text > p {
+  max-width: 54ch;
+  font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+}
+
+.hero-photo {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(62, 47, 38, 0.12);
+}
+
+.hero-photo img {
+  display: block;
+}
+
+.card,
+.post-card,
+.thread-card,
+.counselor-row,
+.calm-section {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.card:hover,
+.post-card:hover,
+.thread-card:hover,
+.counselor-row:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  box-shadow: none;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+input,
+textarea,
+select {
+  background: var(--color-surface);
+  min-height: 44px;
+}
+
+.tab,
+.icon-btn,
+.reaction-btn {
+  min-height: 40px;
+}
+
+.page-header,
+.thread-toolbar {
+  gap: 0.8rem;
+}
+
+.form-page {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.form-page > h1 {
+  margin-bottom: 0.45rem;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+}
+
+.form-page > .form {
+  max-width: none;
+  margin-top: 1rem;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-page > .text-muted:last-child {
+  margin-top: 1rem;
+}
+
+.article-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sections reveal as they enter the viewport and settle away as they leave.
+   The direction-specific offset makes the movement follow the scroll while
+   remaining small enough to keep longer pages calm and readable. */
+.page.scroll-reveal-ready .scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.page.scroll-reveal-ready .scroll-reveal[data-reveal-direction='up'] {
+  transform: translate3d(0, -16px, 0);
+}
+
+.page.scroll-reveal-ready .scroll-reveal.is-visible,
+.page.scroll-reveal-ready .scroll-reveal:focus-within {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page.scroll-reveal-ready .scroll-reveal,
+  .page.scroll-reveal-ready .scroll-reveal[data-reveal-direction='up'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
+
+@media (max-width: 860px) {
+  .page {
+    padding-inline: 1.15rem;
+  }
+
+  .hero {
+    align-items: stretch;
+  }
+
+  .home-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 15px;
+  }
+
+  .page {
+    padding: 1rem 0.85rem 2.5rem;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    border-radius: 19px;
+    padding: 1.25rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 9vw, 2.6rem);
+  }
+
+  .hero-photo {
+    width: 100%;
+    max-height: 230px;
+  }
+
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .home-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .article-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .thread-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .thread-toolbar > .btn,
+  .thread-toolbar > a {
+    align-self: flex-start;
+  }
+
+  .post-card,
+  .thread-card,
+  .counselor-row {
+    padding: 1rem;
+  }
+
+  .form-page > .form {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-content {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .admin-sidebar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-sidebar a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #201c19;
+  --color-surface: #2b2622;
+  --color-border: #433a34;
+  --color-primary: #c6a384;
+  --color-primary-hover: #d6b595;
+  --color-primary-bg: #3a3029;
+  --color-terracotta-bg: #3d2e26;
+}
+
+/* Keep the visual character editorial and calm: clear type, restrained edges,
+   and useful hover feedback instead of a stack of glossy, rounded panels. */
+.navbar {
+  backdrop-filter: none;
+  background: var(--color-bg);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.navbar-tabs {
+  gap: 0.15rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.navbar-tabs a {
+  border-radius: 5px;
+  padding-inline: 0.8rem;
+}
+
+.navbar-tabs a.active {
+  background: transparent;
+  box-shadow: inset 0 -2px 0 var(--color-primary);
+}
+
+.hero {
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  box-shadow: none;
+  padding: clamp(1rem, 2.5vw, 2rem) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hero h1 {
+  max-width: 17ch;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  letter-spacing: -0.025em;
+}
+
+.hero-photo {
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.card,
+.post-card,
+.thread-card,
+.counselor-row,
+.calm-section {
+  box-shadow: none;
+}
+
+.card:hover,
+.post-card:hover,
+.thread-card:hover,
+.counselor-row:hover {
+  box-shadow: 0 5px 16px rgba(62, 47, 38, 0.07);
+}
+
+.sidebar-card,
+.form-page > .form,
+.article-card,
+.calm-section {
+  border-radius: 12px;
+}
+
+.affirmation-text,
+.daily-affirmation p {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.badge {
+  border-radius: 4px;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding-block: 0.5rem 1.25rem;
+  }
+
+  .navbar-tabs a.active {
+    box-shadow: none;
+    background: var(--color-primary-bg);
+  }
 }
