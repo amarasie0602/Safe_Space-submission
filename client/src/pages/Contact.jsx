@@ -14,7 +14,7 @@ const Contact = () => (
       Email us at <a href="mailto:hello@safespace.example">hello@safespace.example</a>.
     </p>
     <p>
-      For anything involving an immediate safety risk, please don't wait on an email — contact
+      For anything involving an immediate safety risk, please don't wait on an email. Contact
       your local emergency service or a crisis line right away.
     </p>
   </StaticPage>

@@ -175,7 +175,7 @@ const MyActivity = () => {
           {bookings.map((booking) => (
             <Card key={booking._id}>
               <p>
-                <strong>{booking.counselor?.name}</strong> —{' '}
+                <strong>{booking.counselor?.name}</strong>,{' '}
                 {new Date(booking.requestedTime).toLocaleString()}
               </p>
               <div className="card-meta">

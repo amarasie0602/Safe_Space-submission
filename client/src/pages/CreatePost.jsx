@@ -104,12 +104,12 @@ const CreatePost = ({ onCreated }) => {
         {submitError && <ErrorMessage message={submitError} />}
         <SubmitButton status={status} idleLabel="Share" savingLabel="Sharing..." />
         <p className="reassurance">
-          <Icon name="lock" size={14} /> Your identity is safe here — no real name, no email,
+          <Icon name="lock" size={14} /> Your identity is safe here: no real name, no email,
           just your nickname.
         </p>
       </form>
       <p className="text-muted">
-        Please keep posts kind and on-topic — see our <Link to="/guidelines">Community Guidelines</Link>.
+        Please keep posts kind and on-topic. See our <Link to="/guidelines">Community Guidelines</Link>.
       </p>
     </div>
   );

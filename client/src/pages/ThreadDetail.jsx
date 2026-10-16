@@ -112,7 +112,7 @@ const ThreadDetail = () => {
 
       <h2>Replies</h2>
       <p className="kindness-banner">
-        <Icon name="heart" size={14} /> Respond with kindness and respect — everyone here is going
+        <Icon name="heart" size={14} /> Respond with kindness and respect. Everyone here is going
         through something.
       </p>
       {replies.length === 0 && <div className="empty-state">No replies yet.</div>}

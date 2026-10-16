@@ -7,9 +7,9 @@ const About = () => (
       <GrowthIllustration />
     </div>
     <p>
-      SafeSpace is a peer support platform built so people can share what they're going through —
-      mental health, family, financial stress, relationships, and more — without giving up their
-      privacy to do it.
+      SafeSpace is a peer support platform built so people can share what they're going through,
+      including mental health, family, financial stress, relationships, and more, without giving
+      up their privacy to do it.
     </p>
     <p>
       Posts and threads are pseudonymous by design. Verified counselors are available for those

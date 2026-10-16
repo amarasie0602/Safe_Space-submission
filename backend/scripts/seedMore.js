@@ -94,7 +94,7 @@ const POSTS = [
   {
     category: 'relationships',
     content:
-      "Twelve years married and we just had our first real fight in front of a counselor. Strange to say but it felt like progress — we actually heard each other for once.",
+      "Twelve years married and we just had our first real fight in front of a counselor. Strange to say but it felt like progress; we actually heard each other for once.",
   },
   {
     category: 'work_burnout',
@@ -152,10 +152,10 @@ const THREADS = [
 ];
 
 const REPLY_BANK = [
-  "Sending you so much strength for this — you're not alone in it.",
+  "Sending you so much strength for this. You're not alone in it.",
   'Thank you for putting this into words. I’ve felt exactly this and never knew how to say it.',
   'This resonates more than I expected it to. Rooting for you.',
-  'Be gentle with yourself through this — you’re doing better than you think.',
+  'Be gentle with yourself through this. You’re doing better than you think.',
   'I went through something similar and want you to know it does get lighter, even if it doesn’t feel like it right now.',
   'Saving this reply for myself honestly. Needed to hear it today too.',
   'Proud of you for naming this out loud. That’s not a small thing.',

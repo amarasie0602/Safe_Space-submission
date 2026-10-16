@@ -3588,6 +3588,20 @@ footer.scroll-reveal-ready.scroll-reveal:focus-within {
   --color-primary-hover: #d6b595;
   --color-primary-bg: #3a3029;
   --color-terracotta-bg: #3d2e26;
+  /* --color-primary is tuned light so it reads as text on this dark
+     background — but that same light value makes white text on a
+     --color-primary *button* fail contrast (2.3:1). Buttons need a
+     separately darkened shade so the white label stays readable. */
+  --color-primary-button: #816a56;
+}
+
+:root[data-theme='dark'] .btn-primary {
+  background: var(--color-primary-button);
+}
+
+:root[data-theme='dark'] .btn-primary:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-bg);
 }
 
 .threads-page .threads-hero {

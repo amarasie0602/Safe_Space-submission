@@ -58,7 +58,7 @@ const PostReplies = ({ postId }) => {
     <div className="post-replies">
       {loading && <p className="text-muted">Loading replies...</p>}
       {!loading && replies.length === 0 && (
-        <p className="text-muted">No replies yet — be the first to respond.</p>
+        <p className="text-muted">No replies yet. Be the first to respond.</p>
       )}
       {!loading &&
         replies.map((reply) => (

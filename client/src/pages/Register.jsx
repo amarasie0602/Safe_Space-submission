@@ -40,7 +40,7 @@ const Register = () => {
   return (
     <AuthCard
       title="Join SafeSpace"
-      subtitle="No real name, no email needed — just pick a nickname others will see and a password only you know."
+      subtitle="No real name, no email needed. Just pick a nickname others will see and a password only you know."
     >
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">

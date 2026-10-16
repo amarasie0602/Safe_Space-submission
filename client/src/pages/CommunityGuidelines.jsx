@@ -14,7 +14,7 @@ const CommunityGuidelines = () => (
     <h2>Privacy protection</h2>
     <p>
       Never ask for or share anyone's real name, contact details, or other identifying
-      information — yours or anyone else's.
+      information, yours or anyone else's.
     </p>
     <h2>No harmful content</h2>
     <p>
@@ -28,7 +28,7 @@ const CommunityGuidelines = () => (
     <h2>Reporting inappropriate content</h2>
     <p>
       If something doesn't feel right, use the ⋯ menu on a post to report it. Every report is
-      reviewed by a moderator — you're helping keep this space safe.
+      reviewed by a moderator, and you're helping keep this space safe.
     </p>
   </StaticPage>
 );

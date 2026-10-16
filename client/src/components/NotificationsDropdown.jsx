@@ -97,7 +97,7 @@ const NotificationsDropdown = () => {
           <h3>Notifications</h3>
           {loading && <p className="text-muted">Loading...</p>}
           {!loading && notifications.length === 0 && (
-            <p className="empty-state">You&apos;re all caught up — no new notifications.</p>
+            <p className="empty-state">You&apos;re all caught up, no new notifications.</p>
           )}
           {!loading &&
             notifications.map((notification) => (

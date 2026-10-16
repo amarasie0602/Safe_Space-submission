@@ -33,7 +33,7 @@ const PostOptionsMenu = ({ post }) => {
       targetId: post._id,
       reason: 'Reported from post feed for review.',
     });
-    showToast('Report submitted — our moderators will review it');
+    showToast('Report submitted. Our moderators will review it.');
     setConfirmAction(null);
   };
 
@@ -43,14 +43,14 @@ const PostOptionsMenu = ({ post }) => {
       targetId: post.author?._id,
       reason: 'User reported from post feed for review.',
     });
-    showToast('Report submitted — our moderators will review it');
+    showToast('Report submitted. Our moderators will review it.');
     setConfirmAction(null);
   };
 
   const handleBlockUser = async () => {
     try {
       await blockUser(post.author?._id);
-      showToast("User blocked — you won't see their posts anymore");
+      showToast("User blocked. You won't see their posts anymore.");
     } catch {
       showToast('Unable to block that user right now.');
     } finally {

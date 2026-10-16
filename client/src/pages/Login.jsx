@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   return (
-    <AuthCard title="Welcome back" subtitle="Good to see you again — your space is right where you left it.">
+    <AuthCard title="Welcome back" subtitle="Good to see you again. Your space is right where you left it.">
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">
           Nickname

@@ -120,7 +120,7 @@ const CounselorProfile = () => {
 
       <h2>Privacy</h2>
       <p className="text-muted">
-        Sessions are anonymous — the counselor will only see your nickname, never your real
+        Sessions are anonymous, so the counselor will only see your nickname, never your real
         identity.
       </p>
 
@@ -128,7 +128,7 @@ const CounselorProfile = () => {
       <p className="text-muted">
         {typeof counselor.rating === 'number'
           ? `Rated ${counselor.rating.toFixed(1)} out of 5 from ${counselor.ratingCount} review${counselor.ratingCount === 1 ? '' : 's'}.`
-          : "No reviews yet — reviews appear here once clients complete a session."}
+          : "No reviews yet. Reviews appear here once clients complete a session."}
       </p>
       {!reviewsLoading && reviews.length > 0 && (
         <div className="review-list">
@@ -153,7 +153,7 @@ const CounselorProfile = () => {
 
       {user && step === 1 && (
         <>
-          <p className="text-muted">Step 1 of 3 — choose a date</p>
+          <p className="text-muted">Step 1 of 3: choose a date</p>
           <Calendar
             selectedDate={date}
             onSelect={(d) => {
@@ -168,7 +168,7 @@ const CounselorProfile = () => {
 
       {user && step === 2 && (
         <>
-          <p className="text-muted">Step 2 of 3 — choose a time on {date}</p>
+          <p className="text-muted">Step 2 of 3: choose a time on {date}</p>
           {slotsLoading && <LoadingSpinner />}
           {!slotsLoading && slotsError && <ErrorMessage message={slotsError} />}
           {!slotsLoading && !slotsError && (
@@ -189,7 +189,7 @@ const CounselorProfile = () => {
 
       {user && step === 3 && (
         <>
-          <p className="text-muted">Step 3 of 3 — confirm your appointment</p>
+          <p className="text-muted">Step 3 of 3: confirm your appointment</p>
           <ul>
             <li>Date: {date}</li>
             <li>Time: {time}</li>

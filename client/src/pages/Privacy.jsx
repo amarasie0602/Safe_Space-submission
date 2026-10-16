@@ -4,7 +4,7 @@ const Privacy = () => (
   <StaticPage title="Privacy Policy">
     <p>
       SafeSpace is built around anonymity. Regular users register with a nickname and password
-      only — no real name, email, or phone number is ever collected.
+      only; no real name, email, or phone number is ever collected.
     </p>
     <h2>What we store</h2>
     <ul>

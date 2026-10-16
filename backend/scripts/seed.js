@@ -95,7 +95,7 @@ const seed = async () => {
       author: dee._id,
       category: 'work_burnout',
       content:
-        'Six months into this job and I already feel completely burnt out. I used to love what I do — I just want that feeling back.',
+        'Six months into this job and I already feel completely burnt out. I used to love what I do, and I just want that feeling back.',
     },
     {
       // flagged: true simulates what createPost's keyword check would set for
@@ -122,7 +122,7 @@ const seed = async () => {
       author: ben._id,
       category: 'gratitude',
       content:
-        'Grateful for the friend who sat with me through a rough week without trying to fix anything — just stayed. That mattered more than advice ever could.',
+        'Grateful for the friend who sat with me through a rough week without trying to fix anything, just stayed. That mattered more than advice ever could.',
     },
   ]);
   console.log(`Seeded ${posts.length} posts (1 auto-flagged into the moderation queue, 3 gratitude)`);
@@ -133,7 +133,7 @@ const seed = async () => {
     {
       post: post1._id,
       author: casey._id,
-      body: "Sending you support — you're not alone in feeling like there's nothing left some nights.",
+      body: "Sending you support. You're not alone in feeling like there's nothing left some nights.",
       upvotes: 4,
     },
     {
@@ -183,14 +183,14 @@ const seed = async () => {
       author: dee._id,
       category: 'mental_health',
       title: 'Small things that actually helped your anxiety',
-      body: "Looking for the small, unglamorous stuff — not just \"try meditation.\" What's a tiny habit that made a real difference for you?",
+      body: "Looking for the small, unglamorous stuff, not just \"try meditation.\" What's a tiny habit that made a real difference for you?",
       upvotes: 11,
     },
     {
       author: alice._id,
       category: 'gratitude',
       title: 'What is something small that went right for you this week?',
-      body: "Trying to make a habit of noticing the good, not just the hard. Doesn't have to be big — I'll go first: I made a decent cup of coffee this morning and it genuinely helped.",
+      body: "Trying to make a habit of noticing the good, not just the hard. Doesn't have to be big. I'll go first: I made a decent cup of coffee this morning and it genuinely helped.",
       upvotes: 14,
     },
   ]);
@@ -200,7 +200,7 @@ const seed = async () => {
     {
       thread: thread1._id,
       author: ben._id,
-      body: "I went through something similar — taking small steps really helped me. I started leaving my laptop in another room after 7pm.",
+      body: "I went through something similar, taking small steps really helped me. I started leaving my laptop in another room after 7pm.",
       upvotes: 5,
     },
     {
@@ -224,7 +224,7 @@ const seed = async () => {
     {
       thread: thread4._id,
       author: casey._id,
-      body: 'Writing down three things before bed — even boring ones — has quieted my mind more than anything else I\'ve tried.',
+      body: 'Writing down three things before bed, even boring ones, has quieted my mind more than anything else I\'ve tried.',
       upvotes: 8,
     },
     {
@@ -381,7 +381,7 @@ const seed = async () => {
       reporter: ben._id,
       targetType: 'post',
       targetId: posts[7]._id,
-      reason: 'Content suggests the poster may be at risk — flagging for review.',
+      reason: 'Content suggests the poster may be at risk, flagging for review.',
     },
     {
       reporter: casey._id,

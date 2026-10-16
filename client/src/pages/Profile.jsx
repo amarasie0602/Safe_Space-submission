@@ -151,7 +151,7 @@ const Profile = () => {
 
       <h2>About me</h2>
       <p className="text-muted">
-        A short, optional note other members see on your posts and threads. Keep it anonymous —
+        A short, optional note other members see on your posts and threads. Keep it anonymous:
         no real names, locations, or identifying details.
       </p>
       <label className="field">
@@ -168,7 +168,7 @@ const Profile = () => {
 
       <h2>Avatar</h2>
       <p className="text-muted">
-        Choose a placeholder avatar. SafeSpace never uses real photos — this is purely a visual
+        Choose a placeholder avatar. SafeSpace never uses real photos; this is purely a visual
         pick so people can recognize your posts without knowing who you are.
       </p>
 
@@ -198,7 +198,7 @@ const Profile = () => {
           <h2>Push notifications</h2>
           <p className="text-muted">
             Get notified on this device when a counselor confirms, cancels, or completes one of
-            your bookings — even if SafeSpace isn't open in a tab.
+            your bookings, even if SafeSpace isn't open in a tab.
           </p>
           <button type="button" className="btn btn-ghost" onClick={handleTogglePush} disabled={pushBusy}>
             {pushBusy ? 'Updating...' : pushEnabled ? 'Turn off push notifications' : 'Enable push notifications'}
@@ -209,7 +209,7 @@ const Profile = () => {
       <h2>Recovery code</h2>
       <p className="text-muted">
         There's no email on this account, so your recovery code is the only way to reset your
-        password if you forget it. Lost yours? Confirm your password to generate a new one — this
+        password if you forget it. Lost yours? Confirm your password to generate a new one. This
         replaces the old code, which will stop working.
       </p>
       {!showRecoveryForm && (

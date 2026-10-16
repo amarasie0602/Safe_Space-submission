@@ -9,7 +9,7 @@ import { timeAgo } from '../../utils/timeAgo';
 
 const RejectReasonPrompt = ({ reason, onReasonChange }) => (
   <>
-    <p>This removes their application entirely — they can re-register if this was a mistake.</p>
+    <p>This removes their application entirely. They can re-register if this was a mistake.</p>
     <label className="field">
       Reason (kept in the admin audit log)
       <input
@@ -60,7 +60,7 @@ const CounselorVerificationList = () => {
     <div>
       <h1>Counselor Applications</h1>
       <p className="text-muted">
-        Review each applicant&apos;s stated credentials before verifying — once verified, they appear
+        Review each applicant&apos;s stated credentials before verifying. Once verified, they appear
         publicly and can accept bookings.
       </p>
       {counselors.length === 0 && <div className="empty-state">No pending applications.</div>}

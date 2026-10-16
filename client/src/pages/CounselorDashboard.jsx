@@ -166,7 +166,7 @@ const CounselorDashboard = () => {
         </button>
       </div>
       <p className="text-muted">
-        Signed in as {counselor.name}. Sessions are anonymous — you'll only see the client's
+        Signed in as {counselor.name}. Sessions are anonymous, so you'll only see the client's
         nickname, never their real identity.
       </p>
 

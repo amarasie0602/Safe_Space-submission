@@ -38,8 +38,8 @@ const AuditLog = () => {
     <div>
       <h1>Audit Log</h1>
       <p className="text-muted">
-        Every suspend, ban, reinstate, and counselor verify/reject decision, for accountability — who
-        made the call, when, and why.
+        Every suspend, ban, reinstate, and counselor verify/reject decision, for accountability:
+        who made the call, when, and why.
       </p>
       {actions.length === 0 && <div className="empty-state">No admin actions recorded yet.</div>}
       {actions.map((entry) => (
