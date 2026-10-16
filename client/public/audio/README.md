@@ -1,33 +1,17 @@
-# Calm Corner audio
+# Calm Corner sound credits
 
-The Calm Corner sound mixer (`client/src/components/calm/SoundMixer.jsx`)
-expects five looping ambient tracks here, referenced from
-`client/src/config/calmCorner.js`:
+The mixer bundles these audio files locally so playback works without a
+third-party request. Each source is released under CC0 1.0 and permits
+redistribution:
 
-- `rain.mp3`
-- `ocean.mp3`
-- `forest.mp3`
-- `cafe.mp3`
-- `piano.mp3`
+| File | Sound | Source |
+| --- | --- | --- |
+| `rain.mp3` | Heavy Pouring Rain 05 | [SFXMint](https://sfxmint.com/sounds/ambience-rain-05) |
+| `ocean.mp3` | Rolling Surf Ocean Waves 01 | [SFXMint](https://sfxmint.com/sounds/ambience-ocean-01) |
+| `forest.mp3` | Misty Calm Forest Ambience 10 | [SFXMint](https://sfxmint.com/sounds/ambience-forest-10) |
+| `cafe.mp3` | Coffee Shop at the Capucins | [BigSoundBank](https://bigsoundbank.com/coffee-shop-at-the-capucins-s2561.html) |
+| `piano.ogg` | Soft Piano 8 | [OpenGameArt](https://opengameart.org/content/pianosoft8) |
 
-None of these files are included — the UI (tiles, volume sliders, master
-volume, sleep timer) works fully without them; a missing file just means
-that tile silently produces no sound until a real file is added.
-
-## Where to get real files (CC0 / royalty-free, no attribution required)
-
-- **Pixabay Audio** — https://pixabay.com/sound-effects/ and
-  https://pixabay.com/music/ — search "rain", "ocean waves", "forest
-  ambience", "cafe ambience", "soft piano".
-- **Freesound** (filter to CC0) — https://freesound.org/search/?f=license%3A%22Creative+Commons+0%22
-- **Mixkit** — https://mixkit.co/free-sound-effects/ and
-  https://mixkit.co/free-stock-music/
-
-## Requirements
-
-- Keep each file under 2MB (trim to ~60-90s and let the `loop` attribute
-  handle the rest — a seamless loop point matters more than length).
-- MP3, 128kbps is plenty for background ambience.
-- Rename whatever you download to match the filenames above, or update
-  the `src` paths in `client/src/config/calmCorner.js` to match your
-  filenames instead.
+Ambient nature tracks are short beds and repeat while selected. Café and piano
+recordings have longer play times. Audio starts only after the listener selects
+a tile; browser autoplay is not used.

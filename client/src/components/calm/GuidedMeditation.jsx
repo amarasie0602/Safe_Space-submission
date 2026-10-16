@@ -14,6 +14,7 @@ const VideoTile = ({ video }) => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
       ) : (
         <button
@@ -30,27 +31,42 @@ const VideoTile = ({ video }) => {
             height={360}
           />
           <span className="meditation-tile-play" aria-hidden="true">
-            <Icon name="sun" size={28} />
+            <Icon name="play" size={24} />
           </span>
         </button>
       )}
       <div className="meditation-tile-meta">
         <strong>{video.title}</strong>
-        <span className="text-muted">{video.channel}</span>
+        <span className="text-muted">{video.duration} · {video.source}</span>
+        <a
+          className="meditation-watch-link"
+          href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Watch on YouTube
+        </a>
       </div>
     </div>
   );
 };
 
 const GuidedMeditation = () => (
-  <section className="calm-section" aria-labelledby="meditation-heading">
-    <h2 id="meditation-heading">Guided meditation</h2>
-    <p className="text-muted">A few short, calming sessions if you'd rather be led through it.</p>
+  <section className="calm-section" id="meditation-section" aria-labelledby="meditation-heading">
+    <div className="calm-section-heading">
+      <div>
+        <span className="calm-section-kicker">03 · Listen along</span>
+        <h2 id="meditation-heading">Guided meditation</h2>
+      </div>
+      <span className="calm-section-mark" aria-hidden="true">03</span>
+    </div>
+    <p className="text-muted">A short guided session, if you would rather follow along.</p>
     <div className="meditation-grid">
       {MEDITATION_VIDEOS.map((video) => (
         <VideoTile key={video.id} video={video} />
       ))}
     </div>
+    <p className="calm-privacy-note">Preview images come from YouTube; the video player loads when selected.</p>
   </section>
 );
 

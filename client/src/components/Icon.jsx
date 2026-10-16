@@ -1,4 +1,6 @@
 const PATHS = {
+  play: <path d="m8 5 11 7-11 7V5z" />,
+  pause: <><path d="M8 5v14" /><path d="M16 5v14" /></>,
   heart: <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z" />,
   message: (
     <>

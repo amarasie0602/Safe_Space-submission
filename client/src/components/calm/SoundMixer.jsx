@@ -8,29 +8,36 @@ const FADE_MS = 400;
 
 // Fades an <audio> element's volume toward `target` over FADE_MS, so
 // toggling a sound in/out is never an abrupt on/off click.
-const fadeVolume = (audio, target, onDone) => {
+const fadeVolume = (audio, target, frameRef, onDone) => {
+  if (frameRef.current) cancelAnimationFrame(frameRef.current);
   const start = audio.volume;
   const startTime = performance.now();
   const step = (now) => {
     const progress = Math.min((now - startTime) / FADE_MS, 1);
     audio.volume = start + (target - start) * progress;
     if (progress < 1) {
-      requestAnimationFrame(step);
+      frameRef.current = requestAnimationFrame(step);
     } else {
+      frameRef.current = null;
       onDone?.();
     }
   };
-  requestAnimationFrame(step);
+  frameRef.current = requestAnimationFrame(step);
 };
 
 const SoundMixer = () => {
   const audioRefs = useRef({});
+  const fadeFramesRef = useRef({});
+  const playingRef = useRef({});
   const [playing, setPlaying] = useState({});
+  const [busyTiles, setBusyTiles] = useState({});
+  const [unavailable, setUnavailable] = useState({});
   const [volumes, setVolumes] = useState(() =>
     Object.fromEntries(SOUND_TILES.map((t) => [t.id, 0.7]))
   );
   const [masterVolume, setMasterVolume] = useState(0.8);
   const [sleepMinutes, setSleepMinutes] = useState(null);
+  const [sleepNotice, setSleepNotice] = useState('');
   const sleepTimeoutRef = useRef(null);
   const sleepIntervalRef = useRef(null);
   const [sleepRemaining, setSleepRemaining] = useState(null);
@@ -39,42 +46,70 @@ const SoundMixer = () => {
     () => () => {
       clearTimeout(sleepTimeoutRef.current);
       clearInterval(sleepIntervalRef.current);
+      SOUND_TILES.forEach((tile) => {
+        const audio = audioRefs.current[tile.id];
+        if (fadeFramesRef.current[tile.id]) cancelAnimationFrame(fadeFramesRef.current[tile.id]);
+        if (audio) {
+          audio.pause();
+        }
+      });
     },
     []
   );
 
   const effectiveVolume = (id) => volumes[id] * masterVolume;
 
-  const toggleTile = (tile) => {
+  const updatePlaying = (next) => {
+    playingRef.current = next;
+    setPlaying(next);
+  };
+
+  const toggleTile = async (tile) => {
     const audio = audioRefs.current[tile.id];
-    if (!audio) return;
-    const isPlaying = !!playing[tile.id];
+    if (!audio || busyTiles[tile.id]) return;
+    const isPlaying = !!playingRef.current[tile.id];
 
     if (isPlaying) {
-      fadeVolume(audio, 0, () => audio.pause());
-      setPlaying((prev) => ({ ...prev, [tile.id]: false }));
+      fadeVolume(audio, 0, fadeFramesRef.current[tile.id] ||= { current: null }, () => audio.pause());
+      updatePlaying({ ...playingRef.current, [tile.id]: false });
     } else {
+      setBusyTiles((prev) => ({ ...prev, [tile.id]: true }));
       audio.volume = 0;
-      // A missing /public/audio file (not added yet) rejects play() —
-      // that's expected until real files are in place, so it's swallowed
-      // rather than surfaced as an app error.
-      audio.play().catch(() => {});
-      fadeVolume(audio, effectiveVolume(tile.id));
-      setPlaying((prev) => ({ ...prev, [tile.id]: true }));
+      setUnavailable((prev) => ({ ...prev, [tile.id]: false }));
+      try {
+        await audio.play();
+        updatePlaying({ ...playingRef.current, [tile.id]: true });
+        fadeVolume(audio, effectiveVolume(tile.id), fadeFramesRef.current[tile.id] ||= { current: null });
+      } catch {
+        setUnavailable((prev) => ({ ...prev, [tile.id]: true }));
+        updatePlaying({ ...playingRef.current, [tile.id]: false });
+      } finally {
+        setBusyTiles((prev) => ({ ...prev, [tile.id]: false }));
+      }
     }
   };
 
   const handleTileVolume = (id, value) => {
     setVolumes((prev) => ({ ...prev, [id]: value }));
     const audio = audioRefs.current[id];
-    if (audio && playing[id]) audio.volume = value * masterVolume;
+    if (audio && playingRef.current[id]) {
+      const frameRef = fadeFramesRef.current[id];
+      if (frameRef?.current) cancelAnimationFrame(frameRef.current);
+      if (frameRef) frameRef.current = null;
+      audio.volume = value * masterVolume;
+    }
   };
 
   const handleMasterVolume = (value) => {
     setMasterVolume(value);
     SOUND_TILES.forEach((tile) => {
       const audio = audioRefs.current[tile.id];
-      if (audio && playing[tile.id]) audio.volume = volumes[tile.id] * value;
+      if (audio && playingRef.current[tile.id]) {
+        const frameRef = fadeFramesRef.current[tile.id];
+        if (frameRef?.current) cancelAnimationFrame(frameRef.current);
+        if (frameRef) frameRef.current = null;
+        audio.volume = volumes[tile.id] * value;
+      }
     });
   };
 
@@ -83,6 +118,7 @@ const SoundMixer = () => {
     clearInterval(sleepIntervalRef.current);
     setSleepMinutes(minutes);
     setSleepRemaining(minutes * 60);
+    setSleepNotice('');
 
     sleepIntervalRef.current = setInterval(() => {
       setSleepRemaining((prev) => (prev && prev > 0 ? prev - 1 : prev));
@@ -91,13 +127,14 @@ const SoundMixer = () => {
     sleepTimeoutRef.current = setTimeout(() => {
       SOUND_TILES.forEach((tile) => {
         const audio = audioRefs.current[tile.id];
-        if (audio && playing[tile.id]) {
-          fadeVolume(audio, 0, () => audio.pause());
+        if (audio && playingRef.current[tile.id]) {
+          fadeVolume(audio, 0, fadeFramesRef.current[tile.id] ||= { current: null }, () => audio.pause());
         }
       });
-      setPlaying({});
+      updatePlaying({});
       setSleepMinutes(null);
       setSleepRemaining(null);
+      setSleepNotice('Sleep timer finished.');
       clearInterval(sleepIntervalRef.current);
     }, minutes * 60 * 1000);
   };
@@ -107,24 +144,43 @@ const SoundMixer = () => {
     clearInterval(sleepIntervalRef.current);
     setSleepMinutes(null);
     setSleepRemaining(null);
+    setSleepNotice('Sleep timer cancelled.');
   };
 
   return (
-    <section className="calm-section" aria-labelledby="sound-mixer-heading">
-      <h2 id="sound-mixer-heading">Ambient sounds</h2>
+    <section className="calm-section" id="ambient-section" aria-labelledby="sound-mixer-heading">
+      <div className="calm-section-heading">
+        <div>
+          <span className="calm-section-kicker">02 · Set the atmosphere</span>
+          <h2 id="sound-mixer-heading">Ambient sounds</h2>
+        </div>
+        <span className="calm-section-mark" aria-hidden="true">02</span>
+      </div>
       <p className="text-muted">Layer a few together, or let one play quietly in the background.</p>
 
       <div className="sound-tiles">
         {SOUND_TILES.map((tile) => {
           const thumb = IMAGES.calmCornerTiles[tile.id];
           return (
-          <div className={`sound-tile${playing[tile.id] ? ' active' : ''}`} key={tile.id}>
-            <audio ref={(el) => (audioRefs.current[tile.id] = el)} src={tile.src} loop preload="none" />
+          <div className={`sound-tile${playing[tile.id] ? ' active' : ''}${unavailable[tile.id] ? ' unavailable' : ''}`} key={tile.id}>
+            <audio
+              ref={(el) => (audioRefs.current[tile.id] = el)}
+              src={tile.src}
+              loop
+              preload="none"
+              onError={() => {
+                setUnavailable((prev) => ({ ...prev, [tile.id]: true }));
+                updatePlaying({ ...playingRef.current, [tile.id]: false });
+                setBusyTiles((prev) => ({ ...prev, [tile.id]: false }));
+              }}
+            />
             <button
               type="button"
               className="sound-tile-toggle"
               onClick={() => toggleTile(tile)}
               aria-pressed={!!playing[tile.id]}
+              aria-label={`${playing[tile.id] ? 'Pause' : 'Play'} ${tile.label}`}
+              disabled={!!busyTiles[tile.id]}
             >
               {thumb ? (
                 <ThemedImage
@@ -141,6 +197,9 @@ const SoundMixer = () => {
               )}
               <span>{tile.label}</span>
             </button>
+            <span className={`sound-unavailable-message${playing[tile.id] ? ' is-playing' : ''}`} role="status" aria-live="polite">
+              {unavailable[tile.id] ? 'Audio unavailable' : playing[tile.id] ? 'Playing' : ''}
+            </span>
             <input
               type="range"
               min="0"
@@ -177,6 +236,7 @@ const SoundMixer = () => {
               type="button"
               className={`tab${sleepMinutes === minutes ? ' active' : ''}`}
               onClick={() => startSleepTimer(minutes)}
+              aria-pressed={sleepMinutes === minutes}
             >
               {minutes}m
             </button>
@@ -187,6 +247,7 @@ const SoundMixer = () => {
             </button>
           )}
         </div>
+        {sleepNotice && <span className="sleep-timer-notice" role="status">{sleepNotice}</span>}
       </div>
     </section>
   );

@@ -4,11 +4,10 @@ import CategoryTag from './CategoryTag';
 import { timeAgo } from '../utils/timeAgo';
 import Icon from './Icon';
 
-const ThreadCard = ({ thread, index = 0 }) => (
+const ThreadCard = ({ thread, featured = false }) => (
   <Link
     to={`/threads/${thread._id}`}
-    className="thread-card"
-    style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+    className={`thread-card${featured ? ' thread-card-featured' : ''}`}
   >
     <div className="post-card-header">
       <AnonymousAvatar seed={thread.author?._id} avatarId={thread.author?.avatarId} />
@@ -30,6 +29,7 @@ const ThreadCard = ({ thread, index = 0 }) => (
         <Icon name="message" size={16} /> {thread.replyCount || 0}{' '}
         {thread.replyCount === 1 ? 'reply' : 'replies'}
       </span>
+      <span className="thread-card-open">Read conversation <Icon name="message" size={14} /></span>
     </div>
   </Link>
 );

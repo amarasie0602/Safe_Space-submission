@@ -1,30 +1,53 @@
-// Ambient sound tiles. Each `src` points at a file that must exist in
-// client/public/audio/ — see that folder's README.md for CC0/royalty-free
-// sources to download. The UI works fully without the files present; a
-// missing file just means that tile silently doesn't produce sound yet.
+// Each ambient track is bundled locally; see public/audio/README.md for credits.
 export const SOUND_TILES = [
   { id: 'rain', label: 'Rain', icon: 'cloud', src: '/audio/rain.mp3' },
   { id: 'ocean', label: 'Ocean', icon: 'wave', src: '/audio/ocean.mp3' },
   { id: 'forest', label: 'Forest', icon: 'leaf', src: '/audio/forest.mp3' },
   { id: 'cafe', label: 'Café', icon: 'avatar-nest', src: '/audio/cafe.mp3' },
-  { id: 'piano', label: 'Soft piano', icon: 'avatar-breath', src: '/audio/piano.mp3' },
+  { id: 'piano', label: 'Soft piano', icon: 'avatar-breath', src: '/audio/piano.ogg' },
 ];
 
 export const SLEEP_TIMER_OPTIONS = [15, 30, 60];
 
-// Guided meditations, embedded via youtube-nocookie.com. Only `headspace`
-// below has been verified (title + embeddability checked via YouTube's
-// oEmbed endpoint) — the rest are TODO: pick real videos and verify the
-// same way before publishing, rather than guessing IDs.
+// Guided meditations use explicit video IDs and load only after a user selects
+// a session. The public resource list is curated by SDSU Counseling &
+// Psychological Services: https://sacd.sdsu.edu/cps/our-services-and-programs/everyday-mindfulness-and-meditation/guided-meditations-and-body-scans
 export const MEDITATION_VIDEOS = [
   {
     id: 'headspace',
     title: 'Training the Monkey Mind',
-    channel: 'Headspace',
+    duration: 'Guided session',
+    source: 'Headspace',
     youtubeId: 'qxyVCjp48S4',
   },
-  // TODO: 2-4 more verified videos, e.g. a body scan, a short sleep
-  // meditation, a loving-kindness practice.
+  {
+    id: 'mindful-breathing',
+    title: 'Mindful Breathing',
+    duration: '9 minutes',
+    source: 'UCLA Mindful Awareness',
+    youtubeId: 'YFSc7Ck0Ao0',
+  },
+  {
+    id: 'body-scan-short',
+    title: 'Body Scan',
+    duration: '5 minutes',
+    source: 'Recommended by SDSU C&PS',
+    youtubeId: 'EXneYUCddHE',
+  },
+  {
+    id: 'body-scan-long',
+    title: 'The Body Scan',
+    duration: '10 minutes',
+    source: 'Recommended by SDSU C&PS',
+    youtubeId: 'zsCVqFr6j1g',
+  },
+  {
+    id: 'peaceful-place',
+    title: 'Peaceful Place',
+    duration: 'Guided imagery',
+    source: 'Recommended by SDSU C&PS',
+    youtubeId: 'vhU5T6Bn_4s',
+  },
 ];
 
 export const GROUNDING_STEPS = [

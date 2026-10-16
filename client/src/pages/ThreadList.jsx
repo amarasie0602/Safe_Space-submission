@@ -79,13 +79,22 @@ const ThreadList = () => {
   });
 
   return (
-    <div>
-      <div className="hero">
+    <div className="threads-page">
+      <div className="hero threads-hero">
         <div className="hero-text">
-          <h1>Threads</h1>
-          <p>
-            Browse ongoing conversations, or start one of your own. You can join in at your own pace.
-          </p>
+          <span className="threads-eyebrow"><Icon name="message" size={14} /> Community conversations</span>
+          <h1>Talk it through.</h1>
+          <p>Start a conversation or find one that feels familiar. Take part at your own pace.</p>
+        </div>
+        <div className="threads-art" aria-hidden="true">
+          <svg viewBox="0 0 280 190" fill="none">
+            <path d="M44 34h129c13 0 23 10 23 23v43c0 13-10 23-23 23h-18l-23 22v-22H44c-13 0-23-10-23-23V57c0-13 10-23 23-23Z" className="threads-bubble threads-bubble-back" />
+            <path d="M110 71h126c12 0 22 10 22 22v39c0 12-10 22-22 22h-50l-21 20v-20h-55c-12 0-22-10-22-22V93c0-12 10-22 22-22Z" className="threads-bubble threads-bubble-front" />
+            <circle cx="72" cy="79" r="5" className="threads-dot" />
+            <circle cx="96" cy="79" r="5" className="threads-dot" />
+            <circle cx="120" cy="79" r="5" className="threads-dot" />
+            <path d="m218 32 3.2 8.8L230 44l-8.8 3.2L218 56l-3.2-8.8L206 44l8.8-3.2L218 32Z" className="threads-spark" />
+          </svg>
         </div>
       </div>
       <div className="thread-toolbar">
@@ -101,35 +110,46 @@ const ThreadList = () => {
           </Link>
         )}
       </div>
-      <div className="filter-row">
-        <label className="sort-select">
-          Sort by
+      <div className="threads-discovery">
+        <div className="threads-topics">
+          <span className="threads-control-label">Browse by topic</span>
+          <div className="tabs tabs-scroll">
+            <button className={`tab${category === '' ? ' active' : ''}`} onClick={() => setCategory('')}>
+              All
+            </button>
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.value}
+                className={`tab${category === c.value ? ' active' : ''}`}
+                onClick={() => setCategory(c.value)}
+              >
+                <Icon name={c.icon} size={14} /> {c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <label className="sort-select threads-sort">
+          <span>Sort</span>
           <select value={sort} onChange={(e) => setSort(e.target.value)}>
             <option value="recent">Most Recent</option>
             <option value="supported">Most Supported</option>
           </select>
         </label>
       </div>
-      <div className="tabs tabs-scroll">
-        <button className={`tab${category === '' ? ' active' : ''}`} onClick={() => setCategory('')}>
-          All
-        </button>
-        {CATEGORIES.map((c) => (
-          <button
-            key={c.value}
-            className={`tab${category === c.value ? ' active' : ''}`}
-            onClick={() => setCategory(c.value)}
-          >
-            <Icon name={c.icon} size={14} /> {c.label}
-          </button>
+      {!loading && !error && sortedThreads.length > 0 && (
+        <div className="thread-list-heading">
+          <h2>{category ? CATEGORIES.find((item) => item.value === category)?.label : 'Open conversations'}</h2>
+          <span>{threads.length}{hasMore ? '+' : ''} {threads.length === 1 ? 'conversation' : 'conversations'}</span>
+        </div>
+      )}
+      <div className="thread-grid">
+        {loading && <><SkeletonCard /><SkeletonCard /><SkeletonCard /></>}
+        {!loading && error && <ErrorMessage message={error} />}
+        {!loading && !error && threads.length === 0 && <div className="empty-state">No threads found. You can start a conversation when you feel ready.</div>}
+        {!loading && !error && sortedThreads.map((thread, index) => (
+          <ThreadCard key={thread._id} thread={thread} featured={index === 0} />
         ))}
       </div>
-      {loading && <><SkeletonCard /><SkeletonCard /><SkeletonCard /></>}
-      {!loading && error && <ErrorMessage message={error} />}
-      {!loading && !error && threads.length === 0 && <div className="empty-state">No threads found. You can start a conversation when you feel ready.</div>}
-      {!loading && !error && sortedThreads.map((thread, index) => (
-        <ThreadCard key={thread._id} thread={thread} index={index} />
-      ))}
       {loadMoreError && <ErrorMessage message={loadMoreError} />}
       {hasMore && (
         <div className="load-more">
