@@ -110,6 +110,7 @@ const PostCard = ({ post, showFlagged, index = 0, featured = false }) => {
             className={`reaction-btn${userReaction === reaction.type ? ' active' : ''}`}
             onClick={() => handleReact(reaction.type)}
             aria-pressed={userReaction === reaction.type}
+            aria-label={reaction.label}
           >
             <Icon name={reaction.icon} size={16} />
             {counts[reaction.type] > 0 && <span className="reaction-count">{counts[reaction.type]}</span>}

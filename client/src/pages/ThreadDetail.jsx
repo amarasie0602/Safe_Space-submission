@@ -143,7 +143,11 @@ const ThreadDetail = () => {
 
       <h2>Write a reply</h2>
       <form className="form form-wide" onSubmit={handleReplySubmit}>
+        <label className="sr-only" htmlFor="thread-reply-body">
+          Write a reply
+        </label>
         <textarea
+          id="thread-reply-body"
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Write a reply"

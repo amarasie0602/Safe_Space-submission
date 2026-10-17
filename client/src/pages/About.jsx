@@ -19,12 +19,19 @@ const About = () => (
     <p>SafeSpace was built as a university project exploring what a genuinely trustworthy anonymous support community could look like.</p>
 
     <h2>Credits</h2>
-    <p className="text-muted">Illustrations, audio, and video used across the app, with source.</p>
+    <p className="text-muted">Illustrations, photography, audio, and video used across the app, with source.</p>
     <ul>
-      <li>Illustrations (hero, sidebar, and resource artwork): provided by the project author.</li>
+      <li>Illustrations (sidebar and resource artwork): provided by the project author.</li>
+      <li>
+        Homepage hero photo: by{' '}
+        <a href="https://unsplash.com/photos/_r6X-xFcASk" target="_blank" rel="noopener noreferrer">
+          Timothy L Brock
+        </a>{' '}
+        on Unsplash, free to use under the Unsplash License.
+      </li>
       <li>
         Calm Corner ambient sounds and guided meditation videos: sources and licences listed in{' '}
-        <code>client/public/audio/README.md</code> once added.
+        <code>client/public/audio/README.md</code>.
       </li>
     </ul>
   </StaticPage>

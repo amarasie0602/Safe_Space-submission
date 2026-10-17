@@ -69,7 +69,7 @@ const Navbar = () => {
 
   return (
     <nav className={`navbar${scrolled ? ' navbar-scrolled' : ''}`}>
-      <NavLink to="/" className="navbar-brand" onClick={closeMenu}>
+      <NavLink to="/" className="navbar-brand" onClick={closeMenu} aria-label="SafeSpace home">
         <span className="navbar-brand-icon">
           <img src={logo} alt="" width={22} height={22} />
         </span>

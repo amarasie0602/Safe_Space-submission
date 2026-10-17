@@ -11,14 +11,17 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@remotion/player": "^4.0.536",
     "axios": "^1.18.1",
     "framer-motion": "^14.3.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",
-    "recharts": "^3.9.2"
+    "recharts": "^3.9.2",
+    "remotion": "^4.0.536"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.17",

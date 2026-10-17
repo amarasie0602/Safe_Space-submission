@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { Suspense, lazy, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { AuthContext } from '../context/AuthContext';
@@ -19,6 +19,11 @@ import ThemedImage from '../components/ThemedImage';
 import { IMAGES } from '../config/images';
 import HomeSidebar from '../components/home/HomeSidebar';
 import { pickFeaturedPost, totalReactions } from '../utils/pickFeaturedPost';
+
+// Remotion + @remotion/player add real weight (~350KB) for an optional,
+// secondary piece of homepage content — lazy-loaded so it never blocks or
+// bloats the initial bundle every visitor downloads just to see the feed.
+const IntroStory = lazy(() => import('../components/home/IntroStory'));
 
 const PostFeed = () => {
   const { user } = useContext(AuthContext);
@@ -118,16 +123,19 @@ const PostFeed = () => {
           <div className="hero-photo">
             <ThemedImage
               src={IMAGES.landingHero.src}
-              alt=""
-              width={792}
-              height={370}
+              alt={IMAGES.landingHero.alt}
+              width={800}
+              height={534}
               sizes="(max-width: 860px) 100vw, 420px"
               loading="eager"
               fetchPriority="high"
-              overlay={false}
             />
           </div>
         </div>
+
+        <Suspense fallback={null}>
+          <IntroStory />
+        </Suspense>
 
         <DailyAffirmation />
 

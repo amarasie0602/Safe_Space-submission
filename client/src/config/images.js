@@ -1,4 +1,4 @@
-import heroWomanPlantsMug from '../assets/images/illustrations/hero-woman-plants-mug.png';
+import journalingPhoto from '../assets/images/photos/journaling.jpg';
 import coffeeBooks from '../assets/images/illustrations/coffee-books.png';
 import handsHeart from '../assets/images/illustrations/hands-heart.png';
 import openJournal from '../assets/images/illustrations/open-journal.png';
@@ -20,8 +20,21 @@ import oceanArtwork from '../assets/images/sounds/ocean.svg';
 const PROVIDED_CREDIT = { source: 'Provided by the project author' };
 const credited = (src, alt = '') => ({ src, alt, credit: PROVIDED_CREDIT });
 
+// Verified, free-to-use Unsplash photo (not from the provided illustration
+// set) — swapped in for the homepage hero specifically to pull back on the
+// plant-heavy imagery used elsewhere, per direct feedback.
+const UNSPLASH_JOURNALING_CREDIT = {
+  photographer: 'Timothy L Brock',
+  source: 'Unsplash',
+  url: 'https://unsplash.com/photos/_r6X-xFcASk',
+};
+
 export const IMAGES = {
-  landingHero: credited(heroWomanPlantsMug, 'A person taking a quiet moment with a warm drink'),
+  landingHero: {
+    src: journalingPhoto,
+    alt: 'A hand writing in an open journal at a wooden table',
+    credit: UNSPLASH_JOURNALING_CREDIT,
+  },
   inspirationHero: credited(coffeeBooks, 'A warm drink and books in a quiet reading space'),
   calmCornerHero: credited(sunsetHillsWide, 'Soft hills at sunset'),
   counselorsHero: credited(handsHeart, 'Hands holding a heart as a symbol of care'),

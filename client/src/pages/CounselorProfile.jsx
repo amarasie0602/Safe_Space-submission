@@ -151,6 +151,7 @@ const CounselorProfile = () => {
         </p>
       )}
 
+      <div aria-live="polite">
       {user && step === 1 && (
         <>
           <p className="text-muted">Step 1 of 3: choose a date</p>
@@ -229,6 +230,7 @@ const CounselorProfile = () => {
           </Link>
         </div>
       )}
+      </div>
     </div>
   );
 };
