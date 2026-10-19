@@ -35,3 +35,34 @@ push-notification toggle in Profile simply doesn't appear.
 - `public/` — static assets
 
 See the [root README](../README.md) for the full product feature list, API routes, and the design theme, and [BUILDPLAN.md](../BUILDPLAN.md) for the original subsystem design.
+
+
+## Performance and accessibility verification
+
+Run `npm run build` then `npm run test:e2e` (install Chromium once with
+`npx playwright install chromium` if needed). The browser suite uses the
+production preview and mocked API responses. It covers skip navigation,
+mobile drawer keyboard focus and Escape, login submission and error alerts,
+the welcome cards and reduced-motion support, and verifies the intro has no
+media player or playback controls. `npm test` runs the unit tests.
+
+Pages load by route. The welcome section uses native HTML and a short CSS
+animation that settles in under five seconds. It has no player controls or
+Remotion download and respects reduced-motion preferences. All three steps
+remain available as text. Chunk sizes are build measurements, not Lighthouse scores.
+The previously recorded performance and accessibility scores must be rerun
+against the final deployed build before reporting updated numbers.
+
+A real screen-reader review remains manual. With NVDA + Firefox/Chrome or
+VoiceOver + Safari, verify the following on home, threads, counselors, calm,
+inspiration, login, register, and forgot-password:
+
+- Landmarks and heading navigation follow the page order; skip navigation moves to main.
+- Links, form fields, and buttons have useful spoken names.
+- Opening the mobile menu announces its dialog; focus stays inside and Escape returns to its toggle.
+- Login validation errors are announced; passwords and nicknames support autofill.
+- All three intro steps are available in reading order; reduced motion disables their entrance animation.
+- At 200% zoom, and with reduced motion enabled, content and controls remain usable.
+
+Record browser/assistive-technology versions and observed results. Automated
+browser and Lighthouse checks do not establish completion of this review.

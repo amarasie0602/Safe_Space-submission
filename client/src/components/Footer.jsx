@@ -11,12 +11,12 @@ const Footer = () => (
     </div>
     <div className="footer-links">
       <div className="footer-column">
-        <h3>Company</h3>
+        <h2>Company</h2>
         <Link to="/about">About SafeSpace</Link>
         <Link to="/contact">Contact</Link>
       </div>
       <div className="footer-column">
-        <h3>Support</h3>
+        <h2>Support</h2>
         <Link to="/contact">Help Center</Link>
         <Link to="/inspiration">Healing Reads</Link>
         <Link to="/guidelines">Community Guidelines</Link>
@@ -24,12 +24,12 @@ const Footer = () => (
         <Link to="/counselors">Professional Support</Link>
       </div>
       <div className="footer-column">
-        <h3>Legal</h3>
+        <h2>Legal</h2>
         <Link to="/privacy">Privacy Policy</Link>
         <Link to="/terms">Terms of Service</Link>
       </div>
       <div className="footer-column">
-        <h3>Counselors</h3>
+        <h2>Counselors</h2>
         <Link to="/counselor-login">Counselor Login</Link>
       </div>
     </div>

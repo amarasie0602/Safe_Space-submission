@@ -20,9 +20,7 @@ import { IMAGES } from '../config/images';
 import HomeSidebar from '../components/home/HomeSidebar';
 import { pickFeaturedPost, totalReactions } from '../utils/pickFeaturedPost';
 
-// Remotion + @remotion/player add real weight (~350KB) for an optional,
-// secondary piece of homepage content — lazy-loaded so it never blocks or
-// bloats the initial bundle every visitor downloads just to see the feed.
+// Load the optional welcome section separately from feed content.
 const IntroStory = lazy(() => import('../components/home/IntroStory'));
 
 const PostFeed = () => {

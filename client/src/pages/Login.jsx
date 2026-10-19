@@ -29,12 +29,14 @@ const Login = () => {
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">
           Nickname
-          <input value={pseudonym} onChange={(e) => setPseudonym(e.target.value)} required />
+          <input autoComplete="username" name="username" value={pseudonym} onChange={(e) => setPseudonym(e.target.value)} required />
         </label>
         <label className="field">
           Password
           <input
             type="password"
+            autoComplete="current-password"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

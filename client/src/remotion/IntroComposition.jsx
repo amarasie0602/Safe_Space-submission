@@ -1,7 +1,7 @@
-import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, spring } from 'remotion';
+import { AbsoluteFill, Sequence, useCurrentFrame, Easing, interpolate, Interactive } from 'remotion';
 
 // A short, calm "how it works" sequence for the homepage — genuinely a
-// Remotion composition (uses its frame/interpolate/spring primitives),
+// Remotion composition (uses its frame/interpolate/Easing primitives),
 // rendered live in the browser via @remotion/player rather than exported
 // to a video file, since that avoids needing a headless-Chromium render
 // pipeline for something this app doesn't otherwise require. Three beats,
@@ -16,32 +16,52 @@ const BEATS = [
 
 const BEAT_FRAMES = 75; // 2.5s at 30fps
 
+// Per Remotion's React Markup best practices, animations are expressed as
+// single inline interpolate() calls on the frame directly, using Easing
+// (rather than an imperative spring() feeding a second interpolate()) and
+// scale/translate/rotate properties (rather than a transform string) —
+// this keeps every keyframe standardized and, if this project ever opens
+// Remotion Studio, editable there.
 const Beat = ({ label, sub }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const enter = spring({ frame, fps, config: { damping: 200 } });
-  const fadeOut = interpolate(frame, [BEAT_FRAMES - 18, BEAT_FRAMES], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const opacity = Math.min(enter, fadeOut);
-  const y = interpolate(enter, [0, 1], [10, 0]);
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', padding: '0 8%' }}>
-      <div style={{ opacity, transform: `translateY(${y}px)`, textAlign: 'center' }}>
-        <h3 style={{ fontFamily: 'Fraunces, Georgia, serif', fontSize: 34, margin: '0 0 10px', color: '#3e2f26' }}>
+      <Interactive.Div
+        name="Beat text"
+        style={{
+          textAlign: 'center',
+          opacity: interpolate(frame, [0, 15, BEAT_FRAMES - 18, BEAT_FRAMES], [0, 1, 1, 0], {
+            easing: [Easing.spring({ damping: 200 }), Easing.linear, Easing.linear],
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+          translate: interpolate(frame, [0, 15], ['0px 10px', '0px 0px'], {
+            easing: Easing.spring({ damping: 200 }),
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          }),
+        }}
+      >
+        <Interactive.H3
+          name="Beat headline"
+          style={{ fontFamily: 'Fraunces, Georgia, serif', fontSize: 34, margin: '0 0 10px', color: '#3e2f26' }}
+        >
           {label}
-        </h3>
-        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 16, color: '#7a6f66', margin: 0 }}>{sub}</p>
-      </div>
+        </Interactive.H3>
+        <Interactive.P
+          name="Beat subtext"
+          style={{ fontFamily: 'Inter, sans-serif', fontSize: 16, color: '#7a6f66', margin: 0 }}
+        >
+          {sub}
+        </Interactive.P>
+      </Interactive.Div>
     </AbsoluteFill>
   );
 };
 
 export const IntroComposition = () => (
-  <AbsoluteFill style={{ background: 'linear-gradient(135deg, #f5efe6, #e3d6c8)' }}>
+  <AbsoluteFill aria-hidden="true" style={{ background: 'linear-gradient(135deg, #f5efe6, #e3d6c8)' }}>
     {BEATS.map((beat, i) => (
       <Sequence key={beat.label} from={i * BEAT_FRAMES} durationInFrames={BEAT_FRAMES}>
         <Beat {...beat} />

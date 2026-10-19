@@ -9,6 +9,18 @@ export default defineConfig({
       '/api': 'http://localhost:5000',
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            { name: 'vendor-react', test: /node_modules\/(react|react-dom|react-router-dom|scheduler)\// },
+            { name: 'vendor-motion', test: /node_modules\/framer-motion\// },
+          ],
+        },
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',

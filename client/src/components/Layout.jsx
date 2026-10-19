@@ -74,9 +74,10 @@ const Layout = ({ children }) => {
 
   return (
     <>
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <Navbar />
       <SupportBanner />
-      <main className="page" ref={pageRef}>{children}</main>
+      <main id="main-content" tabIndex={-1} className="page" ref={pageRef}>{children}</main>
       <Footer />
     </>
   );

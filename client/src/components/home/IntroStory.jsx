@@ -1,54 +1,29 @@
-import { Player } from '@remotion/player';
-import { IntroComposition, INTRO_DURATION_FRAMES, INTRO_FPS } from '../../remotion/IntroComposition';
-import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
-import useMediaQuery from '../../hooks/useMediaQuery';
+import Icon from '../Icon';
 
-const STATIC_BEATS = [
-  'Share anonymously, no real name or email required.',
-  'Connect with people who understand through threaded peer discussions.',
-  'Find real support: verified counselors, Calm Corner tools, and crisis resources.',
+const STEPS = [
+  { icon: 'leaf', title: 'A little space to share', text: 'Share anonymously. No real name or email required.' },
+  { icon: 'message', title: 'A moment of connection', text: 'Find people who understand, one conversation at a time.' },
+  { icon: 'heart', title: 'Support for your next step', text: 'Explore verified counselors, calming tools, and helpful resources.' },
 ];
 
-// Reduced-motion visitors get the same three beats as plain, static text
-// instead of the Remotion sequence — the information is never gated
-// behind the animation playing. Narrow viewports get the same fallback:
-// the Player scales its fixed 960x260 composition as one block (like a
-// video), so on a ~350px-wide phone its 34px headline renders at roughly
-// 12px, too small to read comfortably.
-const IntroStory = () => {
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const isNarrowViewport = useMediaQuery('(max-width: 640px)');
-
-  if (prefersReducedMotion || isNarrowViewport) {
-    return (
-      <section className="intro-story intro-story-static" aria-label="How SafeSpace works">
-        <ul>
-          {STATIC_BEATS.map((beat) => (
-            <li key={beat}>{beat}</li>
-          ))}
-        </ul>
-      </section>
-    );
-  }
-
-  return (
-    <section className="intro-story" aria-label="How SafeSpace works">
-      <Player
-        component={IntroComposition}
-        durationInFrames={INTRO_DURATION_FRAMES}
-        fps={INTRO_FPS}
-        compositionWidth={960}
-        compositionHeight={260}
-        style={{ width: '100%', aspectRatio: '960 / 260', borderRadius: 'var(--radius-lg)' }}
-        autoPlay
-        muted
-        loop={false}
-        controls={false}
-        clickToPlay={false}
-        showPosterWhenPaused={false}
-      />
-    </section>
-  );
-};
+const IntroStory = () => (
+  <section className="intro-story intro-journey" aria-label="How SafeSpace works">
+    <div className="intro-journey-heading">
+      <span className="intro-journey-eyebrow">YOUR SPACE TO BEGIN</span>
+      <h2>Small steps. A little more together.</h2>
+      <p>Come as you are. Take what you need.</p>
+    </div>
+    <ol className="intro-journey-steps">
+      {STEPS.map((step, index) => (
+        <li key={step.title} style={{ '--step': index }}>
+          <span className="intro-journey-icon" aria-hidden="true"><Icon name={step.icon} size={24} /></span>
+          <span className="intro-journey-number" aria-hidden="true">0{index + 1}</span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+);
 
 export default IntroStory;

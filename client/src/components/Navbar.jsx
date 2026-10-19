@@ -68,7 +68,7 @@ const Navbar = () => {
   }, [mobileOpen]);
 
   return (
-    <nav className={`navbar${scrolled ? ' navbar-scrolled' : ''}`}>
+    <nav aria-label="Primary navigation" className={`navbar${scrolled ? ' navbar-scrolled' : ''}`}>
       <NavLink to="/" className="navbar-brand" onClick={closeMenu} aria-label="SafeSpace home">
         <span className="navbar-brand-icon">
           <img src={logo} alt="" width={22} height={22} />
@@ -77,30 +77,25 @@ const Navbar = () => {
       </NavLink>
       <div className="navbar-tabs navbar-desktop-only">
         <NavLink to="/" end className={navLinkClass}>
-          <Icon name="home" size={15} /> Posts
+          Posts
         </NavLink>
         <NavLink to="/threads" className={navLinkClass}>
-          <Icon name="message" size={15} /> Threads
+          Threads
         </NavLink>
         <NavLink to="/inspiration" className={navLinkClass}>
-          <Icon name="sun" size={15} /> Inspiration
+          Inspiration
         </NavLink>
         <NavLink to="/calm" className={navLinkClass}>
-          <Icon name="leaf" size={15} /> Calm Corner
+          Calm Corner
         </NavLink>
         <NavLink to="/counselors" className={navLinkClass}>
-          <Icon name="users" size={15} /> Counselors
+          Counselors
         </NavLink>
       </div>
       <div className="navbar-links">
         {user?.role === 'admin' && (
           <NavLink to="/admin" className={desktopOnlyNavLinkClass}>
             Admin
-          </NavLink>
-        )}
-        {user && (
-          <NavLink to="/my-activity" className={desktopOnlyNavLinkClass}>
-            My Activity
           </NavLink>
         )}
         {!user && (

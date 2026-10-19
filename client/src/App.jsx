@@ -5,29 +5,31 @@ import Layout from './components/Layout';
 import PageLoading from './components/PageLoading';
 import usePrefersReducedMotion from './hooks/usePrefersReducedMotion';
 import { fadeRise, reducedFade } from './lib/motion';
-import PostFeed from './pages/PostFeed';
-import CreatePost from './pages/CreatePost';
-import ThreadList from './pages/ThreadList';
-import ThreadDetail from './pages/ThreadDetail';
-import CreateThread from './pages/CreateThread';
-import CounselorList from './pages/CounselorList';
-import CounselorProfile from './pages/CounselorProfile';
-import Inspiration from './pages/Inspiration';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
-import NotFound from './pages/NotFound';
-import CommunityGuidelines from './pages/CommunityGuidelines';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
-import CrisisResources from './pages/CrisisResources';
-import MyActivity from './pages/MyActivity';
-import Profile from './pages/Profile';
 import PrivateRoute from './context/PrivateRoute';
 import AdminRoute from './context/AdminRoute';
 import CounselorPrivateRoute from './context/CounselorPrivateRoute';
+
+// Load page code only when its route is visited.
+const PostFeed = lazy(() => import('./pages/PostFeed'));
+const CreatePost = lazy(() => import('./pages/CreatePost'));
+const ThreadList = lazy(() => import('./pages/ThreadList'));
+const ThreadDetail = lazy(() => import('./pages/ThreadDetail'));
+const CreateThread = lazy(() => import('./pages/CreateThread'));
+const CounselorList = lazy(() => import('./pages/CounselorList'));
+const CounselorProfile = lazy(() => import('./pages/CounselorProfile'));
+const Inspiration = lazy(() => import('./pages/Inspiration'));
+const Register = lazy(() => import('./pages/Register'));
+const Login = lazy(() => import('./pages/Login'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const CommunityGuidelines = lazy(() => import('./pages/CommunityGuidelines'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const CrisisResources = lazy(() => import('./pages/CrisisResources'));
+const MyActivity = lazy(() => import('./pages/MyActivity'));
+const Profile = lazy(() => import('./pages/Profile'));
 
 // Admin, counselor-portal, and Calm Corner pages are irrelevant to a regular
 // feed visitor's session — lazy-loading them keeps those bundles out of the

@@ -8,6 +8,7 @@ const AccountMenu = () => {
   const { user, logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const triggerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -15,6 +16,13 @@ const AccountMenu = () => {
         setOpen(false);
       }
     };
+    const handleEscape = (event) => {
+      if (event.key === 'Escape' && ref.current?.contains(document.activeElement)) {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -24,6 +32,9 @@ const AccountMenu = () => {
       <button
         type="button"
         className="icon-btn navbar-avatar-btn"
+        ref={triggerRef}
+        aria-expanded={open}
+        aria-controls="account-dropdown"
         onClick={() => setOpen((prev) => !prev)}
         aria-label={`Account menu for ${user.pseudonym}`}
         title={user.pseudonym}
@@ -33,11 +44,12 @@ const AccountMenu = () => {
         <Icon name="chevron-down" size={13} className="navbar-desktop-only" />
       </button>
       {open && (
-        <div className="account-menu-dropdown">
+        <div className="account-menu-dropdown" id="account-dropdown">
           <p className="account-menu-name">{user.pseudonym}</p>
           <Link to="/profile" onClick={() => setOpen(false)}>
             View Profile
           </Link>
+          <Link to="/my-activity" onClick={() => setOpen(false)}>My Activity</Link>
           <button type="button" onClick={logout}>
             Log out
           </button>
