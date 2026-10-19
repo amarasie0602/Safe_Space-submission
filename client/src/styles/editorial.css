@@ -303,3 +303,52 @@ input:focus, textarea:focus, select:focus { border-color: var(--color-primary); 
   .page-home .welcome-copy h1 { font-size: clamp(2.35rem, 9vw, 3rem); }
   .page-home .welcome-caption { inset-inline: 1.25rem; bottom: 1.25rem; }
 }
+
+/* An informal introduction and a reading-first feed. */
+.community-page .home-start { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 6vw, 6rem); padding: 2rem 0; margin-block: .5rem 2rem; border-bottom: 1px solid var(--color-border); }
+.home-start > div { box-shadow: none; }
+.home-start-note { max-width: 430px; align-self: center; }
+.home-start-note h2 { font-size: clamp(1.5rem, 2.3vw, 2rem); line-height: 1.25; margin: 0 0 .8rem; max-width: 23ch; }
+.home-start-note p { font-size: .9rem; line-height: 1.8; color: var(--color-text-muted); margin: 0; max-width: 43ch; }
+.home-start-links { margin: 0; padding: 0; list-style: none; }
+.home-start-links li + li { border-top: 1px solid var(--color-border); }
+.home-start-links a { display: grid; grid-template-columns: 1fr auto; gap: .2rem 1rem; align-items: center; padding: .85rem 0; color: var(--color-text); text-decoration: none; font-size: .9rem; }
+.home-start-links a > span:first-child { grid-column: 1; font-size: .72rem; color: var(--color-text-muted); }
+.home-start-links a > span:last-child { grid-column: 2; grid-row: 1 / 3; color: var(--color-primary); }
+.home-start-links a:hover { color: var(--color-primary-hover); }
+.home-start-links a:hover > span:last-child { transform: translate(2px, -2px); }
+.community-layout .feed-heading { align-items: center; margin-bottom: 1.2rem; }
+.community-layout .feed-heading h2 { margin: 0; font-size: 1.65rem; }
+.feed-browse-link { font-size: .75rem; color: var(--color-text-muted); text-underline-offset: 4px; }
+.community-layout .community-composer { padding: 1.25rem 0; margin-bottom: 1.5rem; background: transparent; border: 0; border-block: 1px solid var(--color-border); border-radius: 0; box-shadow: none; }
+.community-composer .composer-teaser-input { width: 100%; display: flex; align-items: center; gap: .8rem; text-align: left; border: 0; background: transparent; padding: 0; border-radius: 0; color: var(--color-text); font-size: .95rem; }
+.community-composer .composer-write-label { margin-left: auto; font-size: .73rem; color: var(--color-primary-hover); white-space: nowrap; }
+.community-composer .reassurance { font-size: .7rem; margin: .3rem 0 .9rem 3.2rem; color: var(--color-text-muted); }
+.composer-starters { display: flex; flex-wrap: wrap; gap: .25rem .8rem; align-items: center; padding-top: .5rem; }
+.composer-starters > span { font-size: .72rem; color: var(--color-text-muted); }
+.community-composer .mood-options { display: flex; flex-wrap: wrap; gap: .25rem .8rem; margin: 0; }
+.community-composer .mood-chip { background: none; border: 0; border-bottom: 1px solid var(--color-border); border-radius: 0; padding: .25rem 0; font-size: .73rem; font-weight: 400; min-height: 32px; }
+.community-composer .mood-chip:hover { border-bottom-color: var(--color-primary); color: var(--color-primary-hover); }
+.community-composer .mood-chip svg { display: none; }
+.feed-guest-note { font-size: .8rem; color: var(--color-text-muted); padding: 1rem 0; border-block: 1px solid var(--color-border); margin-bottom: 1.5rem; }
+.feed-guest-note a { text-underline-offset: 3px; }
+.sidebar-daily-note { border-bottom: 1px solid var(--color-border); margin-bottom: 1.75rem; padding-bottom: 1.75rem; }
+.sidebar-daily-note .daily-affirmation { display: block; background: none; border: 0; padding: 0; margin: 0; }
+.sidebar-daily-note .daily-affirmation p { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 400; line-height: 1.5; margin: 0 0 .7rem; }
+.sidebar-daily-note .daily-affirmation-link { display: inline-flex; font-size: .7rem; }
+.community-layout .home-sidebar .community-stats { gap: 2rem; }
+.community-layout .home-sidebar .community-stat strong { font-family: var(--font-sans); font-size: 1rem; }
+@media (max-width: 760px) {
+  .community-page .home-start { grid-template-columns: 1fr; gap: 1rem; padding-block: 1.75rem; }
+  .home-start-note { max-width: 100%; }
+  .home-start-note h2 { max-width: none; }
+  .home-start-note p { max-width: 55ch; }
+}
+@media (max-width: 480px) {
+  .community-composer .composer-teaser-input { font-size: .85rem; flex-wrap: wrap; }
+  .community-composer .composer-write-label { margin-left: 3.2rem; margin-top: -.25rem; }
+  .community-layout .feed-heading h2 { font-size: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-start-links a:hover > span:last-child { transform: none; }
+}

@@ -66,13 +66,13 @@ for (const mode of ['mobile', 'reduced motion']) {
   });
 }
 
-test('desktop intro animates welcome cards without playback controls', async ({ page }) => {
+test('intro offers three simple paths without animation or playback controls', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   const intro = page.getByRole('region', { name: 'How SafeSpace works' });
   await expect(intro.getByRole('listitem')).toHaveCount(3);
   await expect(intro.locator('video, audio, button')).toHaveCount(0);
-  expect(await intro.locator('li').first().evaluate(el => getComputedStyle(el).animationName)).toBe('journey-arrive');
+  expect(await intro.locator('li').first().evaluate(el => getComputedStyle(el).animationName)).toBe('none');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect.poll(() => intro.locator('li').first().evaluate(el => getComputedStyle(el).animationName)).toBe('none');
 });

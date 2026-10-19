@@ -11,7 +11,6 @@ import SearchBar from '../components/SearchBar';
 import Icon from '../components/Icon';
 import AnonymousAvatar from '../components/AnonymousAvatar';
 import MoodQuickOptions from '../components/MoodQuickOptions';
-import DailyAffirmation from '../components/DailyAffirmation';
 import { CATEGORIES } from '../utils/categories';
 import { BlockedUsersContext } from '../context/BlockedUsersContext';
 import useDelayedLoading from '../hooks/useDelayedLoading';
@@ -110,31 +109,28 @@ const PostFeed = () => {
       <div className="home-layout community-layout">
       <div className="home-main" id="community-feed" tabIndex={-1}>
         <div className="feed-heading">
-          <div><span className="eyebrow">ROOM FOR EVERY STORY</span><h2>From the community</h2></div>
-          <span className="feed-heading-note">Listen. Share. Be understood.</span>
+          <h2>The conversation</h2>
+          <Link to="/threads" className="feed-browse-link">Browse threads &rarr;</Link>
         </div>
-        <DailyAffirmation />
 
         {user ? (
-          <div className="card composer-teaser">
+          <div className="composer-teaser community-composer">
             <button
               type="button"
               className="composer-teaser-input"
               onClick={() => navigate('/posts/new')}
             >
               <AnonymousAvatar seed={user.id} avatarId={user.avatarId} />
-              <span>Share what&apos;s on your mind...</span>
+              <span>What would you like to share?</span>
+              <span className="composer-write-label">Write a post <span aria-hidden="true">&#8599;</span></span>
             </button>
             <p className="reassurance">
-              <Icon name="lock" size={14} /> Your identity remains anonymous. Express yourself
-              freely in a safe environment.
+              Your nickname is all anyone sees.
             </p>
-            <MoodQuickOptions onSelect={(mood) => navigate('/posts/new', { state: { mood } })} />
+            <div className="composer-starters"><span>Need a starting point?</span><MoodQuickOptions onSelect={(mood) => navigate('/posts/new', { state: { mood } })} /></div>
           </div>
         ) : (
-          <p className="reassurance">
-            <Icon name="lock" size={14} /> Your identity is safe here.
-          </p>
+          <p className="feed-guest-note">Just looking around? You can read without an account. <Link to="/register">Join when you are ready.</Link></p>
         )}
 
         <SearchBar value={search} onChange={setSearch} placeholder="Search posts..." suggestions={searchSuggestions} />
