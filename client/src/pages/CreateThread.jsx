@@ -1,3 +1,4 @@
+import PageHeader from '../components/PageHeader';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
@@ -34,9 +35,9 @@ const CreateThread = ({ onCreated }) => {
   };
 
   return (
-    <div className="form-page">
-      <h1>New Thread</h1>
-      <form className="form" onSubmit={handleSubmit}>
+    <div className="form-page writing-page">
+      <PageHeader eyebrow="COMMUNITY CONVERSATIONS" title="Start a conversation" description="Give your conversation a clear title, then tell your story at your own pace." />
+      <form className="form writing-form" onSubmit={handleSubmit}>
         <label className="field">
           Category
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -53,6 +54,7 @@ const CreateThread = ({ onCreated }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="What's on your mind?"
+            maxLength={150}
             required
           />
         </label>
@@ -62,6 +64,8 @@ const CreateThread = ({ onCreated }) => {
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="Say as much or as little as you'd like..."
+            maxLength={5000}
+            rows={8}
             required
           />
         </label>

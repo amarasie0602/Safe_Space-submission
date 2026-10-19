@@ -1,3 +1,4 @@
+import PageHeader from '../../components/PageHeader';
 import { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import Card from '../../components/Card';
@@ -56,7 +57,7 @@ const FlaggedPostsQueue = () => {
 
   return (
     <div>
-      <h1>Flagged Posts</h1>
+      <PageHeader eyebrow="COMMUNITY CARE" title="Flagged Posts" description="Review posts that need attention. Keep decisions consistent with the community guidelines." />
       {loading && <LoadingSpinner />}
       {!loading && error && <><ErrorMessage message={error} /><button className="btn btn-ghost btn-sm" onClick={fetchPosts}>Try again</button></>}
       {!loading && !error && posts.length === 0 && <div className="empty-state">No flagged posts need review.</div>}

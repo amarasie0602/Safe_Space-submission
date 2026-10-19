@@ -102,6 +102,8 @@ const CounselorProfile = () => {
 
   return (
     <div className="counselor-profile">
+      <div className="counselor-overview">
+      <Link to="/counselors" className="back-link">&larr; All counselors</Link>
       <h1>{counselor.name}</h1>
       <div className="card-meta">
         {counselor.specialties?.map((specialty) => (
@@ -144,7 +146,10 @@ const CounselorProfile = () => {
         </div>
       )}
 
-      <h2>Book an anonymous session</h2>
+      </div>
+      <section className="booking-panel" aria-labelledby="booking-title">
+      <span className="eyebrow">YOUR NEXT STEP</span>
+      <h2 id="booking-title">Book an anonymous session</h2>
       {!user && (
         <p className="text-muted">
           Please <Link to="/login">log in</Link> to book a session.
@@ -231,6 +236,7 @@ const CounselorProfile = () => {
         </div>
       )}
       </div>
+      </section>
     </div>
   );
 };

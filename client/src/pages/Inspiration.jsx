@@ -17,7 +17,7 @@ const ArticleCard = ({ article, isOpen, onToggle, large }) => (
       className="article-card-cover"
     />
     <div className="article-card-content">
-      <button type="button" className="article-card-header" onClick={onToggle} aria-expanded={isOpen}>
+      <button type="button" className="article-card-header" onClick={onToggle} aria-expanded={isOpen} aria-controls={`article-${article.id}`}>
         <div>
           <div className="post-card-meta">
             <span className="badge">{article.topic}</span>
@@ -29,7 +29,7 @@ const ArticleCard = ({ article, isOpen, onToggle, large }) => (
         <Icon name={isOpen ? 'chevron-up' : 'chevron-down'} size={18} />
       </button>
       {isOpen && (
-        <div className="article-card-body">
+        <div className="article-card-body" id={`article-${article.id}`}>
           {article.body.map((paragraph) => (
             <p key={paragraph.slice(0, 24)}>{paragraph}</p>
           ))}
@@ -47,9 +47,10 @@ const Inspiration = () => {
   const [featured, ...rest] = filtered;
 
   return (
-    <div>
+    <div className="inspiration-page">
       <div className="hero">
         <div className="hero-text">
+          <span className="eyebrow">THE READING ROOM</span>
           <h1>Healing Reads</h1>
           <p>
             Brief reads on rest, self-compassion, gratitude, and coping. Choose a topic that feels useful today.

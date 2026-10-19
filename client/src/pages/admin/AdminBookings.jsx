@@ -1,3 +1,4 @@
+import PageHeader from '../../components/PageHeader';
 import { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import Card from '../../components/Card';
@@ -28,7 +29,7 @@ const AdminBookings = () => {
 
   return (
     <div>
-      <h1>Bookings</h1>
+      <PageHeader eyebrow="COMMUNITY CARE" title="Bookings" description="An overview of counselor session requests and their current status." />
       {loading && <LoadingSpinner />}
       {!loading && error && <><ErrorMessage message={error} /><button className="btn btn-ghost btn-sm" onClick={fetchBookings}>Try again</button></>}
       {!loading && !error && bookings.length === 0 && <div className="empty-state">No bookings yet.</div>}

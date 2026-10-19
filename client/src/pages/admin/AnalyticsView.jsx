@@ -1,3 +1,4 @@
+import PageHeader from '../../components/PageHeader';
 import { useEffect, useState } from 'react';
 import {
   Bar,
@@ -33,7 +34,7 @@ const AnalyticsView = () => {
   }, []);
 
   if (error && !analytics) {
-    return <div><h1>Analytics</h1><ErrorMessage message={error} /><button className="btn btn-ghost btn-sm" onClick={fetchAnalytics}>Try again</button></div>;
+    return <div><PageHeader eyebrow="COMMUNITY CARE" title="Analytics" description="Community activity and moderation workload, based on recorded application data." /><ErrorMessage message={error} /><button className="btn btn-ghost btn-sm" onClick={fetchAnalytics}>Try again</button></div>;
   }
   if (!analytics) return <LoadingSpinner />;
 
@@ -44,7 +45,7 @@ const AnalyticsView = () => {
 
   return (
     <div>
-      <h1>Analytics</h1>
+      <PageHeader eyebrow="COMMUNITY CARE" title="Analytics" description="Community activity and moderation workload, based on recorded application data." />
       <div className="metrics">
         <div className="metric-card">
           <h2>Flagged Posts</h2>

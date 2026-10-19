@@ -29,12 +29,13 @@ const CounselorLogin = () => {
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">
           Email
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input autoComplete="username" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <label className="field">
           Password
           <input
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

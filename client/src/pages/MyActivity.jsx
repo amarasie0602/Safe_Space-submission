@@ -1,3 +1,4 @@
+import PageHeader from '../components/PageHeader';
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
@@ -98,10 +99,9 @@ const MyActivity = () => {
   const myPosts = posts.filter((post) => post.author?._id === user.id);
 
   return (
-    <div>
-      <h1>My Activity</h1>
-      <p className="text-muted">Everything here syncs with your account across devices.</p>
-      <div className="tabs">
+    <div className="activity-page">
+      <PageHeader eyebrow="YOUR SPACE" title="My activity" description="Your posts, saved conversations, and upcoming sessions, all in one place." />
+      <div className="tabs activity-tabs">
         {TABS.map((tab) => (
           <button
             key={tab}

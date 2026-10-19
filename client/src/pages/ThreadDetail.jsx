@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/axios';
 import AnonymousAvatar from '../components/AnonymousAvatar';
 import Card from '../components/Card';
 import CategoryTag from '../components/CategoryTag';
+import NetworkError from '../components/NetworkError';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Icon from '../components/Icon';
 import ErrorMessage from '../components/ErrorMessage';
@@ -16,6 +18,8 @@ const ThreadDetail = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const [thread, setThread] = useState(null);
+  const [loadError, setLoadError] = useState('');
+  const [retry, setRetry] = useState(0);
   const [supported, setSupported] = useState(false);
   const [replies, setReplies] = useState([]);
   const [body, setBody] = useState('');
@@ -34,8 +38,9 @@ const ThreadDetail = () => {
       setSupported(!!user && (threadData.upvotedBy || []).some((uid) => uid === user.id));
       setReplies(repliesData);
     };
-    fetchThread();
-  }, [id, user]);
+    setLoadError('');
+    fetchThread().catch(() => setLoadError('Unable to load this conversation. Please try again.'));
+  }, [id, user, retry]);
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();
@@ -87,10 +92,12 @@ const ThreadDetail = () => {
     }
   };
 
+  if (loadError) return <NetworkError message={loadError} onRetry={() => setRetry(value => value + 1)} />;
   if (!thread) return <LoadingSpinner />;
 
   return (
-    <div>
+    <article className="conversation-page">
+      <Link to="/threads" className="back-link">&larr; All conversations</Link>
       <div className="thread-header">
         <AnonymousAvatar seed={thread.author?._id} avatarId={thread.author?.avatarId} />
         <div className="post-card-authorline">
@@ -102,7 +109,7 @@ const ThreadDetail = () => {
         </div>
       </div>
       <h1>{thread.title}</h1>
-      <p>{thread.body}</p>
+      <p className="conversation-body">{thread.body}</p>
       <button
         className={`btn btn-ghost btn-sm${supported ? ' active' : ''}`}
         onClick={handleUpvoteThread}
@@ -156,7 +163,7 @@ const ThreadDetail = () => {
         {replyError && <ErrorMessage message={replyError} />}
         <SubmitButton status={replyStatus} idleLabel="Reply" savingLabel="Replying..." className="btn-sm" />
       </form>
-    </div>
+    </article>
   );
 };
 

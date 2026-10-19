@@ -1,7 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import PageHeader from '../../components/PageHeader';
+import { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import Card from '../../components/Card';
-import { ToastContext } from '../../context/ToastContext';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import ErrorMessage from '../../components/ErrorMessage';
 import { timeAgo } from '../../utils/timeAgo';
 
 const ACTION_LABELS = {
@@ -19,28 +21,20 @@ const describeTarget = (entry) => {
 
 const AuditLog = () => {
   const [actions, setActions] = useState(null);
-  const { showToast } = useContext(ToastContext);
-
+  const [loadError, setLoadError] = useState('');
+  const [retry, setRetry] = useState(0);
   useEffect(() => {
-    const fetchActions = async () => {
-      const { data } = await api.get('/admin/actions');
-      setActions(data);
-    };
-    fetchActions().catch(() => showToast('Unable to load the audit log.'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setLoadError('');
+    api.get('/admin/actions').then(({ data }) => setActions(data))
+      .catch(() => setLoadError('Unable to load the audit log. Please try again.'));
+  }, [retry]);
 
-  if (actions === null) {
-    return <div>Loading…</div>;
-  }
+  if (loadError) return <div><PageHeader eyebrow="COMMUNITY CARE" title="Audit Log" /><ErrorMessage message={loadError} /><button className="btn btn-ghost" onClick={() => setRetry(value => value + 1)}>Try again</button></div>;
+  if (actions === null) return <LoadingSpinner />;
 
   return (
     <div>
-      <h1>Audit Log</h1>
-      <p className="text-muted">
-        Every suspend, ban, reinstate, and counselor verify/reject decision, for accountability:
-        who made the call, when, and why.
-      </p>
+      <PageHeader eyebrow="COMMUNITY CARE" title="Audit Log" description="A record of moderation decisions, with who acted, when, and why." />
       {actions.length === 0 && <div className="empty-state">No admin actions recorded yet.</div>}
       {actions.map((entry) => (
         <Card key={entry._id}>

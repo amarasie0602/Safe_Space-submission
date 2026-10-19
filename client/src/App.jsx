@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Layout from './components/Layout';
 import PageLoading from './components/PageLoading';
@@ -136,6 +136,7 @@ function App() {
                   </AdminRoute>
                 }
               >
+                <Route index element={<Navigate to="posts" replace />} />
                 <Route path="posts" element={<FlaggedPostsQueue />} />
                 <Route path="reports" element={<ReportsQueue />} />
                 <Route

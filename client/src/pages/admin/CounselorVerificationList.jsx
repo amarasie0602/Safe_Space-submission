@@ -1,3 +1,4 @@
+import PageHeader from '../../components/PageHeader';
 import { useContext, useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import api from '../../api/axios';
@@ -58,7 +59,7 @@ const CounselorVerificationList = () => {
 
   return (
     <div>
-      <h1>Counselor Applications</h1>
+      <PageHeader eyebrow="COMMUNITY CARE" title="Counselor Applications" description="Review professional credentials before making a profile available to members." />
       <p className="text-muted">
         Review each applicant&apos;s stated credentials before verifying. Once verified, they appear
         publicly and can accept bookings.

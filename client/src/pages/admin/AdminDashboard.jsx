@@ -10,7 +10,8 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
-      <nav className="admin-sidebar">
+      <nav className="admin-sidebar" aria-label="Administration">
+        <div className="workspace-label"><span className="eyebrow">SAFESPACE</span><strong>Community care</strong><p>Moderation &amp; oversight</p></div>
         <NavLink to="/admin/posts" className={navLinkClass}>
           Flagged Posts
         </NavLink>

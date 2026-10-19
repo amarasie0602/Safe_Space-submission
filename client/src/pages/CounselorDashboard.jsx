@@ -77,7 +77,8 @@ const ScheduleEditor = () => {
 
   return (
     <Card>
-      <h2>My Weekly Schedule</h2>
+      <span className="eyebrow">AVAILABILITY</span>
+      <h2>My weekly schedule</h2>
       <p className="text-muted">
         Choose the recurring hours you're open for anonymous sessions. Clients can only book a
         slot you've selected here, and only if it isn't already booked.
@@ -93,6 +94,7 @@ const ScheduleEditor = () => {
                   key={slot}
                   type="button"
                   className={`tab${(schedule[dayOfWeek] || []).includes(slot) ? ' active' : ''}`}
+                  aria-pressed={(schedule[dayOfWeek] || []).includes(slot)}
                   onClick={() => toggleSlot(dayOfWeek, slot)}
                 >
                   {slot}
@@ -158,7 +160,7 @@ const CounselorDashboard = () => {
   };
 
   return (
-    <div>
+    <div className="counselor-workspace">
       <div className="page-header">
         <h1>My Bookings</h1>
         <button type="button" className="btn btn-ghost btn-sm" onClick={logout}>

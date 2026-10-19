@@ -1,3 +1,4 @@
+import PageHeader from '../components/PageHeader';
 import { useContext, useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import api from '../api/axios';
@@ -120,7 +121,7 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-      <h1>My Profile</h1>
+      <PageHeader eyebrow="YOUR ACCOUNT" title="My profile" description="A familiar identity, with your privacy intact." />
       <div className="profile-summary">
         <AnonymousAvatar seed={user.id} avatarId={selected} size={72} />
         <div>
@@ -149,6 +150,7 @@ const Profile = () => {
         </div>
       )}
 
+      <section className="settings-section">
       <h2>About me</h2>
       <p className="text-muted">
         A short, optional note other members see on your posts and threads. Keep it anonymous:
@@ -156,6 +158,7 @@ const Profile = () => {
       </p>
       <label className="field">
         <textarea
+          aria-label="About me"
           value={bio}
           onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX))}
           placeholder="e.g. Here to listen as much as I'm here to share."
@@ -193,8 +196,10 @@ const Profile = () => {
         {saving ? 'Saving...' : 'Save profile'}
       </button>
 
+      </section>
       {isPushSupported() && (
         <>
+          <section className="settings-section">
           <h2>Push notifications</h2>
           <p className="text-muted">
             Get notified on this device when a counselor confirms, cancels, or completes one of
@@ -203,9 +208,11 @@ const Profile = () => {
           <button type="button" className="btn btn-ghost" onClick={handleTogglePush} disabled={pushBusy}>
             {pushBusy ? 'Updating...' : pushEnabled ? 'Turn off push notifications' : 'Enable push notifications'}
           </button>
+          </section>
         </>
       )}
 
+      <section className="settings-section">
       <h2>Recovery code</h2>
       <p className="text-muted">
         There's no email on this account, so your recovery code is the only way to reset your
@@ -253,6 +260,8 @@ const Profile = () => {
         )}
       </AnimatePresence>
 
+      </section>
+      <section className="settings-section">
       <h2>Blocked users</h2>
       <p className="text-muted">
         Blocked users' posts and threads are hidden from your feed. They aren't notified.
@@ -269,6 +278,7 @@ const Profile = () => {
           </button>
         </div>
       ))}
+      </section>
     </div>
   );
 };

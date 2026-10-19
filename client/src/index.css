@@ -3613,7 +3613,14 @@ footer.scroll-reveal-ready.scroll-reveal:focus-within {
   padding-block: clamp(1.25rem, 3vw, 2.2rem);
 }
 
-.calm-hero-kicker,
+.calm-hero-kicker {
+  display: block;
+  color: var(--color-primary-hover);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: .75rem;
+}
 
 .calm-corner .calm-hero h1 {
   font-size: clamp(2.25rem, 4vw, 3rem);

@@ -1,3 +1,4 @@
+import PageHeader from '../components/PageHeader';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
@@ -72,11 +73,11 @@ const CreatePost = ({ onCreated }) => {
   else if (remaining <= 50) charCountTone = ' char-count-near';
 
   return (
-    <div className="form-page">
-      <h1>New Post</h1>
+    <div className="form-page writing-page">
+      <PageHeader eyebrow="ANONYMOUS SHARING" title="Share a thought" description="A few words or a little more. Share only what feels comfortable." />
       <p className="text-muted">Not sure what to say? Try one of these:</p>
       <MoodQuickOptions onSelect={handleMoodSelect} />
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form writing-form" onSubmit={handleSubmit}>
         <label className="field">
           Category
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -95,6 +96,7 @@ const CreatePost = ({ onCreated }) => {
               setContent(e.target.value);
               setValidationError('');
             }}
+            rows={7}
             placeholder="Take your time. Share whatever feels true right now..."
           />
           <span className={`char-count${charCountTone}`}>{remaining} characters left</span>

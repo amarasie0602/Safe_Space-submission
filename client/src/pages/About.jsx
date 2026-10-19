@@ -21,9 +21,10 @@ const About = () => (
     <h2>Credits</h2>
     <p className="text-muted">Illustrations, photography, audio, and video used across the app, with source.</p>
     <ul>
+      <li>Homepage animation: <a href="https://www.pinterest.com/pin/1129910994034704793/" target="_blank" rel="noopener noreferrer">project-selected journaling reference</a>.</li>
       <li>Illustrations (sidebar and resource artwork): provided by the project author.</li>
       <li>
-        Homepage hero photo: by{' '}
+        Authentication photograph: by{' '}
         <a href="https://unsplash.com/photos/_r6X-xFcASk" target="_blank" rel="noopener noreferrer">
           Timothy L Brock
         </a>{' '}

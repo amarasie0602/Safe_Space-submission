@@ -47,10 +47,11 @@ const CounselorList = () => {
   );
 
   return (
-    <div className="home-layout">
+    <div className="home-layout directory-page">
       <div className="home-main">
         <div className="hero">
           <div className="hero-text">
+            <span className="eyebrow">PROFESSIONAL SUPPORT</span>
             <h1>Counselors &amp; Professionals</h1>
             <p>Explore counselor profiles, specialties, and availability for anonymous sessions.</p>
           </div>

@@ -41,11 +41,13 @@ const ForgotPassword = () => {
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">
           Nickname
-          <input value={pseudonym} onChange={(e) => setPseudonym(e.target.value)} required />
+          <input autoComplete="username" name="username" value={pseudonym} onChange={(e) => setPseudonym(e.target.value)} required />
         </label>
         <label className="field">
           Recovery code
           <input
+            autoComplete="off"
+            spellCheck={false}
             value={recoveryCode}
             onChange={(e) => setRecoveryCode(e.target.value.toUpperCase())}
             placeholder="XXXX-XXXX-XXXX"
@@ -56,6 +58,7 @@ const ForgotPassword = () => {
           New password
           <input
             type="password"
+            autoComplete="new-password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             minLength={6}

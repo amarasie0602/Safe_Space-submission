@@ -47,6 +47,8 @@ const Register = () => {
           Nickname
           <div className="input-group">
             <input
+              autoComplete="username"
+              name="username"
               value={pseudonym}
               onChange={(e) => setPseudonym(e.target.value)}
               minLength={3}
@@ -66,6 +68,8 @@ const Register = () => {
           Password
           <input
             type="password"
+            autoComplete="new-password"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             minLength={6}

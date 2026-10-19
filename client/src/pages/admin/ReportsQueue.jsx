@@ -1,3 +1,4 @@
+import PageHeader from '../../components/PageHeader';
 import { useContext, useEffect, useState } from 'react';
 import api from '../../api/axios';
 import Card from '../../components/Card';
@@ -62,7 +63,7 @@ const ReportsQueue = () => {
 
   return (
     <div>
-      <h1>Reports</h1>
+      <PageHeader eyebrow="COMMUNITY CARE" title="Reports" description="Review concerns raised by members and record the appropriate action." />
       {loading && <LoadingSpinner />}
       {!loading && loadError && <><ErrorMessage message={loadError} /><button type="button" className="btn btn-ghost btn-sm" onClick={fetchReports}>Try again</button></>}
       {!loading && !loadError && reports.length === 0 && <div className="empty-state">No open reports.</div>}
