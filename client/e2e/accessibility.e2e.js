@@ -157,7 +157,58 @@ test('home navigation overlays the video and becomes solid on scroll', async ({ 
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await expect(nav).not.toHaveClass(/navbar-scrolled/);
   await expect(nav).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
-  await page.goto('/login');
+  await page.goto('/privacy');
   await expect(nav).not.toHaveClass(/navbar-home/);
   await expect(nav).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+});
+
+
+test('login waves stay animated behind the form and support a manual pause', async ({ page }) => {
+  await page.goto('/login');
+  const light = page.locator('.auth-wave-back');
+  await expect(light).toHaveCSS('animation-play-state', 'running');
+  await expect(page.locator('.auth-experience video, .auth-experience audio')).toHaveCount(0);
+  await page.getByLabel('Nickname').focus();
+  await expect(light).toHaveCSS('animation-play-state', 'running');
+  await expect(page.locator('.auth-wave')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Pause background' }).click();
+  await expect(light).toHaveCSS('animation-play-state', 'paused');
+  await page.getByRole('button', { name: 'Resume background' }).click();
+  await expect(light).toHaveCSS('animation-play-state', 'running');
+});
+
+test('login daylight respects reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/login');
+  await expect(page.locator('.auth-wave-back')).toHaveCSS('animation-name', 'none');
+  await expect(page.getByLabel('Nickname')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Pause background' })).toHaveCount(0);
+});
+
+
+test('registration matches the login scene and keeps nickname suggestions usable', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/register');
+  await expect(page.locator('.auth-wave')).toHaveCount(3);
+  await expect(page.getByRole('contentinfo')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Suggest one' }).click();
+  await expect(page.getByRole('textbox', { name: 'Nickname', exact: true })).not.toHaveValue('');
+  await page.getByLabel('Password', { exact: true }).fill('preview-password');
+  await page.getByRole('button', { name: 'Show password' }).click();
+  await expect(page.getByLabel('Password', { exact: true })).toHaveAttribute('type', 'text');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('registration still presents the recovery code after account creation', async ({ page }) => {
+  await page.route('http://localhost:5000/auth/register', route => route.fulfill({ json: {
+    token: 'browser-test-token', user: { id: 'preview', pseudonym: 'preview_member', role: 'user' }, recoveryCode: 'TEST-CODE-1234',
+  } }));
+  await page.goto('/register');
+  await page.getByRole('textbox', { name: 'Nickname', exact: true }).fill('preview_member');
+  await page.getByLabel('Password', { exact: true }).fill('preview-password');
+  await page.getByRole('button', { name: 'Create account', exact: true }).click();
+  const dialog = page.getByRole('alertdialog', { name: 'Save your recovery code' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('TEST-CODE-1234');
+  await expect(dialog.getByRole('button', { name: /saved it/ })).toBeVisible();
 });

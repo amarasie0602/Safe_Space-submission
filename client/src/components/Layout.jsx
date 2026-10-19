@@ -9,7 +9,9 @@ const REVEAL_SELECTOR = '.community-invitation, .thread-list-heading, .calm-sect
 
 const Layout = ({ children }) => {
   const pageRef = useRef(null);
-  const isHome = useLocation().pathname === '/';
+  const pathname = useLocation().pathname;
+  const isHome = pathname === '/';
+  const isAuthScene = pathname === '/login' || pathname === '/register';
 
   useEffect(() => {
     const page = pageRef.current;
@@ -65,9 +67,9 @@ const Layout = ({ children }) => {
     <>
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <Navbar overlay={isHome} />
-      {!isHome && <SupportBanner />}
-      <main id="main-content" tabIndex={-1} className={`page${isHome ? ' page-home' : ''}`} ref={pageRef}>{children}</main>
-      <Footer />
+      {!isHome && !isAuthScene && <SupportBanner />}
+      <main id="main-content" tabIndex={-1} className={`page${isHome ? ' page-home' : ''}${isAuthScene ? ' page-auth' : ''}`} ref={pageRef}>{children}</main>
+      {!isAuthScene && <Footer />}
     </>
   );
 };

@@ -21,32 +21,39 @@ const Register = () => {
   const [pseudonym, setPseudonym] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [recoveryCode, setRecoveryCode] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     setError('');
+    setSubmitting(true);
     try {
       const { data } = await api.post('/auth/register', { pseudonym, password });
       login(data);
       setRecoveryCode(data.recoveryCode);
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <AuthCard
+    <AuthCard immersive scene="register"
       title="Join SafeSpace"
-      subtitle="No real name, no email needed. Just pick a nickname others will see and a password only you know."
+      subtitle="Choose a nickname and a password. Keep your real name to yourself."
     >
       <form className="form" onSubmit={handleSubmit}>
         <label className="field">
           Nickname
           <div className="input-group">
             <input
+              aria-label="Nickname"
               autoComplete="username"
               name="username"
               value={pseudonym}
@@ -66,8 +73,10 @@ const Register = () => {
         </label>
         <label className="field">
           Password
+          <div className="login-password">
           <input
-            type="password"
+            aria-label="Password"
+            type={showPassword ? 'text' : 'password'}
             autoComplete="new-password"
             name="password"
             value={password}
@@ -75,10 +84,12 @@ const Register = () => {
             minLength={6}
             required
           />
+          <button type="button" className="login-password-toggle" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} onClick={() => setShowPassword(value => !value)}>{showPassword ? 'Hide' : 'Show'}</button>
+          </div>
         </label>
         {error && <ErrorMessage message={error} />}
-        <button type="submit" className="btn btn-primary">
-          Create account
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
+          {submitting ? 'Creating account...' : 'Create account'}
         </button>
         <p className="text-muted">
           Already have an account? <Link to="/login">Log in</Link>
