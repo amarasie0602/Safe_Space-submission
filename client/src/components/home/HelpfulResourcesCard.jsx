@@ -5,7 +5,7 @@ import Icon from '../Icon';
 const RESOURCES = [
   {
     to: '/calm#breathing-heading',
-    label: 'Breathing techniques for instant calm',
+    label: 'A guided breathing break',
     icon: 'sun',
   },
   {
@@ -24,7 +24,7 @@ const HelpfulResourcesCard = () => (
   <div className="card sidebar-card">
     <div className="sidebar-card-header">
       <Icon name="leaf" size={16} />
-      <h2>You Might Find Helpful</h2>
+      <h2>A little support</h2>
     </div>
     <ul className="helpful-resources">
       {RESOURCES.map((resource) => (

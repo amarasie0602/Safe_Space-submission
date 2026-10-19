@@ -26,7 +26,7 @@ const CommunityStatsCard = () => {
     <div className="card sidebar-card">
       <div className="sidebar-card-header">
         <Icon name="users" size={16} />
-        <h2>You&apos;re not alone</h2>
+        <h2>A growing community</h2>
       </div>
       <div className="community-stats">
         <div className="community-stat">

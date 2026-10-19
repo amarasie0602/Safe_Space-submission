@@ -16,7 +16,7 @@ const desktopOnlyNavLinkClass = ({ isActive }) =>
 const DRAWER_FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-const Navbar = () => {
+const Navbar = ({ overlay = false }) => {
   const { user } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -27,10 +27,17 @@ const Navbar = () => {
   const closeMenu = () => setMobileOpen(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 8);
+    const handleScroll = () => setScrolled(window.scrollY > 48);
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const compactNavigation = window.matchMedia('(max-width: 960px)');
+    const closeOnDesktop = () => { if (!compactNavigation.matches) setMobileOpen(false); };
+    compactNavigation.addEventListener('change', closeOnDesktop);
+    return () => compactNavigation.removeEventListener('change', closeOnDesktop);
   }, []);
 
   useEffect(() => {
@@ -68,7 +75,7 @@ const Navbar = () => {
   }, [mobileOpen]);
 
   return (
-    <nav aria-label="Primary navigation" className={`navbar${scrolled ? ' navbar-scrolled' : ''}`}>
+    <nav aria-label="Primary navigation" className={`navbar${overlay ? ' navbar-home' : ''}${scrolled ? ' navbar-scrolled' : ''}`}>
       <NavLink to="/" className="navbar-brand" onClick={closeMenu} aria-label="SafeSpace home">
         <span className="navbar-brand-icon">
           <img src={logo} alt="" width={22} height={22} />

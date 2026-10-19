@@ -15,8 +15,8 @@ import DailyAffirmation from '../components/DailyAffirmation';
 import { CATEGORIES } from '../utils/categories';
 import { BlockedUsersContext } from '../context/BlockedUsersContext';
 import useDelayedLoading from '../hooks/useDelayedLoading';
-import ThemedImage from '../components/ThemedImage';
-import { IMAGES } from '../config/images';
+import SupportBanner from '../components/SupportBanner';
+import WelcomeHero from '../components/home/WelcomeHero';
 import HomeSidebar from '../components/home/HomeSidebar';
 import { pickFeaturedPost, totalReactions } from '../utils/pickFeaturedPost';
 
@@ -103,38 +103,16 @@ const PostFeed = () => {
     : sortedPosts;
 
   return (
-    <div className="home-layout">
-      <div className="home-main">
-        <div className="hero">
-          <div className="hero-text">
-            <h1>Some things are easier to share here.</h1>
-            <p>Write anonymously, read what others are carrying, and find a little company in it.</p>
-            <div className="hero-badges">
-              <span className="badge tag-sage">
-                <Icon name="shield" size={13} /> Always anonymous
-              </span>
-              <span className="badge tag-mocha">
-                <Icon name="users" size={13} /> Supportive community
-              </span>
-            </div>
-          </div>
-          <div className="hero-photo">
-            <ThemedImage
-              src={IMAGES.landingHero.src}
-              alt={IMAGES.landingHero.alt}
-              width={800}
-              height={534}
-              sizes="(max-width: 860px) 100vw, 420px"
-              loading="eager"
-              fetchPriority="high"
-            />
-          </div>
+    <div className="community-page">
+      <WelcomeHero user={user} />
+      <SupportBanner />
+      <Suspense fallback={null}><IntroStory /></Suspense>
+      <div className="home-layout community-layout">
+      <div className="home-main" id="community-feed" tabIndex={-1}>
+        <div className="feed-heading">
+          <div><span className="eyebrow">ROOM FOR EVERY STORY</span><h2>From the community</h2></div>
+          <span className="feed-heading-note">Listen. Share. Be understood.</span>
         </div>
-
-        <Suspense fallback={null}>
-          <IntroStory />
-        </Suspense>
-
         <DailyAffirmation />
 
         {user ? (
@@ -224,7 +202,18 @@ const PostFeed = () => {
           </Link>
         )}
       </div>
-      <HomeSidebar onSelectCategory={setCategory} />
+      <HomeSidebar onSelectCategory={(value) => {
+        setCategory(value);
+        document.getElementById('community-feed')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }} />
+      </div>
+      <section className="community-invitation">
+        <span className="eyebrow">THERE’S NO RIGHT WAY TO BEGIN</span>
+        <h2>Reading is participating, too.</h2>
+        <p>Stay for a story, take a quiet moment, or share when you’re ready. This space is yours to make your own.</p>
+        <Link to="/threads" className="text-link">Find a conversation <span aria-hidden="true">&#8599;</span></Link>
+        <Link to="/calm" className="text-link">Take a breathing break <span aria-hidden="true">&#8599;</span></Link>
+      </section>
     </div>
   );
 };

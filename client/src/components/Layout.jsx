@@ -1,26 +1,15 @@
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import SupportBanner from './SupportBanner';
 
-const REVEAL_SELECTOR = [
-  '.hero',
-  '.page-header',
-  '.threads-discovery',
-  '.thread-list-heading',
-  '.daily-affirmation',
-  '.composer-teaser',
-  '.post-card',
-  '.thread-card',
-  '.article-card',
-  '.counselor-row',
-  '.calm-section',
-  '.card',
-  '.static-page > *',
-].map((selector) => `main.page ${selector}`).join(', ');
+// Reveal editorial sections once; keep feed entries and forms immediately visible.
+const REVEAL_SELECTOR = '.community-invitation, .thread-list-heading, .calm-section';
 
 const Layout = ({ children }) => {
   const pageRef = useRef(null);
+  const isHome = useLocation().pathname === '/';
 
   useEffect(() => {
     const page = pageRef.current;
@@ -75,9 +64,9 @@ const Layout = ({ children }) => {
   return (
     <>
       <a className="skip-link" href="#main-content">Skip to main content</a>
-      <Navbar />
-      <SupportBanner />
-      <main id="main-content" tabIndex={-1} className="page" ref={pageRef}>{children}</main>
+      <Navbar overlay={isHome} />
+      {!isHome && <SupportBanner />}
+      <main id="main-content" tabIndex={-1} className={`page${isHome ? ' page-home' : ''}`} ref={pageRef}>{children}</main>
       <Footer />
     </>
   );
